@@ -4,12 +4,11 @@ import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public abstract class DifferentialDrive extends DriveTrain {
+public class DifferentialDrive extends DriveTrain {
 
     public DifferentialDrive() {
         // Use requires() here to declare subsystem dependencies
@@ -22,6 +21,8 @@ public abstract class DifferentialDrive extends DriveTrain {
     	Spark m_midRight = new Spark(5);
     	Spark m_rearRight = new Spark(6);
     	SpeedControllerGroup m_right = new SpeedControllerGroup(m_frontRight, m_midRight, m_rearRight);
+    	
+    	DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
     }
 
     // Called just before this Command runs the first time
@@ -45,4 +46,10 @@ public abstract class DifferentialDrive extends DriveTrain {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
+
+	@Override
+	protected void initDefaultCommand() {
+		// TODO Auto-generated method stub
+		
+	}
 }

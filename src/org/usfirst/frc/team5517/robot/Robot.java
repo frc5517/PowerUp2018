@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 
 public class Robot extends TimedRobot {
-	public static final DriveTrain driveTrainSubsystem = new DriveTrain(Robot.driveTrainSubsystem);
+	public static final DriveTrain driveTrainSubsystem = new DriveTrain();
 	public static OI m_oi = new OI();
 
 	Command m_autonomousCommand;
@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_oi = new OI();
+		//m_oi = new OI();
 		// m_chooser.addDefault("Default Auto", new AutoCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);

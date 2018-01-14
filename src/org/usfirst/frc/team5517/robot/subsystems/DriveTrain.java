@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Spark;
 /**
  * Drive Train subsystem
  */
-public abstract class DriveTrain extends Subsystem {
+public class DriveTrain extends Subsystem {
 
      Spark driveLeft1 = new Spark(RobotMap.driveTrainLeftMotor1PWM);
 	 Spark driveLeft2 = new Spark(RobotMap.driveTrainLeftMotor2PWM);
