@@ -22,22 +22,22 @@ public class OI {
 	Joystick leftJoystick = new Joystick(RobotMap.leftJoystickPort);
 	Joystick rightJoystick = new Joystick(RobotMap.rightJoystickPort);
 	// Button button = new JoystickButton(stick, buttonNumber);
-	
+
 	public double getLeftJoystickY() {
 		double y = leftJoystick.getY();
 		double sign = 1;
-		
+
 		if(y < 0) {
 			sign = -1;
 			y = -y;
 		}
 		return -(y * y * sign);
 	}
-	
+
 	public double getRightJoystickX() {
 		double y = rightJoystick.getX();
 		double sign = 1;
-		
+
 		if(y < 0) {
 			sign = -1;
 			y = -y;
