@@ -19,12 +19,12 @@ public class Drive extends Command {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.driveTrainSubsystem);
         
-    	Spark m_frontLeft = new Spark(1);
-    	Spark m_backLeft = new Spark(2);
+    	Spark m_frontLeft = new Spark(0);
+    	Spark m_backLeft = new Spark(1);
     	SpeedControllerGroup m_left = new SpeedControllerGroup(m_frontLeft, m_backLeft);
     	
-    	Spark m_frontRight = new Spark(3);
-    	Spark m_backRight = new Spark(4);
+    	Spark m_frontRight = new Spark(2);
+    	Spark m_backRight = new Spark(3);
     	SpeedControllerGroup m_right = new SpeedControllerGroup(m_frontRight, m_backRight);
     	
     	DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right); 
@@ -55,5 +55,6 @@ public class Drive extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

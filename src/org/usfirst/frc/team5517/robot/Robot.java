@@ -8,13 +8,14 @@
 package org.usfirst.frc.team5517.robot;
 
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
+//import org.usfirst.frc.team5517.robot.commands.Drive;
 
-// import edu.wpi.first.wpilibj.Spark;
-// import edu.wpi.first.wpilibj.SpeedControllerGroup;
+//import edu.wpi.first.wpilibj.Spark;
+//import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-// import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+//import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -28,19 +29,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
 	public static final DriveTrain driveTrainSubsystem = new DriveTrain();
+	//public static DifferentialDrive driveCommand = new DifferentialDrive(null, null);
 	public static OI m_oi = new OI();
 
-	/* 
-	 * 	Spark m_frontLeft = new Spark(1);
-    	Spark m_backLeft = new Spark(2);
+	/*	Spark m_frontLeft = new Spark(0);
+    	Spark m_backLeft = new Spark(1);
     	SpeedControllerGroup m_left = new SpeedControllerGroup(m_frontLeft, m_backLeft);
     	
-    	Spark m_frontRight = new Spark(3);
-    	Spark m_backRight = new Spark(4);
+    	Spark m_frontRight = new Spark(2);
+    	Spark m_backRight = new Spark(3);
     	SpeedControllerGroup m_right = new SpeedControllerGroup(m_frontRight, m_backRight);
     	
-     *  DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);  
-	 */
+    	DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);  */
 	
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();

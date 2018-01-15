@@ -24,7 +24,7 @@ public class OI {
 	// Button button = new JoystickButton(stick, buttonNumber);
 	
 	public double getLeftJoystickY() {
-		double y = mainDriverGamepad.getLeftY();
+		double y = leftJoystick.getY();
 		double sign = 1;
 		
 		if(y < 0) {
@@ -35,7 +35,7 @@ public class OI {
 	}
 	
 	public double getRightJoystickX() {
-		double y = mainDriverGamepad.getRightX();
+		double y = rightJoystick.getX();
 		double sign = 1;
 		
 		if(y < 0) {
