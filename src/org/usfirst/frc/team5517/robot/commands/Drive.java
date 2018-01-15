@@ -1,22 +1,25 @@
 package org.usfirst.frc.team5517.robot.commands;
 
+import org.usfirst.frc.team5517.robot.OI;
 import org.usfirst.frc.team5517.robot.Robot;
 
-// import edu.wpi.first.wpilibj.Spark;
-// import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Command;
-// import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
- * Single stick Arcade drive
+ *
  */
-public class ArcadeDrive extends Command {
+public class Drive extends Command {
 
-    public ArcadeDrive() {
+	private OI oi = Robot.m_oi;
+
+    public Drive() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.driveTrainSubsystem);
         
-       /* Spark m_frontLeft = new Spark(1);
+    	Spark m_frontLeft = new Spark(1);
     	Spark m_backLeft = new Spark(2);
     	SpeedControllerGroup m_left = new SpeedControllerGroup(m_frontLeft, m_backLeft);
     	
@@ -24,7 +27,8 @@ public class ArcadeDrive extends Command {
     	Spark m_backRight = new Spark(4);
     	SpeedControllerGroup m_right = new SpeedControllerGroup(m_frontRight, m_backRight);
     	
-    	DifferentialDrive drive = new DifferentialDrive(m_left, m_right); */
+    	DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right); 
+
     }
 
     // Called just before this Command runs the first time
@@ -33,7 +37,10 @@ public class ArcadeDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrainSubsystem.arcadeDrive(Robot.m_oi.getLeftJoystickY(), Robot.m_oi.getRightJoystickX());
+    	Robot.driveTrainSubsystem.drive(
+    		oi.getLeftJoystickY(), // Linear Motion
+    		oi.getRightJoystickX() // Rotation
+    	);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -48,6 +55,5 @@ public class ArcadeDrive extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }
