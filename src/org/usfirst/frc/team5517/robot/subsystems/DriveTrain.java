@@ -1,11 +1,12 @@
 package org.usfirst.frc.team5517.robot.subsystems;
 
 import org.usfirst.frc.team5517.robot.RobotMap;
+import org.usfirst.frc.team5517.robot.commands.Drive;
 
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  * Drive Train subsystem
@@ -17,55 +18,22 @@ public class DriveTrain extends Subsystem {
 	 Spark driveRight1 = new Spark(RobotMap.driveTrainRightMotor1PWM);
 	 Spark driveRight2 = new Spark(RobotMap.driveTrainRightMotor2PWM);
  
-	 public DriveTrain() {
+	 SpeedControllerGroup driveLeft = new SpeedControllerGroup(driveLeft1, driveLeft2);
+	 SpeedControllerGroup driveRight = new SpeedControllerGroup(driveRight1, driveRight2);
 		 
-	 }
-    /**
-     * Arcade drive
-     * @param moveValue
-     * @param rotateValue
-     */
-   public void arcadeDrive(double moveValue, double rotateValue) {
-    	arcadeDrive(moveValue, rotateValue);
-    }
-    
-    /**
-     * Set max motor speed
-     */
-   public void DifferentialDrive(double speed) {
-    	DifferentialDrive(speed);
-    }
+	 DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
 
-   /**
-    * Stop robot movement
-    */
-	public void stopMotor() {
-		arcadeDrive(0,0);
-		
-	}
-
-
-	@Override
-	public void initSendable(SendableBuilder builder) {
-		
-		
-	}
-
-	
-	public String getDescription() {
-		return null;
-	}
 
 	protected void initDefaultCommand() {
-		setDefaultCommand(Drive());
+		setDefaultCommand(new Drive());
 	} 
-	
-	private Command Drive() {
-		// TODO Auto-generated method stub
-		return null;
+
+	public void drive(double left, double right) {
+		drive.tankDrive(left, right);
 	}
-	public void drive(double x, double y) {
-		
+	
+	public void arcadeDrive(double speed, double rotation) {
+		drive.arcadeDrive(speed, rotation);
 	}
 }
 
