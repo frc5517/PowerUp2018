@@ -23,7 +23,6 @@ public class DriveTrain extends Subsystem {
 
 	DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
 
-
 	protected void initDefaultCommand() {
 		setDefaultCommand(new Drive());
 	} 
@@ -34,6 +33,10 @@ public class DriveTrain extends Subsystem {
 
 	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
+	}
+	
+	public void stop() {
+		drive.stopMotor();
 	}
 }
 
