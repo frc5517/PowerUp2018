@@ -11,7 +11,7 @@ public class ArcadeDrive extends Command {
 
     public ArcadeDrive() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.driveTrainSubsystem);
+        // requires(Robot.driveTrainSubsystem);
     }
 
     // Called just before this Command runs the first time

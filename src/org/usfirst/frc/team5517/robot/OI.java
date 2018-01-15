@@ -7,7 +7,6 @@
 
 package org.usfirst.frc.team5517.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import org.usfirst.frc.team5517.robot.utils.Gamepad;
 
 /**
@@ -18,7 +17,7 @@ public class OI {
 
 	Gamepad mainDriverGamepad = new Gamepad(RobotMap.mainDriverGamepadPort);
 	Gamepad operatorGamepad = new Gamepad(RobotMap.operatorGamepadPort);
-	//Joystick stick = new Joystick(0);
+	// Joystick stick = new Joystick(0);
 	// Button button = new JoystickButton(stick, buttonNumber);
 	
 	public double getLeftJoystickY() {

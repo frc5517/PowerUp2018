@@ -9,9 +9,12 @@ package org.usfirst.frc.team5517.robot;
 
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -26,6 +29,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 	public static final DriveTrain driveTrainSubsystem = new DriveTrain();
 	public static OI m_oi = new OI();
+	
+	Spark m_frontLeft = new Spark(1);
+	Spark m_midLeft = new Spark(2);
+	Spark m_backLeft = new Spark(3);
+	SpeedControllerGroup m_left = new SpeedControllerGroup(m_frontLeft, m_midLeft, m_backLeft);
+	
+	Spark m_frontRight = new Spark(4);
+	Spark m_midRight = new Spark(5);
+	Spark m_backRight = new Spark(6);
+	SpeedControllerGroup m_right = new SpeedControllerGroup(m_frontRight, m_midRight, m_backRight);
+	
+	DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -36,7 +51,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		//m_oi = new OI();
 		// m_chooser.addDefault("Default Auto", new AutoCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
