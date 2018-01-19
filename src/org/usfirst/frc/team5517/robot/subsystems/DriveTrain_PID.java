@@ -1,10 +1,11 @@
 package org.usfirst.frc.team5517.robot.subsystems;
 
 import org.usfirst.frc.team5517.robot.Robot;
-import org.usfirst.frc.team5517.robot.RobotMap;
+// import org.usfirst.frc.team5517.robot.RobotMap;
 import org.usfirst.frc.team5517.robot.commands.Drive;
 import org.usfirst.frc.team5517.robot.sensors.ADXRS453Gyro;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 //import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
@@ -21,6 +22,8 @@ public class DriveTrain_PID extends PIDSubsystem {
 	SpeedControllerGroup driveRight;
 	ADXRS453Gyro gyro;
 	
+	DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
+	
 	//private double targetAngle = 0;
 	//private double compensateValue = 0;
 	//private double lastUpdatedAngleTime = 0;
@@ -31,10 +34,11 @@ public class DriveTrain_PID extends PIDSubsystem {
     	
     	driveLeft = new SpeedControllerGroup(Robot.driveTrainSubsystem.driveLeft);
     	driveRight = new SpeedControllerGroup(Robot.driveTrainSubsystem.driveRight);
+    
+    	
     	gyro = new ADXRS453Gyro();
     	gyro.startThread();
     	
-    	DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
     	
     	setAbsoluteTolerance(0.05);
     	setInputRange(-180, 180);
@@ -64,12 +68,20 @@ public class DriveTrain_PID extends PIDSubsystem {
     protected double returnPIDInput() {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
-        // yourPot.getAverageVoltage() / kYourMaxVoltage;
+        // driveTrainPot.getAverageVoltage() / kYourMaxVoltage;
         return 0.0;
     }
 
     protected void usePIDOutput(double output) {
         // Use output to drive your system, like a motor
         // e.g. yourMotor.set(output);
+    }
+    
+    public void drive(double left, double right) {
+    	drive.tankDrive(left, right);
+    }
+    
+    public void arcadeDrive(double speed, double rotation) {
+    	drive.arcadeDrive(speed,rotation);
     }
 }

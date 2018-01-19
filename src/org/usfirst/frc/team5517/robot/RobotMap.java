@@ -24,10 +24,10 @@ public class RobotMap {
 	public static int operatorGamepadPort = 3;
 
 	// Drive Motors
-	public static int driveTrainLeftMotor1PWM = 0;
-	public static int driveTrainLeftMotor2PWM = 1;
-	public static int driveTrainRightMotor1PWM = 2;
-	public static int driveTrainRightMotor2PWM = 3;
+	public static int driveTrainLeftMotorPWM = 0;
+	public static int driveTrainRightMotorPWM = 1;
+	//public static int driveTrainRightMotor1PWM = 2;
+	//public static int driveTrainRightMotor2PWM = 3;
 
 	// If you are using multiple modules, make sure to define both the port
 	// number and the module. For example you with a rangefinder:
