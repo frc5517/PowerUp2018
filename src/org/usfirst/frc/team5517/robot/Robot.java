@@ -8,42 +8,19 @@
 package org.usfirst.frc.team5517.robot;
 
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
-//import org.usfirst.frc.team5517.robot.commands.Drive;
 
-//import edu.wpi.first.wpilibj.Spark;
-//import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-//import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in the
- * project.
- */
-
 public class Robot extends TimedRobot {
 	public static final DriveTrain driveTrainSubsystem = new DriveTrain();
-	//public static DifferentialDrive driveCommand = new DifferentialDrive(null, null);
-	public static OI m_oi = new OI();
+	public static OI oi = new OI();
 
-	/*	Spark m_frontLeft = new Spark(0);
-    	Spark m_backLeft = new Spark(1);
-    	SpeedControllerGroup m_left = new SpeedControllerGroup(m_frontLeft, m_backLeft);
-    	
-    	Spark m_frontRight = new Spark(2);
-    	Spark m_backRight = new Spark(3);
-    	SpeedControllerGroup m_right = new SpeedControllerGroup(m_frontRight, m_backRight);
-    	
-    	DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);  */
-	
-	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	Command autoCommand;
+	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -51,9 +28,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		// m_chooser.addDefault("Default Auto", new AutoCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		// autonChooser.addDefault("Default Auto", new AutoCommand());
+		// autonChooser.addObject("My Auto", new MyAutoCommand());
+		SmartDashboard.putData("Auto mode", autoChooser);
 	}
 
 	/**
@@ -72,19 +49,11 @@ public class Robot extends TimedRobot {
 	}
 
 	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
-	 *
-	 * <p>You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
+	 * Autonomous Initializtion
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		autoCommand = autoChooser.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -93,9 +62,9 @@ public class Robot extends TimedRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 
-		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		// schedule the autonomous command
+		if (autoCommand != null) {
+			autoCommand.start();
 		}
 	}
 
@@ -109,12 +78,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (autoCommand != null) {
+			autoCommand.cancel();
 		}
 	}
 
