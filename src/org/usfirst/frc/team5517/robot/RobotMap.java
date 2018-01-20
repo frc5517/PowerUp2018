@@ -26,8 +26,12 @@ public class RobotMap {
 	// Drive Motors
 	public static int driveTrainLeftMotorPWM = 0;
 	public static int driveTrainRightMotorPWM = 1;
-	//public static int driveTrainRightMotor1PWM = 2;
-	//public static int driveTrainRightMotor2PWM = 3;
+	
+	// Mechanism Motors
+	public static int armMotorPWMPort = 2;
+	public static int intakeMotorPWMPort = 3;
+	
+
 
 	// If you are using multiple modules, make sure to define both the port
 	// number and the module. For example you with a rangefinder:

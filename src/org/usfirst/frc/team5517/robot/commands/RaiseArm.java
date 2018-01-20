@@ -2,19 +2,16 @@ package org.usfirst.frc.team5517.robot.commands;
 
 import org.usfirst.frc.team5517.robot.Robot;
 
-// import edu.wpi.first.wpilibj.Spark;
-// import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Command;
-// import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
- * Single stick Arcade drive
+ *
  */
-public class ArcadeDrive extends Command {
+public class RaiseArm extends Command {
 
-    public ArcadeDrive() {
+    public RaiseArm() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.driveTrain);
+        requires(Robot.arm);
     }
 
     // Called just before this Command runs the first time
@@ -23,7 +20,7 @@ public class ArcadeDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.arcadeDrive(Robot.oi.getLeftJoystickY(), Robot.oi.getRightJoystickX());
+    	Robot.arm.raise();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -33,6 +30,7 @@ public class ArcadeDrive extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.arm.stop();
     }
 
     // Called when another command which requires one or more of the same

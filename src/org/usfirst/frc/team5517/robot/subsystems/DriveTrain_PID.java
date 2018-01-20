@@ -32,8 +32,8 @@ public class DriveTrain_PID extends PIDSubsystem {
   
     	super("DriveTrain", 0, 0, 0);
     	
-    	driveLeft = new SpeedControllerGroup(Robot.driveTrainSubsystem.driveLeft);
-    	driveRight = new SpeedControllerGroup(Robot.driveTrainSubsystem.driveRight);
+    	driveLeft = new SpeedControllerGroup(Robot.driveTrain.driveLeft);
+    	driveRight = new SpeedControllerGroup(Robot.driveTrain.driveRight);
     
     	
     	gyro = new ADXRS453Gyro();

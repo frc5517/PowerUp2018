@@ -14,7 +14,7 @@ public class Drive extends Command {
 
 	public Drive() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.driveTrainSubsystem);
+		requires(Robot.driveTrain);
 	}
 
 	// Called just before this Command runs the first time
@@ -23,7 +23,7 @@ public class Drive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.driveTrainSubsystem.arcadeDrive(
+		Robot.driveTrain.arcadeDrive(
 			oi.getLeftJoystickY(), // Linear Motion
 			oi.getRightJoystickX() // Rotation
 		);
@@ -36,7 +36,7 @@ public class Drive extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		Robot.driveTrainSubsystem.stop();
+		Robot.driveTrain.stop();
 	}
 
 	// Called when another command which requires one or more of the same

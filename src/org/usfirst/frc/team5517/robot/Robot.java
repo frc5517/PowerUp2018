@@ -7,8 +7,12 @@
 
 package org.usfirst.frc.team5517.robot;
 
+import org.usfirst.frc.team5517.robot.subsystems.Arm;
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team5517.robot.subsystems.Intake;
+import org.usfirst.frc.team5517.robot.utils.Debouncer;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -16,9 +20,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
-	public static final DriveTrain driveTrainSubsystem = new DriveTrain();
+	
+	// Subsystems
+	public static final DriveTrain driveTrain = new DriveTrain();
+	public static Arm arm = new Arm();
+	public static final Intake intake = new Intake();
 	public static OI oi = new OI();
+	
+	public boolean matchStarted = false;
+	
+	// Gyro variables
+	private double curAngle;
+	private double lastAngle;
+	private boolean gyroCalibrating;
+	private boolean lastGyroCalibrating;
+	private int gyroReinits;
+	private Debouncer gyroDriftDetector;
 
+	
 	Command autoCommand;
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -28,6 +47,19 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		
+		System.out.println("Robot initializing...");
+		
+		CameraServer server = CameraServer.getInstance();
+		server.startAutomaticCapture();
+		
+		// Create controls
+		oi = new OI();
+		
+		// Gyro stuff
+		gyroDriftDetector = new Debouncer(1.0);
+		driveTrain.calibrateGyro();
+		
 		// autonChooser.addDefault("Default Auto", new AutoCommand());
 		// autonChooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", autoChooser);

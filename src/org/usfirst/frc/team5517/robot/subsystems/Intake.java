@@ -1,5 +1,8 @@
 package org.usfirst.frc.team5517.robot.subsystems;
 
+import org.usfirst.frc.team5517.robot.RobotMap;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -10,12 +13,14 @@ public class Intake extends Subsystem {
 
     private final double INTAKE_IN_SPEED = 0.5;
     private final double INTAKE_OUT_SPEED = 0.5;
-    private final double LIFT_SPEED = 0.75;
-    private final double LOWER_SPEED = 0.75;
     
     private Talon intakeMotor;
-    private Talon intakeLiftMotor;
-    private Talon intakeLowerMotor;
+    private DoubleSolenoid solenoid;
+    
+    public Intake() {
+    	intakeMotor = new Talon(RobotMap.intakeMotorPWMPort);
+    	solenoid = new DoubleSolenoid(1, 2);
+    }
     
 
     public void initDefaultCommand() {
@@ -28,19 +33,19 @@ public class Intake extends Subsystem {
     }
     
     public void intakeOut() {
-    	intakeMotor.set(INTAKE_OUT_SPEED);
+    	intakeMotor.set(-INTAKE_OUT_SPEED);
     }
     
     public void liftIntake() {
-    	intakeLiftMotor.set(LIFT_SPEED);
+    	solenoid.set(DoubleSolenoid.Value.kForward);
     }
     
     public void lowerIntake() {
-    	intakeLowerMotor.set(-LOWER_SPEED);
+    	solenoid.set(DoubleSolenoid.Value.kReverse);
     }
     
     public void stopIntakeLift() {
-    	intakeLiftMotor.set(0);
+    	solenoid.set(DoubleSolenoid.Value.kOff);
     }
     
     public void stopIntake() {
