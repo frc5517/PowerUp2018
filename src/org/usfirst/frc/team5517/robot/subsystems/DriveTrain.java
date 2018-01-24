@@ -76,15 +76,43 @@ public class DriveTrain extends Subsystem {
 		speed = speed*speed*speed;
 		rotation = rotation*rotation;
 
+		/**
+		 * If there is rotation input, update the current angle
+		 */
 		if(rotation != 0) {
 			setTargetAngle(currentAngle);
 			lastUpdatedTargetAngleTime = System.nanoTime();
 		}
 
-		/*else if(500 < nanoToMilli(System.nanoTime()-lastUpdatedTargetAngleTime)) {
+		/**
+		 * If it has been some time since the angle was updated by the driver,
+		 * we can compensate
+		 */
+		else if(500 < nanoToMilli(System.nanoTime()-lastUpdatedTargetAngleTime)) {
 			System.out.print("gyro angle: " + currentAngle);
 			System.out.print(", target angle: " + targetAngle);
-		}*/
+		}
+		
+		/**
+		 * Compensate if the diff is large enough
+		 */
+		if(diff > 3) {
+			final double multiplier = 0.015;
+			
+			if(targetAngle > currentAngle) {
+				System.out.println("compensate right");
+				compensation = diff * multiplier;
+			}
+			else if(targetAngle < currentAngle) {
+				System.out.println("compensate left");
+				compensation = diff * -multiplier;
+			}
+			
+			/**
+			 * Min/max compensation values
+			 */
+			compensation = minAndMax(compensation, 0.1, 0.3);
+		}
 	}
 
 
@@ -130,6 +158,49 @@ public class DriveTrain extends Subsystem {
 	 */
 	public void stop() {
 		drive.stopMotor();
+	}
+	
+	/**
+	 * Converts nanoseconds to milliseconds
+	 */
+	private long nanoToMilli(long nano) {
+		return nano/1000000;
+	}
+	
+	/**
+	 * Min and max of a value 
+	 */
+	private double minAndMax(double value, double min, double max) {
+		// positive max
+		if(value > max) {
+			value = max;
+		}
+		// negative max
+		else if(value < 0 && value < -max) {
+			value = -max;
+		}
+		// positive min
+		else if(value > 0 && value < min) {
+			value = min;
+		}
+		// negative min
+		else if(value < 0 && value > -min) {
+			value = min;
+		}
+		
+		return value;
+	}
+	
+	/**
+	 * Adds a "deadzone" to the joystick inputs to remove jitter
+	 * @param joystick value
+	 * @return joystick value with deadzone added
+	 */
+	private double joystickDz(double value) {
+		if(value > -JOYSTICK_TOLERANCE && value < JOYSTICK_TOLERANCE) {
+			return 0;
+		}
+		return value;
 	}
 }
 

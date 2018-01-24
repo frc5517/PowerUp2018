@@ -21,13 +21,13 @@ public class DriveTrain_PID extends PIDSubsystem {
 
 	DifferentialDrive drive;
 
-	//private double targetAngle = 0;
-	//private double compensateValue = 0;
-	//private double lastUpdatedAngleTime = 0;
+	private double targetAngle = 0;
+	private double compensateValue = 0;
+	private double lastUpdatedAngleTime = 0;
 
 	public DriveTrain_PID() {
 
-		super("DriveTrain", 0, 0, 0);
+		super("DriveTrain", 0, 0, 0); // kP, kI, kD
 
 		driveLeft = new SpeedControllerGroup(Robot.driveTrain.driveLeft);
 		driveRight = new SpeedControllerGroup(Robot.driveTrain.driveRight);
@@ -53,12 +53,12 @@ public class DriveTrain_PID extends PIDSubsystem {
 	 * @param The joystick value
 	 * @return The joystick value after adding deadzone
 	 */
-	/*private double joystickDz(double value) {
+	private double joystickDz(double value) {
 		if(value > -JOYSTICK_TOLERANCE && value < JOYSTICK_TOLERANCE) {
 			return 0;
 		}
 		return value;
-	}*/
+	}
 
 	public void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDrive());
@@ -70,7 +70,8 @@ public class DriveTrain_PID extends PIDSubsystem {
 
 	protected void usePIDOutput(double output) {
 		// Use output to drive your system, like a motor
-		// e.g. yourMotor.set(output);
+		driveLeft.set(output);
+		driveRight.set(output);
 	}
 	
 	/**

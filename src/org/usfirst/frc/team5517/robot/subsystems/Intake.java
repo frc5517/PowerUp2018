@@ -36,6 +36,10 @@ public class Intake extends Subsystem {
     	intakeMotor.set(-INTAKE_OUT_SPEED);
     }
     
+    public void stopIntake() {
+    	intakeMotor.set(0);
+    }
+    
     public void liftIntake() {
     	solenoid.set(DoubleSolenoid.Value.kForward);
     }
@@ -46,9 +50,5 @@ public class Intake extends Subsystem {
     
     public void stopIntakeLift() {
     	solenoid.set(DoubleSolenoid.Value.kOff);
-    }
-    
-    public void stopIntake() {
-    	intakeMotor.set(0);
     }
 }
