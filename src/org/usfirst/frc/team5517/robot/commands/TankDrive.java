@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class Drive extends Command {
+public class TankDrive extends Command {
 
 	private OI oi = Robot.oi;
 
-	public Drive() {
+	public TankDrive() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.driveTrain);
 	}
@@ -23,7 +23,7 @@ public class Drive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.driveTrain.arcadeDrive(
+		Robot.driveTrain.tankDrive(
 			oi.getLeftJoystickY(), // Linear Motion
 			oi.getRightJoystickX() // Rotation
 		);

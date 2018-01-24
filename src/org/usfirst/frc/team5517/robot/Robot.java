@@ -20,15 +20,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
-	
+
 	// Subsystems
 	public static final DriveTrain driveTrain = new DriveTrain();
-	public static Arm arm = new Arm();
+	public static final Arm arm = new Arm();
 	public static final Intake intake = new Intake();
 	public static OI oi = new OI();
-	
+
 	public boolean matchStarted = false;
-	
+
 	// Gyro variables
 	private double curAngle;
 	private double lastAngle;
@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 	private int gyroReinits;
 	private Debouncer gyroDriftDetector;
 
-	
+
 	Command autoCommand;
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -47,19 +47,19 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		
+
 		System.out.println("Robot initializing...");
-		
+
 		CameraServer server = CameraServer.getInstance();
 		server.startAutomaticCapture();
-		
+
 		// Create controls
 		oi = new OI();
-		
+
 		// Gyro stuff
 		gyroDriftDetector = new Debouncer(1.0);
 		driveTrain.calibrateGyro();
-		
+
 		// autonChooser.addDefault("Default Auto", new AutoCommand());
 		// autonChooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", autoChooser);

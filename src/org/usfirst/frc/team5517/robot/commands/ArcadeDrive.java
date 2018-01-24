@@ -2,10 +2,7 @@ package org.usfirst.frc.team5517.robot.commands;
 
 import org.usfirst.frc.team5517.robot.Robot;
 
-// import edu.wpi.first.wpilibj.Spark;
-// import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Command;
-// import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 /**
  * Single stick Arcade drive
