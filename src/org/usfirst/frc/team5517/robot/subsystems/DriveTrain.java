@@ -69,13 +69,27 @@ public class DriveTrain extends Subsystem {
 
 	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
-		currentAngle = this.getHeading();
+		double currentAngle = getHeading();
 		diff = Math.IEEEremainder(targetAngle, currentAngle);
 		compensation = 0;
+		
+		
+		/**
+		 * Remove jitter by adding a joystick 'deadzone'
+		 */
+		speed = joystickDz(speed);
+		rotation = joystickDz(rotation);
 
+		
+		/**
+		 *  Exponential speed and rotation, makes each value start less quickly
+		 *  @param speed
+		 *  @param rotation
+		 */
 		speed = speed*speed*speed;
 		rotation = rotation*rotation;
 
+		
 		/**
 		 * If there is rotation input, update the current angle
 		 */
@@ -84,14 +98,16 @@ public class DriveTrain extends Subsystem {
 			lastUpdatedTargetAngleTime = System.nanoTime();
 		}
 
+		
 		/**
 		 * If it has been some time since the angle was updated by the driver,
 		 * we can compensate
 		 */
-		else if(500 < nanoToMilli(System.nanoTime()-lastUpdatedTargetAngleTime)) {
+		else if(500 < nanoToMilli(System.nanoTime() - lastUpdatedTargetAngleTime)) {
 			System.out.print("gyro angle: " + currentAngle);
 			System.out.print(", target angle: " + targetAngle);
 		}
+		
 		
 		/**
 		 * Compensate if the diff is large enough
@@ -107,6 +123,7 @@ public class DriveTrain extends Subsystem {
 				System.out.println("compensate left");
 				compensation = diff * -multiplier;
 			}
+			
 			
 			/**
 			 * Min/max compensation values
