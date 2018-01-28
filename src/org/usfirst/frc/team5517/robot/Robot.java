@@ -7,7 +7,7 @@
 
 package org.usfirst.frc.team5517.robot;
 
-import org.usfirst.frc.team5517.robot.subsystems.Arm;
+import org.usfirst.frc.team5517.robot.subsystems.Elevator;
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
 import org.usfirst.frc.team5517.robot.utils.Debouncer;
@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
 
 	// Subsystems
 	public static final DriveTrain driveTrain = new DriveTrain();
-	public static final Arm arm = new Arm();
+	public static final Elevator arm = new Elevator();
 	public static final Intake intake = new Intake();
 	public static OI oi = new OI();
 

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class Arm extends Subsystem {
+public class Elevator extends Subsystem {
 	
 	private final double LIFT_SPEED = 1;
 	private final double LOWER_SPEED = 1;
@@ -16,7 +16,7 @@ public class Arm extends Subsystem {
 	private Talon armMotor;
 	
 	
-	public Arm() {
+	public Elevator() {
 		armMotor = new Talon(RobotMap.armMotorPWMPort);
 	}
 
