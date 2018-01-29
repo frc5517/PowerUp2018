@@ -7,10 +7,9 @@
 
 package org.usfirst.frc.team5517.robot;
 
+import org.usfirst.frc.team5517.robot.subsystems.DriveTrain_PID;
 import org.usfirst.frc.team5517.robot.subsystems.Elevator;
-import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
-import org.usfirst.frc.team5517.robot.utils.Debouncer;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -22,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 
 	// Subsystems
-	public static final DriveTrain driveTrain = new DriveTrain();
+	public static final DriveTrain_PID driveTrain = new DriveTrain_PID();
 	public static final Elevator arm = new Elevator();
 	public static final Intake intake = new Intake();
 	public static OI oi = new OI();
@@ -30,12 +29,12 @@ public class Robot extends TimedRobot {
 	public boolean matchStarted = false;
 
 	// Gyro variables
-	private double curAngle;
+	/*private double curAngle;
 	private double lastAngle;
 	private boolean gyroCalibrating;
 	private boolean lastGyroCalibrating;
 	private int gyroReinits;
-	private Debouncer gyroDriftDetector;
+	private Debouncer gyroDriftDetector;*/
 
 
 	Command autoCommand;
@@ -57,8 +56,8 @@ public class Robot extends TimedRobot {
 		oi = new OI();
 
 		// Gyro stuff
-		gyroDriftDetector = new Debouncer(1.0);
-		driveTrain.calibrateGyro();
+		//gyroDriftDetector = new Debouncer(1.0);
+		//driveTrain.calibrateGyro();
 
 		// autonChooser.addDefault("Default Auto", new AutoCommand());
 		// autonChooser.addObject("My Auto", new MyAutoCommand());
@@ -72,7 +71,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+		matchStarted = false;
 	}
 
 	@Override
@@ -110,6 +109,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		matchStarted = true;
 		if (autoCommand != null) {
 			autoCommand.cancel();
 		}
