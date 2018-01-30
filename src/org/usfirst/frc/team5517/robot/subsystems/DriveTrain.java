@@ -52,9 +52,12 @@ public class DriveTrain extends Subsystem {
 		angleController = new PIDController(angleP, angleI, angleD, gyro, distPIDOutput);
 		distanceController = new PIDController(distP, distI, distD, distPIDSource, anglePIDOutput);
 	}
+
+	protected void initDefaultCommand() {
+		setDefaultCommand(new ArcadeDrive());
+	} 
 	
 	private PIDSource distPIDSource = new PIDSource() {
-
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {
 			// TODO Auto-generated method stub
@@ -69,9 +72,7 @@ public class DriveTrain extends Subsystem {
 
 		@Override
 		public double pidGet() {
-			// average of both encoders for now
-			double output = (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
-			return output;
+			return getEncoderValue();
 		}
 		
 	};
@@ -90,10 +91,11 @@ public class DriveTrain extends Subsystem {
 		}
 	};
 
-
-	protected void initDefaultCommand() {
-		setDefaultCommand(new ArcadeDrive());
-	} 
+	private double getEncoderValue() {
+		// average of both encoders for now
+		double output = (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
+		return output;
+	}
 
 	public void tankDrive(double left, double right) {
 		drive.tankDrive(left, right);
