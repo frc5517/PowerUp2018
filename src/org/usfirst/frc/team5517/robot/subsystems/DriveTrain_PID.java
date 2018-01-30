@@ -87,6 +87,18 @@ public class DriveTrain_PID extends PIDSubsystem {
 		System.out.println(", Gyro Pos: " + gyro.getPos());
 		System.out.println(", Rate: " + gyro.getRate());
 	}
+	
+	public void turnLeft(double rate) {
+		drive.arcadeDrive(0, -rate);
+	}
+	
+	public void turnRight(double rate) {
+		drive.arcadeDrive(0, rate);
+	}
+	
+	public void driveStraight(double rate) {
+		drive.arcadeDrive(rate, 0);
+	}
 
 	public void tankDrive(double left, double right) {
 		drive.tankDrive(left, right);
@@ -114,8 +126,6 @@ public class DriveTrain_PID extends PIDSubsystem {
 		
 		/**
 		 *  Exponential speed and rotation, makes each value start less quickly
-		 *  @param speed
-		 *  @param rotation
 		 */
 		speed = speed*speed*speed;
 		rotation = rotation*rotation;
