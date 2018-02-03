@@ -2,10 +2,10 @@ package org.usfirst.frc.team5517.robot.subsystems;
 
 import org.usfirst.frc.team5517.robot.RobotMap;
 import org.usfirst.frc.team5517.robot.commands.TankDrive;
+
 import org.usfirst.frc.team5517.robot.sensors.ADXRS453Gyro;
 
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 

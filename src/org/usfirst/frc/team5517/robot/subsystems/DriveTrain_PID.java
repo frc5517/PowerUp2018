@@ -70,7 +70,6 @@ public class DriveTrain_PID extends PIDSubsystem {
 	}
 
 	protected void usePIDOutput(double output) {
-		// Use output to drive your system, like a motor
 		driveLeft.set(output);
 		driveRight.set(output);
 	}

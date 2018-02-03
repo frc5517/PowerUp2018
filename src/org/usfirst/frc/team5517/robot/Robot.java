@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
 
 	// Subsystems
 	public static final DriveTrain driveTrain = new DriveTrain();
-	public static final Elevator arm = new Elevator();
+	public static final Elevator elevator = new Elevator();
 	public static final Intake intake = new Intake();
 	public static OI oi = new OI();
 

@@ -51,4 +51,16 @@ public class Intake extends Subsystem {
     public void stopIntakeLift() {
     	solenoid.set(DoubleSolenoid.Value.kOff);
     }
+    
+    public void intakeRelease() {
+    	solenoid.set(DoubleSolenoid.Value.kForward);
+    }
+    
+    public void intakePinch() {
+    	solenoid.set(DoubleSolenoid.Value.kReverse);
+    }
+    
+    public void stopIntakePinch() {
+    	solenoid.set(DoubleSolenoid.Value.kOff);
+    }
 }

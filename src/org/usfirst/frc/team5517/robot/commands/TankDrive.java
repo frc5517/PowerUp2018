@@ -24,8 +24,8 @@ public class TankDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		Robot.driveTrain.tankDrive(
-			oi.getLeftJoystickY(), // Linear Motion
-			oi.getRightJoystickX() // Rotation
+			oi.getMainDriverGamepadY(), // Linear Motion
+			oi.getMainDriverGamepadX() // Rotation
 		);
 	}
 
