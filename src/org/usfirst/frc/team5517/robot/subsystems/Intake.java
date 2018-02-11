@@ -14,11 +14,13 @@ public class Intake extends Subsystem {
     private final double INTAKE_IN_SPEED = 0.5;
     private final double INTAKE_OUT_SPEED = 0.5;
     
-    private Talon intakeMotor;
+    private Talon intakeLeftMotor;
+    private Talon intakeRightMotor;
     private DoubleSolenoid solenoid;
     
     public Intake() {
-    	intakeMotor = new Talon(RobotMap.intakeMotorPWMPort);
+    	intakeLeftMotor = new Talon(RobotMap.intakeLeftMotorPWMPort);
+    	intakeRightMotor = new Talon(RobotMap.intakeRightMotorPWMPort);
     	solenoid = new DoubleSolenoid(1, 2);
     }
     
@@ -29,15 +31,18 @@ public class Intake extends Subsystem {
     }
     
     public void intakeIn() {
-    	intakeMotor.set(INTAKE_IN_SPEED);
+    	intakeLeftMotor.set(INTAKE_IN_SPEED);
+    	intakeRightMotor.set(-INTAKE_IN_SPEED);
     }
     
     public void intakeOut() {
-    	intakeMotor.set(-INTAKE_OUT_SPEED);
+    	intakeLeftMotor.set(-INTAKE_OUT_SPEED);
+    	intakeRightMotor.set(INTAKE_OUT_SPEED);
     }
     
     public void stopIntake() {
-    	intakeMotor.set(0);
+    	intakeLeftMotor.set(0);
+    	intakeRightMotor.set(0);
     }
     
     public void liftIntake() {

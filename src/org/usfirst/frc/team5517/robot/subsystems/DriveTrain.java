@@ -1,7 +1,6 @@
 package org.usfirst.frc.team5517.robot.subsystems;
 
 import org.usfirst.frc.team5517.robot.RobotMap;
-
 import org.usfirst.frc.team5517.robot.commands.ArcadeDrive;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -61,13 +60,11 @@ public class DriveTrain extends Subsystem {
 	private PIDSource distPIDSource = new PIDSource() {
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public PIDSourceType getPIDSourceType() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 

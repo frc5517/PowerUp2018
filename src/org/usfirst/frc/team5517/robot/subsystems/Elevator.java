@@ -10,30 +10,33 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Elevator extends Subsystem {
 	
-	private final double LIFT_SPEED = 1;
-	private final double LOWER_SPEED = 1;
+	private final double LIFT_SPEED = .5;
+	private final double LOWER_SPEED = .5;
 
-	private Talon armMotor;
+	private Talon elevatorLeftMotor;
+	private Talon elevatorRightMotor;
 	
 	
 	public Elevator() {
-		armMotor = new Talon(RobotMap.armMotorPWMPort);
+		elevatorLeftMotor = new Talon(RobotMap.elevatorLeftMotorPWMPort);
+		elevatorLeftMotor = new Talon(RobotMap.elevatorRightMotorPWMPort);
 	}
 
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
     }
     
     public void raise() {
-    	armMotor.set(LIFT_SPEED);
+    	elevatorLeftMotor.set(-LIFT_SPEED);
+    	elevatorRightMotor.set(LIFT_SPEED);
     }
     
     public void lower() {
-    	armMotor.set(LOWER_SPEED);
+    	elevatorLeftMotor.set(LOWER_SPEED);
+    	elevatorRightMotor.set(-LOWER_SPEED);
     }
     
     public void stop() {
-    	armMotor.set(0);
+    	elevatorLeftMotor.set(0);
+    	elevatorRightMotor.set(0);
     }
 }

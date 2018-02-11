@@ -28,8 +28,10 @@ public class RobotMap {
 	public static int driveTrainRightMotorPWM = 1;
 	
 	// Mechanism Motors
-	public static int armMotorPWMPort = 2;
-	public static int intakeMotorPWMPort = 3;
+	public static int elevatorLeftMotorPWMPort = 2;
+	public static int elevatorRightMotorPWMPort = 3;
+	public static int intakeLeftMotorPWMPort = 4;
+	public static int intakeRightMotorPWMPort = 5;
 	
 
 

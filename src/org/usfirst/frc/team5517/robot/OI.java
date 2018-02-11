@@ -7,21 +7,16 @@
 
 package org.usfirst.frc.team5517.robot;
 
+import org.usfirst.frc.team5517.robot.commands.IntakePinch;
+import org.usfirst.frc.team5517.robot.commands.IntakeRelease;
 import org.usfirst.frc.team5517.robot.commands.LowerElevator;
 import org.usfirst.frc.team5517.robot.commands.LowerIntake;
 import org.usfirst.frc.team5517.robot.commands.RaiseElevator;
 import org.usfirst.frc.team5517.robot.commands.RaiseIntake;
 import org.usfirst.frc.team5517.robot.commands.SpinIntakeIn;
 import org.usfirst.frc.team5517.robot.commands.SpinIntakeOut;
-import org.usfirst.frc.team5517.robot.subsystems.Intake;
-import org.usfirst.frc.team5517.robot.utils.DPadButton;
 import org.usfirst.frc.team5517.robot.utils.Gamepad;
 import org.usfirst.frc.team5517.robot.utils.JoystickAnalogButton;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -34,15 +29,6 @@ public class OI {
 	JoystickAnalogButton operatorRightTrigger, operatorLeftTrigger;
 	
 	public OI() {
-		Button operatorButtonA = new JoystickButton(mainDriverGamepad, 1);
-		Button operatorButtonB = new JoystickButton(mainDriverGamepad, 2);
-		Button operatorButtonX = new JoystickButton(mainDriverGamepad, 3);
-		Button operatorButtonY = new JoystickButton(mainDriverGamepad, 4);
-		Button operatorDPadUp = new DPadButton(operatorGamepad, DPadButton.NORTH);
-		Button operatorDPadDown = new DPadButton(operatorGamepad, DPadButton.SOUTH);
-		Trigger operatorRightTrigger = new JoystickAnalogButton(operatorGamepad, Gamepad.AXIS_RIGHT_TRIGGER, 0.5);
-		Trigger operatorLeftTrigger = new JoystickAnalogButton(operatorGamepad, Gamepad.AXIS_LEFT_TRIGGER, 0.5);
-		
 		bindControls();
 	}
 	
@@ -50,8 +36,8 @@ public class OI {
 	private void bindControls() {
 		operatorGamepad.getButtonA().whileHeld(new SpinIntakeIn());
 		operatorGamepad.getButtonB().whileHeld(new SpinIntakeOut());
-		operatorGamepad.getButtonX().whileHeld(null); //TODO make pinch
-		operatorGamepad.getButtonY().whileHeld(null); //TODO make release
+		operatorGamepad.getButtonX().whileHeld(new IntakePinch());
+		operatorGamepad.getButtonY().whileHeld(new IntakeRelease());
 		operatorGamepad.getRightShoulder().whenPressed(new RaiseIntake());
 		operatorGamepad.getLeftShoulder().whenPressed(new LowerIntake());
 		operatorGamepad.getRightTriggerClick().whileActive(new RaiseElevator());
@@ -62,22 +48,24 @@ public class OI {
 	public double getMainDriverGamepadY() {
 		double y = mainDriverGamepad.getY();
 		double sign = 1;
+		return y;
 
-		if(y < 0) {
+		/*if(y < 0) {
 			sign = -1;
 			y = -y;
 		}
-		return -(y * y * sign);
+		return -(y * y * sign);*/
 	}
 
 	public double getMainDriverGamepadX() {
-		double y = mainDriverGamepad.getX();
+		double x = mainDriverGamepad.getX();
 		double sign = 1;
+		return x;
 
-		if(y < 0) {
+		/*if(x < 0) {
 			sign = -1;
-			y = -y;
+			x = -x;
 		}
-		return -(y * y * sign);
+		return -(x * x * sign);*/
 	}
 }
