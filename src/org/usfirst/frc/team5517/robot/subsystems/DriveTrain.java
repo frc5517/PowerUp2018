@@ -1,10 +1,15 @@
 package org.usfirst.frc.team5517.robot.subsystems;
 
 import org.usfirst.frc.team5517.robot.RobotMap;
-import org.usfirst.frc.team5517.robot.commands.TankDrive;
 
-import org.usfirst.frc.team5517.robot.sensors.ADXRS453Gyro;
+import org.usfirst.frc.team5517.robot.commands.ArcadeDrive;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -13,55 +18,85 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * Drive Train subsystem
  */
 public class DriveTrain extends Subsystem {
-
-	private final double JOYSTICK_TOLERANCE = 0.1;
-	private final double ERROR_TOLERANCE = 3;
-
-	ADXRS453Gyro gyro;
-
-
-	/**
-	 *  The current gyro angle
-	 */
-	private double currentAngle = 0;
-
-
-	/**
-	 * Target angle of the robot
-	 * (what angle we want the robot to close in on)
-	 */ 
-	private double targetAngle = 0;
-
-
-	/**
-	 * The difference (error) of the target angle and current angle
-	 */
-	private double diff = 0;
-
-	/**
-	 * Value added to the motor to compensate error
-	 */
-	private double compensation = 0;
-
-
-	/**
-	 * Value added to the motor's to compensate the error
-	 */
-	private long lastUpdatedTargetAngleTime = 0;
-
+	
+	private final static double angleP = 1.0, 
+								angleI = 0.0, 
+								angleD = 0.0,
+								distP  = 1.0, 
+								distI  = 0.0, 
+								distD  = 0.0;
 
 	Spark driveLeft = new Spark(RobotMap.driveTrainLeftMotorPWM);
 	Spark driveRight = new Spark(RobotMap.driveTrainRightMotorPWM);
 	DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
 
+	PIDController angleController;
+	PIDController distanceController;
+
+	ADXRS450_Gyro gyro;
+	//ADXRS453Gyro gyro;
+	Encoder leftEncoder;
+	Encoder rightEncoder;
+
+	
 	public DriveTrain() {
-		gyro = new ADXRS453Gyro();
-		gyro.startThread();
+		// not sure if this gyro class will work for the 453, we'll see...
+		// it implements PIDSource so it can be used with PIDController
+		gyro = new ADXRS450_Gyro();
+		//gyro = new ADXRS453Gyro();
+		//gyro.startThread();
+		
+		// TODO: use robotmap constants for these ports!
+		leftEncoder = new Encoder(0, 1);
+		rightEncoder = new Encoder(2, 3);
+		
+		angleController = new PIDController(angleP, angleI, angleD, gyro, distPIDOutput);
+		distanceController = new PIDController(distP, distI, distD, distPIDSource, anglePIDOutput);
 	}
 
 	protected void initDefaultCommand() {
-		setDefaultCommand(new TankDrive());
+		setDefaultCommand(new ArcadeDrive());
 	} 
+	
+	private PIDSource distPIDSource = new PIDSource() {
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public double pidGet() {
+			return getEncoderValue();
+		}
+		
+	};
+	
+	private PIDOutput distPIDOutput = new PIDOutput() {
+		@Override
+		public void pidWrite(double output) {
+			drive.arcadeDrive(output, 0);
+		}
+	};
+	
+	private PIDOutput anglePIDOutput = new PIDOutput() {
+		@Override
+		public void pidWrite(double output) {
+			drive.arcadeDrive(0, output);
+		}
+	};
+
+	private double getEncoderValue() {
+		// average of both encoders for now
+		double output = (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
+		return output;
+	}
 
 	public void tankDrive(double left, double right) {
 		drive.tankDrive(left, right);
@@ -69,155 +104,14 @@ public class DriveTrain extends Subsystem {
 
 	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
-		double currentAngle = getHeading();
-		diff = Math.IEEEremainder(targetAngle, currentAngle);
-		compensation = 0;
-		
-		
-		/**
-		 * Remove jitter by adding a joystick 'deadzone'
-		 */
-		speed = joystickDz(speed);
-		rotation = joystickDz(rotation);
-
-		
-		/**
-		 *  Exponential speed and rotation, makes each value start less quickly
-		 *  @param speed
-		 *  @param rotation
-		 */
-		speed = speed*speed*speed;
-		rotation = rotation*rotation;
-
-		
-		/**
-		 * If there is rotation input, update the current angle
-		 */
-		if(rotation != 0) {
-			setTargetAngle(currentAngle);
-			lastUpdatedTargetAngleTime = System.nanoTime();
-		}
-
-		
-		/**
-		 * If it has been some time since the angle was updated by the driver,
-		 * we can compensate
-		 */
-		else if(500 < nanoToMilli(System.nanoTime() - lastUpdatedTargetAngleTime)) {
-			System.out.print("gyro angle: " + currentAngle);
-			System.out.print(", target angle: " + targetAngle);
-		}
-		
-		
-		/**
-		 * Compensate if the diff is large enough
-		 */
-		if(diff > 3) {
-			final double multiplier = 0.015;
-			
-			if(targetAngle > currentAngle) {
-				System.out.println("compensate right");
-				compensation = diff * multiplier;
-			}
-			else if(targetAngle < currentAngle) {
-				System.out.println("compensate left");
-				compensation = diff * -multiplier;
-			}
-			
-			
-			/**
-			 * Min/max compensation values
-			 */
-			compensation = minAndMax(compensation, 0.1, 0.3);
-		}
 	}
 
-
-
-	public void setTargetAngle(double angle) {
-		targetAngle = angle;
-	}
-
-	public void turnToAngle(double angle) {
-		setTargetAngle(angle);
-	}
-
-	public boolean isAngleOnTarget() {
-		return Math.abs(diff) <= ERROR_TOLERANCE;
-	}
-
-	public double getHeading() {
-		return gyro.getAngle();
-	}
-
-	public double getCorrectedHeading() {
-		return correctAngle(gyro.getAngle());
-	}
-
-	private double correctAngle(double angle) {
-		return angle + 360*Math.floor(0.5-angle/360);
-	}
-
-	public boolean isGyroCalibrating() {
-		return gyro.isCalibrating();
-	}
-
-	public void calibrateGyro() {
-		gyro.calibrate();
-	}
-
-	public void stopCalibrating() {
-		gyro.stopCalibrating();
-	}
 
 	/**
 	 * Stop robot drivetrain
 	 */
 	public void stop() {
 		drive.stopMotor();
-	}
-	
-	/**
-	 * Converts nanoseconds to milliseconds
-	 */
-	private long nanoToMilli(long nano) {
-		return nano/1000000;
-	}
-	
-	/**
-	 * Min and max of a value 
-	 */
-	private double minAndMax(double value, double min, double max) {
-		// positive max
-		if(value > max) {
-			value = max;
-		}
-		// negative max
-		else if(value < 0 && value < -max) {
-			value = -max;
-		}
-		// positive min
-		else if(value > 0 && value < min) {
-			value = min;
-		}
-		// negative min
-		else if(value < 0 && value > -min) {
-			value = min;
-		}
-		
-		return value;
-	}
-	
-	/**
-	 * Adds a "deadzone" to the joystick inputs to remove jitter
-	 * @param joystick value
-	 * @return joystick value with deadzone added
-	 */
-	private double joystickDz(double value) {
-		if(value > -JOYSTICK_TOLERANCE && value < JOYSTICK_TOLERANCE) {
-			return 0;
-		}
-		return value;
 	}
 }
 

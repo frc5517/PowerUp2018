@@ -13,8 +13,11 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class DriveTrain_PID extends PIDSubsystem {
 
-	private final double JOYSTICK_TOLERANCE = 0.1;
-	private final double ERROR_TOLERANCE = 3;
+	private final static double JOYSTICK_TOLERANCE = 0.1;
+	private final static double ERROR_TOLERANCE = 3;
+	private final static double kP = 0;
+	private final static double kI = 0;
+	private final static double kD = 0;
 	
 	private double targetAngle = 0;
 	private double diff = 0;
@@ -30,10 +33,10 @@ public class DriveTrain_PID extends PIDSubsystem {
 
 	public DriveTrain_PID() {
 
-		super("DriveTrain", 0, 0, 0); // kP, kI, kD
+		super("DriveTrain", kP, kI, kD); // kP, kI, kD
 
-		driveLeft = new SpeedControllerGroup(Robot.driveTrain.driveLeft);
-		driveRight = new SpeedControllerGroup(Robot.driveTrain.driveRight);
+		driveLeft = new SpeedControllerGroup(driveLeft);
+		driveRight = new SpeedControllerGroup(driveRight);
 		drive = new DifferentialDrive(driveLeft, driveRight);
 
 
@@ -42,7 +45,7 @@ public class DriveTrain_PID extends PIDSubsystem {
 
 		setAbsoluteTolerance(0.05);
 		setInputRange(-180, 180);
-		setOutputRange(-0.14, 0.14);
+		setOutputRange(-1, 1);
 		setSetpoint(0.0);
 		getPIDController().setContinuous(false);
 		enable();
@@ -70,6 +73,8 @@ public class DriveTrain_PID extends PIDSubsystem {
 	}
 
 	protected void usePIDOutput(double output) {
+		// Use output to drive your system, like a motor
+		System.out.println("OUTPUT: "+output);
 		driveLeft.set(output);
 		driveRight.set(output);
 	}
@@ -81,6 +86,18 @@ public class DriveTrain_PID extends PIDSubsystem {
 		System.out.print("Gyro Angle: " + gyro.getAngle());
 		System.out.println(", Gyro Pos: " + gyro.getPos());
 		System.out.println(", Rate: " + gyro.getRate());
+	}
+	
+	public void turnLeft(double rate) {
+		drive.arcadeDrive(0, -rate);
+	}
+	
+	public void turnRight(double rate) {
+		drive.arcadeDrive(0, rate);
+	}
+	
+	public void driveStraight(double rate) {
+		drive.arcadeDrive(rate, 0);
 	}
 
 	public void tankDrive(double left, double right) {
@@ -109,8 +126,6 @@ public class DriveTrain_PID extends PIDSubsystem {
 		
 		/**
 		 *  Exponential speed and rotation, makes each value start less quickly
-		 *  @param speed
-		 *  @param rotation
 		 */
 		speed = speed*speed*speed;
 		rotation = rotation*rotation;
