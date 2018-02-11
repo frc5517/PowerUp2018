@@ -16,7 +16,6 @@ import org.usfirst.frc.team5517.robot.commands.RaiseIntake;
 import org.usfirst.frc.team5517.robot.commands.SpinIntakeIn;
 import org.usfirst.frc.team5517.robot.commands.SpinIntakeOut;
 import org.usfirst.frc.team5517.robot.utils.Gamepad;
-import org.usfirst.frc.team5517.robot.utils.JoystickAnalogButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -26,7 +25,6 @@ public class OI {
 
 	Gamepad mainDriverGamepad = new Gamepad(RobotMap.mainDriverGamepadPort);
 	Gamepad operatorGamepad = new Gamepad(RobotMap.operatorGamepadPort);
-	JoystickAnalogButton operatorRightTrigger, operatorLeftTrigger;
 	
 	public OI() {
 		bindControls();
@@ -54,11 +52,12 @@ public class OI {
 
 
 	public double getMainDriverGamepadY() {
-		double y = mainDriverGamepad.getY();
-		double sign = 1;
+		double y = mainDriverGamepad.getRightY();
 		return y;
 
-		/*if(y < 0) {
+		/*
+		double sign = 1;
+		if(y < 0) {
 			sign = -1;
 			y = -y;
 		}
@@ -66,11 +65,12 @@ public class OI {
 	}
 
 	public double getMainDriverGamepadX() {
-		double x = mainDriverGamepad.getX();
-		double sign = 1;
+		double x = mainDriverGamepad.getLeftX();
 		return x;
 
-		/*if(x < 0) {
+		/*
+		double sign = 1;
+		if(x < 0) {
 			sign = -1;
 			x = -x;
 		}

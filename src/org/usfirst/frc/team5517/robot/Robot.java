@@ -8,11 +8,11 @@
 package org.usfirst.frc.team5517.robot;
 
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
-//import org.usfirst.frc.team5517.robot.subsystems.DriveTrain_PID;
 import org.usfirst.frc.team5517.robot.subsystems.Elevator;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -27,9 +27,10 @@ public class Robot extends TimedRobot {
 	//public static final DriveTrain_PID driveTrainPID = new DriveTrain_PID();
 	public static final Elevator arm = new Elevator();
 	public static final Intake intake = new Intake();
-	public static OI oi = new OI();
-
-	public boolean matchStarted = false;
+	public static OI oi;
+	
+	private static boolean matchStarted = false;
+	private static String fmsGameData = null;
 
 	// Gyro variables
 	/*private double curAngle;
@@ -39,9 +40,29 @@ public class Robot extends TimedRobot {
 	private int gyroReinits;
 	private Debouncer gyroDriftDetector;*/
 
-
 	Command autoCommand;
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
+	
+	public boolean isMatchStarted() {
+		return matchStarted;
+	}
+	
+	// Autonomous game data
+	public static String getGameDataString() {
+		return fmsGameData;
+	} 
+	
+	public static char getSwitchSide() {
+		return fmsGameData.charAt(0);
+	}
+	
+	public static char getScaleSide() {
+		return fmsGameData.charAt(1);
+	}
+	
+	public static char getOpponentSwitchSide() {
+		return fmsGameData.charAt(2);
+	}
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -62,8 +83,8 @@ public class Robot extends TimedRobot {
 		//gyroDriftDetector = new Debouncer(1.0);
 		//driveTrain.calibrateGyro();
 
-		// autonChooser.addDefault("Default Auto", new AutoCommand());
-		// autonChooser.addObject("My Auto", new MyAutoCommand());
+		// autoChooser.addDefault("Default Auto", new AutoCommand());
+		// autoChooser.addObject("My Auto", new OtherAutoCommand());
 		SmartDashboard.putData("Auto mode", autoChooser);
 	}
 
@@ -74,6 +95,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+		System.out.println("Disabled Init");
 		matchStarted = false;
 	}
 
@@ -87,14 +109,14 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		System.out.println("Autonomous Init");
+		
+		// get selected autonomous from dashboard
 		autoCommand = autoChooser.getSelected();
-
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+		
+		// get plate assignment from FMS
+		fmsGameData = DriverStation.getInstance().getGameSpecificMessage();
+		System.out.println("Received plate assignment from FMS: " + fmsGameData);
 
 		// schedule the autonomous command
 		if (autoCommand != null) {
@@ -112,6 +134,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		System.out.println("Teleop Init");
 		matchStarted = true;
 		if (autoCommand != null) {
 			autoCommand.cancel();

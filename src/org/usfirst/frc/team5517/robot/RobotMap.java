@@ -33,10 +33,8 @@ public class RobotMap {
 	public static int intakeLeftMotorPWMPort = 4;
 	public static int intakeRightMotorPWMPort = 5;
 	
-
-
-	// If you are using multiple modules, make sure to define both the port
-	// number and the module. For example you with a rangefinder:
-	// public static int rangefinderPort = 1;
-	// public static int rangefinderModule = 1;
+	// Encoder Digital Ports
+	public static int encoderLeftA  = 0, encoderLeftB  = 1,
+					  encoderRightA = 2, encoderRightB = 3;
+	
 }

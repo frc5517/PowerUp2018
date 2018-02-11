@@ -5,6 +5,8 @@ import java.nio.ByteOrder;
 import java.util.BitSet;
 import java.util.TimerTask;
 
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.Timer;
@@ -12,7 +14,7 @@ import edu.wpi.first.wpilibj.Timer;
 /**
  * @author Kevin Harrilal (kevin@team2168.org)
  */
-public class ADXRS453Gyro {
+public class ADXRS453Gyro implements PIDSource {
 
 	static final int DATA_SIZE = 4; //4 bytes = 32 bits
 	static final byte PARITY_BIT = (byte) 0x01; //parity check on first bit
@@ -31,6 +33,9 @@ public class ADXRS453Gyro {
 	static final byte ADXRS453_REG_PID      =  (byte) 0x0C;
 	static final byte ADXRS453_REG_SN_HIGH  =  (byte) 0x0E;
 	static final byte ADXRS453_REG_SN_LOW   =  (byte) 0x10;
+	
+	// PIDSource
+	PIDSourceType pidSource;
 
 	//angle integration
 	public volatile double currentRate;
@@ -358,5 +363,24 @@ public class ADXRS453Gyro {
 		public void run() {
 			gyro.update();
 		}
+	}
+	
+	/**
+	 * PIDSource methods
+	 */
+
+	@Override
+	public void setPIDSourceType(PIDSourceType pidSource) {
+		this.pidSource = pidSource;
+	}
+
+	@Override
+	public PIDSourceType getPIDSourceType() {
+		return pidSource;
+	}
+
+	@Override
+	public double pidGet() {
+		return this.getAngle();
 	}
 }

@@ -2,8 +2,8 @@ package org.usfirst.frc.team5517.robot.subsystems;
 
 import org.usfirst.frc.team5517.robot.RobotMap;
 import org.usfirst.frc.team5517.robot.commands.ArcadeDrive;
+import org.usfirst.frc.team5517.robot.sensors.ADXRS453Gyro;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -32,35 +32,25 @@ public class DriveTrain extends Subsystem {
 	PIDController angleController;
 	PIDController distanceController;
 
-	ADXRS450_Gyro gyro;
-	//ADXRS453Gyro gyro;
+	ADXRS453Gyro gyro;
 	Encoder leftEncoder;
 	Encoder rightEncoder;
-
 	
-	public DriveTrain() {
-		// not sure if this gyro class will work for the 453, we'll see...
-		// it implements PIDSource so it can be used with PIDController
-		gyro = new ADXRS450_Gyro();
-		//gyro = new ADXRS453Gyro();
-		//gyro.startThread();
-		
-		// TODO: use robotmap constants for these ports!
-		leftEncoder = new Encoder(0, 1);
-		rightEncoder = new Encoder(2, 3);
-		
-		angleController = new PIDController(angleP, angleI, angleD, gyro, distPIDOutput);
-		distanceController = new PIDController(distP, distI, distD, distPIDSource, anglePIDOutput);
+	class BasicPIDOutput implements PIDOutput {
+		private double output = 0;
+		public double getOutput() {
+			return output;
+		}
+		@Override
+		public void pidWrite(double output) {
+			this.output = output;
+		}
 	}
-
-	protected void initDefaultCommand() {
-		setDefaultCommand(new ArcadeDrive());
-	} 
-	
+	private BasicPIDOutput distPidOutput = new BasicPIDOutput();
+	private BasicPIDOutput anglePidOutput = new BasicPIDOutput();
 	private PIDSource distPIDSource = new PIDSource() {
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {
-			
 		}
 
 		@Override
@@ -75,24 +65,68 @@ public class DriveTrain extends Subsystem {
 		
 	};
 	
-	private PIDOutput distPIDOutput = new PIDOutput() {
-		@Override
-		public void pidWrite(double output) {
-			drive.arcadeDrive(output, 0);
-		}
-	};
-	
-	private PIDOutput anglePIDOutput = new PIDOutput() {
-		@Override
-		public void pidWrite(double output) {
-			drive.arcadeDrive(0, output);
-		}
-	};
+
+	public DriveTrain() {
+		gyro = new ADXRS453Gyro();
+		gyro.startThread();
+		
+		gyro.setPIDSourceType(PIDSourceType.kRate);
+		
+		leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
+		rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
+		
+		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		
+		angleController = new PIDController(angleP, angleI, angleD, gyro, distPidOutput);
+		distanceController = new PIDController(distP, distI, distD, distPIDSource, anglePidOutput);
+	}
+
+	protected void initDefaultCommand() {
+		setDefaultCommand(new ArcadeDrive());
+	} 
 
 	private double getEncoderValue() {
 		// average of both encoders for now
 		double output = (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
 		return output;
+	}
+	
+	/**
+	 * set distance setpoint
+	 * @param dist
+	 */
+	public void setDistanceSetpoint(double dist) {
+		distanceController.setSetpoint(dist);
+		distanceController.enable();
+	}
+	
+	/**
+	 * Set the setpoint  of the angle pid controller to current angle
+	 */
+	public void setAngleToCurrent() {
+		angleController.setSetpoint(gyro.getAngle());
+		angleController.enable();
+	}
+
+	/**
+	 * Drive with both PID controllers' output
+	 * @param distance
+	 */
+	public void drivePidAngleAndDist() {
+		int speed = 0;
+		drive.arcadeDrive(
+			speed,  // speed
+			anglePidOutput.getOutput()  // 
+		);
+	}
+	
+	/**
+	 * check if the robot has reached the distance
+	 * @return has reached distance
+	 */
+	public boolean hasReachedDistance() {
+		return distanceController.getError() == 0;
 	}
 
 	public void tankDrive(double left, double right) {
@@ -108,6 +142,8 @@ public class DriveTrain extends Subsystem {
 	 * Stop robot drivetrain
 	 */
 	public void stop() {
+		angleController.disable();
+		distanceController.disable();
 		drive.stopMotor();
 	}
 }
