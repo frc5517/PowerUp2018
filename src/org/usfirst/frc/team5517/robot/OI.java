@@ -43,6 +43,14 @@ public class OI {
 		operatorGamepad.getRightTriggerClick().whileActive(new RaiseElevator());
 		operatorGamepad.getLeftTriggerClick().whileHeld(new LowerElevator());
 	}
+	
+	public Gamepad getMainController() {
+		return mainDriverGamepad;
+	}
+	
+	public Gamepad getOperatorController() {
+		return operatorGamepad;
+	}
 
 
 	public double getMainDriverGamepadY() {

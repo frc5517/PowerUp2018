@@ -20,7 +20,10 @@ public class ArcadeDrive extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.arcadeDrive(Robot.oi.getMainDriverGamepadY(), Robot.oi.getMainDriverGamepadX());
+    	Robot.driveTrain.arcadeDrive(
+    		Robot.oi.getMainController().getLeftY(), // speed
+    		Robot.oi.getMainController().getRightX() // rotation
+    	);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -30,6 +33,7 @@ public class ArcadeDrive extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.driveTrain.stop();
     }
 
     // Called when another command which requires one or more of the same
