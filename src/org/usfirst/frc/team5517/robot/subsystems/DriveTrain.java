@@ -78,8 +78,8 @@ public class DriveTrain extends Subsystem {
 		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		
-		angleController = new PIDController(angleP, angleI, angleD, gyro, distPidOutput);
-		distanceController = new PIDController(distP, distI, distD, distPIDSource, anglePidOutput);
+		angleController = new PIDController(angleP, angleI, angleD, gyro, anglePidOutput);
+		distanceController = new PIDController(distP, distI, distD, distPIDSource, distPidOutput);
 	}
 
 	protected void initDefaultCommand() {
@@ -135,7 +135,7 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public boolean hasReachedAngle() {
-		return angleController.getError() == 0;
+		return angleController.getError() == 0;	
 	}
 
 	public void tankDrive(double left, double right) {
