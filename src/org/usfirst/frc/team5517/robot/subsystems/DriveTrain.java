@@ -101,6 +101,11 @@ public class DriveTrain extends Subsystem {
 		distanceController.enable();
 	}
 	
+	public void setAngleSetpoint(double angle) {
+		angleController.setSetpoint(angle);
+		angleController.enable();
+	}
+	
 	/**
 	 * Set the setpoint  of the angle pid controller to current angle
 	 */

@@ -24,8 +24,8 @@ public class RobotMap {
 	public static int operatorGamepadPort = 3;
 
 	// Drive Motors
-	public static int driveTrainLeftMotorPWM = 0;
-	public static int driveTrainRightMotorPWM = 1;
+	public static int driveTrainRightMotorPWM = 0;
+	public static int driveTrainLeftMotorPWM = 1;
 	
 	// Mechanism Motors
 	public static int elevatorLeftMotorPWMPort = 2;

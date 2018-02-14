@@ -1,4 +1,4 @@
-package org.usfirst.frc.team5517.robot.commands;
+package org.usfirst.frc.team5517.robot.commands.Auto;
 
 import org.usfirst.frc.team5517.robot.Robot;
 
@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 /**
  *
  */
-public class TimedRaise extends TimedCommand {
+public class TimedLower extends TimedCommand {
 
-    public TimedRaise(double timeout) {
+    public TimedLower(double timeout) {
         super(timeout);
         // Use requires() here to declare subsystem dependencies
         requires(Robot.elevator);
@@ -21,7 +21,7 @@ public class TimedRaise extends TimedCommand {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.raise();
+    	Robot.elevator.lower();
     }
 
     // Called once after timeout
