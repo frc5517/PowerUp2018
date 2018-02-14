@@ -133,6 +133,10 @@ public class DriveTrain extends Subsystem {
 	public boolean hasReachedDistance() {
 		return distanceController.getError() == 0;
 	}
+	
+	public boolean hasReachedAngle() {
+		return angleController.getError() == 0;
+	}
 
 	public void tankDrive(double left, double right) {
 		drive.tankDrive(left, right);
@@ -140,6 +144,8 @@ public class DriveTrain extends Subsystem {
 
 	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
+		speed = speed*speed;
+		rotation = rotation/2;
 	}
 
 

@@ -7,18 +7,18 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class AutoDrive extends Command {
+public class AutoTurn extends Command {
 
-	private double distance;
+	private double angle;
 	
-    public AutoDrive(int d) {
+    public AutoTurn(int a) {
         requires(Robot.driveTrain);
-        distance = d;
+        angle = a;
     }
 
     protected void initialize() {
     	Robot.driveTrain.setAngleToCurrent();
-    	Robot.driveTrain.setDistanceSetpoint(distance);
+    	Robot.driveTrain.setAngleSetpoint(angle);
     }
     
     protected void execute() {
@@ -26,7 +26,7 @@ public class AutoDrive extends Command {
     }
 
     protected boolean isFinished() {
-    	return Robot.driveTrain.hasReachedDistance();
+    	return Robot.driveTrain.hasReachedAngle();
     }
 
     protected void end() {
