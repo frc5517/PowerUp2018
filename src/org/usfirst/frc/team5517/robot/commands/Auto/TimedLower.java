@@ -5,8 +5,10 @@ import org.usfirst.frc.team5517.robot.Robot;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
- *
+ * This is to lower the elevator during autonomous based on time, t.
+ * @param time
  */
+
 public class TimedLower extends TimedCommand {
 
     public TimedLower(double timeout) {

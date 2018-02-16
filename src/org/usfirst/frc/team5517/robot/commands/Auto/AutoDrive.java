@@ -5,8 +5,11 @@ import org.usfirst.frc.team5517.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * This allows the robot to drive forward or backward
+ * based on distance, d.
+ * @param distance
  */
+
 public class AutoDrive extends Command {
 
 	private double distance;

@@ -7,6 +7,13 @@
 
 package org.usfirst.frc.team5517.robot;
 
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoDoNothing;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleLeft;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleMiddle;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleRight;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeft;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchMiddle;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRight;
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5517.robot.subsystems.Elevator;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
@@ -24,8 +31,6 @@ public class Robot extends TimedRobot {
 	// Subsystems
 	public static final DriveTrain driveTrain = new DriveTrain();
 	public static final Elevator elevator = new Elevator();
-	//public static final DriveTrain_PID driveTrainPID = new DriveTrain_PID();
-	public static final Elevator arm = new Elevator();
 	public static final Intake intake = new Intake();
 	public static OI oi;
 	
@@ -83,8 +88,13 @@ public class Robot extends TimedRobot {
 		//gyroDriftDetector = new Debouncer(1.0);
 		//driveTrain.calibrateGyro();
 
-		// autoChooser.addDefault("Default Auto", new AutoCommand());
-		// autoChooser.addObject("My Auto", new OtherAutoCommand());
+		autoChooser.addObject("Do Nothing", new AutoDoNothing());
+		autoChooser.addObject("Switch Right", new AutoSwitchRight());
+		autoChooser.addObject("Switch Middle", new AutoSwitchMiddle());
+		autoChooser.addObject("Switch Left", new AutoSwitchLeft());
+		autoChooser.addObject("Scale Right", new AutoScaleRight());
+		autoChooser.addObject("Scale Middle", new AutoScaleMiddle());
+		autoChooser.addObject("Scale Left", new AutoScaleLeft());
 		SmartDashboard.putData("Auto mode", autoChooser);
 	}
 

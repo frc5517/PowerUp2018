@@ -16,19 +16,22 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 /**
  * Drive Train subsystem
  */
+
 public class DriveTrain extends Subsystem {
 	
-	private final static double angleP = 1.0, 
+	private final static double angleP = 1.0,
 								angleI = 0.0, 
 								angleD = 0.0,
 								distP  = 1.0, 
 								distI  = 0.0, 
 								distD  = 0.0;
 
+	// Creating the drivetrain.
 	Spark driveLeft = new Spark(RobotMap.driveTrainLeftMotorPWM);
 	Spark driveRight = new Spark(RobotMap.driveTrainRightMotorPWM);
 	DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
 
+	// Creating the sensors that will be tuned with PID loops.
 	PIDController angleController;
 	PIDController distanceController;
 
@@ -46,6 +49,8 @@ public class DriveTrain extends Subsystem {
 			this.output = output;
 		}
 	}
+	
+	// Creating the PIDOutputs coming from distController and angleController.
 	private BasicPIDOutput distPidOutput = new BasicPIDOutput();
 	private BasicPIDOutput anglePidOutput = new BasicPIDOutput();
 	private PIDSource distPIDSource = new PIDSource() {
@@ -65,7 +70,7 @@ public class DriveTrain extends Subsystem {
 		
 	};
 	
-
+	// Calling everything into the drivetrain and initializing the sensors.
 	public DriveTrain() {
 		gyro = new ADXRS453Gyro();
 		gyro.startThread();
@@ -93,7 +98,7 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	/**
-	 * set distance setpoint
+	 * Set distance setpoint.
 	 * @param dist
 	 */
 	public void setDistanceSetpoint(double dist) {
@@ -101,6 +106,10 @@ public class DriveTrain extends Subsystem {
 		distanceController.enable();
 	}
 	
+	/**
+	 * Set angle setpoint.
+	 * @param angle
+	 */
 	public void setAngleSetpoint(double angle) {
 		angleController.setSetpoint(angle);
 		angleController.enable();
@@ -115,7 +124,7 @@ public class DriveTrain extends Subsystem {
 	}
 
 	/**
-	 * Drive with both PID controllers' output
+	 * Drive with both PID controllers' output.
 	 * @param distance
 	 */
 	public void drivePidAngleAndDist() {
@@ -127,31 +136,34 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	/**
-	 * check if the robot has reached the distance
+	 * Check if the robot has reached the distance.
 	 * @return has reached distance
 	 */
 	public boolean hasReachedDistance() {
 		return distanceController.getError() == 0;
 	}
 	
+	/**
+	 * Check if the robot has reached the angle.
+	 * @return has reached angle
+	 */
 	public boolean hasReachedAngle() {
 		return angleController.getError() == 0;	
 	}
 
+	// Implementing Tank Drive.
 	public void tankDrive(double left, double right) {
 		drive.tankDrive(left, right);
 	}
 
+	// Implementing Arcade Drive.
 	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
-		speed = speed*speed;
-		rotation = rotation/2;
+		speed = speed*speed;	// Squaring the speed to have a smooth gain in speed rather than an instant jolt.
+		rotation = rotation/2;	// Halving the rotation to make it the robot a little easier to control when turning.
 	}
 
-
-	/**
-	 * Stop robot drivetrain
-	 */
+	// Stopping the drivetrain.
 	public void stop() {
 		angleController.disable();
 		distanceController.disable();

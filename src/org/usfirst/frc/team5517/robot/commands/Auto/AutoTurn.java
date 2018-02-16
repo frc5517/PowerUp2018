@@ -5,8 +5,11 @@ import org.usfirst.frc.team5517.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * This allows the robot to turn to an angle between
+ * -180 and 180 during autonomous.
+ * @param angle
  */
+
 public class AutoTurn extends Command {
 
 	private double angle;

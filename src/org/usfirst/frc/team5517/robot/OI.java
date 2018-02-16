@@ -21,6 +21,7 @@ import org.usfirst.frc.team5517.robot.utils.Gamepad;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+
 public class OI {
 
 	Gamepad mainDriverGamepad = new Gamepad(RobotMap.mainDriverGamepadPort);
@@ -30,7 +31,7 @@ public class OI {
 		bindControls();
 	}
 	
-	
+	// Setting the operator's controls.
 	private void bindControls() {
 		operatorGamepad.getButtonA().whileHeld(new SpinIntakeIn());
 		operatorGamepad.getButtonB().whileHeld(new SpinIntakeOut());
@@ -42,21 +43,23 @@ public class OI {
 		operatorGamepad.getLeftTriggerClick().whileHeld(new LowerElevator());
 	}
 	
+	// Initializing the main driver's gamepad.
 	public Gamepad getMainController() {
 		return mainDriverGamepad;
 	}
 	
+	// Initializing the operator's gamepad.
 	public Gamepad getOperatorController() {
 		return operatorGamepad;
 	}
 
-
+	
+	// Getting the Y-value of the left stick on the main driver's gamepad.
 	public double getMainDriverGamepadY() {
-		double y = mainDriverGamepad.getRightY();
+		double y = mainDriverGamepad.getLeftY();
 		return y;
 
-		/*
-		double sign = 1;
+		/*double sign = 1;
 		if(y < 0) {
 			sign = -1;
 			y = -y;
@@ -64,12 +67,12 @@ public class OI {
 		return -(y * y * sign);*/
 	}
 
+	// Getting the X-value of the right stick on the main driver's gamepad.
 	public double getMainDriverGamepadX() {
-		double x = mainDriverGamepad.getLeftX();
+		double x = mainDriverGamepad.getRightX();
 		return x;
 
-		/*
-		double sign = 1;
+		/*double sign = 1;
 		if(x < 0) {
 			sign = -1;
 			x = -x;

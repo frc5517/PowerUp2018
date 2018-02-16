@@ -1,20 +1,16 @@
 package org.usfirst.frc.team5517.robot.commands.Auto;
 
-import org.usfirst.frc.team5517.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
- * This is to raise the elevator during autonomous based on time, t.
- * @param time
+ * This is to delay our autonomous, in case we possibly run into
+ * other robots when turning or going to the switch/scale.
  */
 
-public class TimedRaise extends TimedCommand {
+public class AutoWait extends TimedCommand {
 
-    public TimedRaise(double timeout) {
+    public AutoWait(double timeout) {
         super(timeout);
-        // Use requires() here to declare subsystem dependencies
-        requires(Robot.elevator);
     }
 
     // Called just before this Command runs the first time
@@ -23,17 +19,14 @@ public class TimedRaise extends TimedCommand {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.raise();
     }
 
     // Called once after timeout
     protected void end() {
-    	Robot.elevator.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }
