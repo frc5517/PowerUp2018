@@ -15,13 +15,9 @@ package org.usfirst.frc.team5517.robot;
  */
 public class RobotMap {
 
-	// Joysticks (test)
-	public static int leftJoystickPort = 0;
-	public static int rightJoystickPort = 1;
-
 	// Gamepads
-	public static int mainDriverGamepadPort = 2;
-	public static int operatorGamepadPort = 3;
+	public static int mainDriverGamepadPort = 0;
+	public static int operatorGamepadPort = 1;
 
 	// Drive Motors
 	public static int driveTrainRightMotorPWM = 0;
