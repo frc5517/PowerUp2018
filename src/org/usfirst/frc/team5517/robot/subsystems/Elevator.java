@@ -23,7 +23,7 @@ public class Elevator extends Subsystem {
 	// Initializing the motors.
 	public Elevator() {
 		elevatorLeftMotor = new Talon(RobotMap.elevatorLeftMotorPWMPort);
-		elevatorLeftMotor = new Talon(RobotMap.elevatorRightMotorPWMPort);
+		elevatorRightMotor = new Talon(RobotMap.elevatorRightMotorPWMPort);
 	}
 
     public void initDefaultCommand() {

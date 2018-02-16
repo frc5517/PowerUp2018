@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	
 	private static boolean matchStarted = false;
-	private static String fmsGameData = null;
+	private static String fmsGameData = "LRL";
 
 	// Gyro variables
 	/*private double curAngle;

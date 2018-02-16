@@ -22,6 +22,7 @@ public class LowerIntake extends Command {
 
     protected void execute() {
     	Robot.intake.lowerIntake();
+    	Robot.intake.intakePinch();
     }
 
 
@@ -32,6 +33,7 @@ public class LowerIntake extends Command {
 
     protected void end() {
     	Robot.intake.stopIntakeLift();
+    	Robot.intake.stopIntakePinch();
     }
 
 

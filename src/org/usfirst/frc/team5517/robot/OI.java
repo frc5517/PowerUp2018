@@ -39,7 +39,7 @@ public class OI {
 		operatorGamepad.getButtonY().whileHeld(new IntakeRelease());
 		operatorGamepad.getRightShoulder().whenPressed(new RaiseIntake());
 		operatorGamepad.getLeftShoulder().whenPressed(new LowerIntake());
-		operatorGamepad.getRightTriggerClick().whileActive(new RaiseElevator());
+		operatorGamepad.getRightTriggerClick().whileHeld(new RaiseElevator());
 		operatorGamepad.getLeftTriggerClick().whileHeld(new LowerElevator());
 	}
 	
@@ -57,26 +57,24 @@ public class OI {
 	// Getting the Y-value of the left stick on the main driver's gamepad.
 	public double getMainDriverGamepadY() {
 		double y = mainDriverGamepad.getLeftY();
-		return y;
 
-		/*double sign = 1;
+		double sign = 1;
 		if(y < 0) {
 			sign = -1;
 			y = -y;
 		}
-		return -(y * y * sign);*/
+		return -(y * y * sign);
 	}
 
 	// Getting the X-value of the right stick on the main driver's gamepad.
 	public double getMainDriverGamepadX() {
 		double x = mainDriverGamepad.getRightX();
-		return x;
 
-		/*double sign = 1;
+		double sign = 1;
 		if(x < 0) {
 			sign = -1;
 			x = -x;
 		}
-		return -(x * x * sign);*/
+		return -(x * x * sign);
 	}
 }

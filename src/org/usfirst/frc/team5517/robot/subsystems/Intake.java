@@ -13,18 +13,20 @@ public class Intake extends Subsystem {
 
 	// Setting the speed of the Bag motors.
     private final double INTAKE_IN_SPEED = 0.5;
-    private final double INTAKE_OUT_SPEED = 0.5;
+    private final double INTAKE_OUT_SPEED = 0.75;
     
-    // Creating the intake motors and solenoid.
+    // Creating the intake motors and solenoids.
     private Talon intakeLeftMotor;
     private Talon intakeRightMotor;
-    private DoubleSolenoid solenoid;
+    private DoubleSolenoid intakeSolenoid;
+    private DoubleSolenoid pinchSolenoid;
     
     // Initializing the motors and solenoid.
     public Intake() {
     	intakeLeftMotor = new Talon(RobotMap.intakeLeftMotorPWMPort);
     	intakeRightMotor = new Talon(RobotMap.intakeRightMotorPWMPort);
-    	solenoid = new DoubleSolenoid(1, 2);
+    	intakeSolenoid = new DoubleSolenoid(0, 7);
+    	pinchSolenoid = new DoubleSolenoid(6, 1);
     }
     
 
@@ -51,31 +53,31 @@ public class Intake extends Subsystem {
     
     // Making the solenoid lift the intake arms.
     public void liftIntake() {
-    	solenoid.set(DoubleSolenoid.Value.kReverse);
+    	intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
     
     // Making the solenoid lower the intake arms.
     public void lowerIntake() {
-    	solenoid.set(DoubleSolenoid.Value.kForward);
+    	intakeSolenoid.set(DoubleSolenoid.Value.kForward);
     }
     
     // Stopping the solenoid after lifting/lowering the intake arms.
     public void stopIntakeLift() {
-    	solenoid.set(DoubleSolenoid.Value.kOff);
+    	intakeSolenoid.set(DoubleSolenoid.Value.kOff);
     }
     
     // Making the solenoid release the Power Cube.
     public void intakeRelease() {
-    	solenoid.set(DoubleSolenoid.Value.kForward);
+    	pinchSolenoid.set(DoubleSolenoid.Value.kForward);
     }
     
     // Making the solenoid lift the Power Cube to ensure that we don't lose it.
     public void intakePinch() {
-    	solenoid.set(DoubleSolenoid.Value.kReverse);
+    	pinchSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
     
     // Stopping the solenoid after pinching/releasing the Power Cube.
     public void stopIntakePinch() {
-    	solenoid.set(DoubleSolenoid.Value.kOff);
+    	pinchSolenoid.set(DoubleSolenoid.Value.kOff);
     }
 }
