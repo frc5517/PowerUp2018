@@ -28,8 +28,8 @@ public class Gamepad extends Joystick {
     private static final int BUTTON_TRIGGER_RIGHT = 8;
     private static final int BUTTON_BACK = 9;
     private static final int BUTTON_START = 10;
-    private static final int BUTTON_LEFT_STICK = 11;
-    private static final int BUTTON_RIGHT_STICK = 12;
+    public static final int BUTTON_LEFT_STICK = 11;
+    public static final int BUTTON_RIGHT_STICK = 12;
     private static final int BUTTON_MODE = -1;
     private static final int BUTTON_LOGITECH = -1;
 

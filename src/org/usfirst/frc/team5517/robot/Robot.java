@@ -34,17 +34,10 @@ public class Robot extends TimedRobot {
 	public static final Intake intake = new Intake();
 	public static OI oi;
 	
-	private static boolean matchStarted = false;
-	private static String fmsGameData = "LRL";
+	public static boolean matchStarted = false;
+	private static String fmsGameData = " ";
 
-	// Gyro variables
-	/*private double curAngle;
-	private double lastAngle;
-	private boolean gyroCalibrating;
-	private boolean lastGyroCalibrating;
-	private int gyroReinits;
-	private Debouncer gyroDriftDetector;*/
-
+	
 	Command autoCommand;
 	SendableChooser<Command> autoChooser = new SendableChooser<>();
 	
@@ -58,14 +51,26 @@ public class Robot extends TimedRobot {
 	} 
 	
 	public static char getSwitchSide() {
+		if(fmsGameData.length() < 3)  {
+			return ' ';
+		}
+		
 		return fmsGameData.charAt(0);
 	}
 	
 	public static char getScaleSide() {
+		if(fmsGameData.length() < 3) {
+			return ' ';
+		}
+		
 		return fmsGameData.charAt(1);
 	}
 	
 	public static char getOpponentSwitchSide() {
+		if(fmsGameData.length() < 3)  {
+			return ' ';
+		}
+		
 		return fmsGameData.charAt(2);
 	}
 
@@ -79,16 +84,14 @@ public class Robot extends TimedRobot {
 		System.out.println("Robot initializing...");
 
 		CameraServer server = CameraServer.getInstance();
-		server.startAutomaticCapture();
+		server.startAutomaticCapture(0);
 
 		// Create controls
 		oi = new OI();
 
-		// Gyro stuff
-		//gyroDriftDetector = new Debouncer(1.0);
-		//driveTrain.calibrateGyro();
+		driveTrain.reinitGyro();
 
-		autoChooser.addObject("Do Nothing", new AutoDoNothing());
+		autoChooser.addDefault("Do Nothing", new AutoDoNothing());
 		autoChooser.addObject("Switch Right", new AutoSwitchRight());
 		autoChooser.addObject("Switch Middle", new AutoSwitchMiddle());
 		autoChooser.addObject("Switch Left", new AutoSwitchLeft());
@@ -112,6 +115,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		driveTrain.reinitGyro();
 	}
 
 	/**
@@ -157,6 +161,11 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+	}
+	
+	@Override
+	public void robotPeriodic() {
+		
 	}
 
 	/**

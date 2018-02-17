@@ -7,6 +7,8 @@
 
 package org.usfirst.frc.team5517.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -28,6 +30,12 @@ public class RobotMap {
 	public static int elevatorRightMotorPWMPort = 3;
 	public static int intakeLeftMotorPWMPort = 4;
 	public static int intakeRightMotorPWMPort = 5;
+	
+	// Solenoid Ports
+	public static int intakeSolenoidPinch = 1;   // color: blue
+	public static int intakeSolenoidRelease = 6; // color: green-yellow
+	public static int intakeSolenoidLift = 7;    // color: green-black
+	public static int intakeSolenoidLower = 0;   // color: orange
 	
 	// Encoder Digital Ports
 	public static int encoderLeftA  = 0, encoderLeftB  = 1,

@@ -21,12 +21,12 @@ public class Intake extends Subsystem {
     private DoubleSolenoid intakeSolenoid;
     private DoubleSolenoid pinchSolenoid;
     
-    // Initializing the motors and solenoid.
+    // Initializing the motors and solenoids.
     public Intake() {
     	intakeLeftMotor = new Talon(RobotMap.intakeLeftMotorPWMPort);
     	intakeRightMotor = new Talon(RobotMap.intakeRightMotorPWMPort);
-    	intakeSolenoid = new DoubleSolenoid(0, 7);
-    	pinchSolenoid = new DoubleSolenoid(6, 1);
+    	intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidLift, RobotMap.intakeSolenoidLower);
+    	pinchSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidPinch, RobotMap.intakeSolenoidRelease);
     }
     
 
@@ -53,12 +53,12 @@ public class Intake extends Subsystem {
     
     // Making the solenoid lift the intake arms.
     public void liftIntake() {
-    	intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+    	intakeSolenoid.set(DoubleSolenoid.Value.kForward);
     }
     
     // Making the solenoid lower the intake arms.
     public void lowerIntake() {
-    	intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    	intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
     
     // Stopping the solenoid after lifting/lowering the intake arms.
@@ -68,12 +68,12 @@ public class Intake extends Subsystem {
     
     // Making the solenoid release the Power Cube.
     public void intakeRelease() {
-    	pinchSolenoid.set(DoubleSolenoid.Value.kForward);
+    	pinchSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
     
     // Making the solenoid lift the Power Cube to ensure that we don't lose it.
     public void intakePinch() {
-    	pinchSolenoid.set(DoubleSolenoid.Value.kReverse);
+    	pinchSolenoid.set(DoubleSolenoid.Value.kForward);
     }
     
     // Stopping the solenoid after pinching/releasing the Power Cube.

@@ -1,8 +1,10 @@
 package org.usfirst.frc.team5517.robot.subsystems;
 
+import org.usfirst.frc.team5517.robot.Robot;
 import org.usfirst.frc.team5517.robot.RobotMap;
 import org.usfirst.frc.team5517.robot.commands.ArcadeDrive;
 import org.usfirst.frc.team5517.robot.sensors.ADXRS453Gyro;
+import org.usfirst.frc.team5517.robot.utils.Debouncer;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
@@ -38,6 +40,16 @@ public class DriveTrain extends Subsystem {
 	ADXRS453Gyro gyro;
 	Encoder leftEncoder;
 	Encoder rightEncoder;
+	
+
+	// Gyro variables
+	private double curAngle;
+	private double lastAngle;
+	private boolean gyroCalibrating;
+	private boolean lastGyroCalibrating;
+	private int gyroReinits;
+	private Debouncer gyroDriftDetector;
+	
 	
 	class BasicPIDOutput implements PIDOutput {
 		private double output = 0;
@@ -75,6 +87,8 @@ public class DriveTrain extends Subsystem {
 		gyro = new ADXRS453Gyro();
 		gyro.startThread();
 		
+		gyroDriftDetector = new Debouncer(1.0);
+		
 		gyro.setPIDSourceType(PIDSourceType.kRate);
 		
 		leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
@@ -85,6 +99,8 @@ public class DriveTrain extends Subsystem {
 		
 		angleController = new PIDController(angleP, angleI, angleD, gyro, anglePidOutput);
 		distanceController = new PIDController(distP, distI, distD, distPIDSource, distPidOutput);
+		angleController.disable();
+		distanceController.disable();
 	}
 
 	protected void initDefaultCommand() {
@@ -103,7 +119,7 @@ public class DriveTrain extends Subsystem {
 	 */
 	public void setDistanceSetpoint(double dist) {
 		distanceController.setSetpoint(dist);
-		distanceController.enable();
+		//distanceController.enable();
 	}
 	
 	/**
@@ -112,7 +128,7 @@ public class DriveTrain extends Subsystem {
 	 */
 	public void setAngleSetpoint(double angle) {
 		angleController.setSetpoint(angle);
-		angleController.enable();
+		//angleController.enable();
 	}
 	
 	/**
@@ -128,10 +144,9 @@ public class DriveTrain extends Subsystem {
 	 * @param distance
 	 */
 	public void drivePidAngleAndDist() {
-		int speed = 0;
 		drive.arcadeDrive(
-			speed,  // speed
-			anglePidOutput.getOutput()  // 
+			distPidOutput.getOutput(),  
+			anglePidOutput.getOutput()
 		);
 	}
 	
@@ -168,6 +183,40 @@ public class DriveTrain extends Subsystem {
 		angleController.disable();
 		distanceController.disable();
 		drive.stopMotor();
+	}
+	
+	public double getAngle() {
+		return gyro.getAngle();
+	}
+	
+	public boolean isGyroCalibrating() {
+		return gyro.isCalibrating();
+	}
+	
+	public void reinitGyro() {
+		curAngle = getAngle();
+		gyroCalibrating = isGyroCalibrating();
+
+		if (lastGyroCalibrating && !gyroCalibrating) {
+			// if we've just finished calibrating the gyro, reset
+			gyroDriftDetector.reset();
+			curAngle = getAngle();
+			// reset target angle so when we enable it doesn't try to correct
+			// to the target angle before gyro calibrated
+			angleController.disable();
+			System.out.println("Finished auto-reinit gyro");
+		}
+		else if (gyroDriftDetector.update(Math.abs(curAngle - lastAngle) > (0.75 / 50.0))
+				&& !Robot.matchStarted && !gyroCalibrating) {
+			// start calibrating gyro
+			gyroReinits++;
+			System.out.println("!!! Sensed drift, about to auto-reinit gyro (#"+ gyroReinits + ")");
+			gyro.calibrate();
+		}
+
+		lastAngle = curAngle;
+		lastGyroCalibrating = gyroCalibrating;
+		
 	}
 }
 
