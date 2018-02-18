@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
 
 	
 	Command autoCommand;
-	SendableChooser<Command> autoChooser = new SendableChooser<>();
+	SendableChooser<Command> autoChooser;
 	
 	public boolean isMatchStarted() {
 		return matchStarted;
@@ -89,8 +89,10 @@ public class Robot extends TimedRobot {
 		// Create controls
 		oi = new OI();
 
-		driveTrain.reinitGyro();
+		driveTrain.calibrateGyro();
 
+		// Add all auton modes
+		autoChooser = new SendableChooser<>();
 		autoChooser.addDefault("Do Nothing", new AutoDoNothing());
 		autoChooser.addObject("Switch Right", new AutoSwitchRight());
 		autoChooser.addObject("Switch Middle", new AutoSwitchMiddle());
@@ -101,14 +103,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Auto mode", autoChooser);
 	}
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-	 */
 	@Override
 	public void disabledInit() {
-		System.out.println("Disabled Init");
+		System.out.println("Robot Disabled");
 		matchStarted = false;
 	}
 
@@ -119,11 +116,12 @@ public class Robot extends TimedRobot {
 	}
 
 	/**
-	 * Autonomous Initializtion
+	 * Autonomous Initialization
 	 */
 	@Override
 	public void autonomousInit() {
 		System.out.println("Autonomous Init");
+		matchStarted = true;
 		
 		// get selected autonomous from dashboard
 		autoCommand = autoChooser.getSelected();
@@ -138,9 +136,6 @@ public class Robot extends TimedRobot {
 		}
 	}
 
-	/**
-	 * This function is called periodically during autonomous.
-	 */
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
@@ -155,23 +150,14 @@ public class Robot extends TimedRobot {
 		}
 	}
 
-	/**
-	 * This function is called periodically during operator control.
-	 */
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 	}
 	
 	@Override
-	public void robotPeriodic() {
-		
-	}
+	public void robotPeriodic() {}
 
-	/**
-	 * This function is called periodically during test mode.
-	 */
 	@Override
-	public void testPeriodic() {
-	}
+	public void testPeriodic() {}
 }

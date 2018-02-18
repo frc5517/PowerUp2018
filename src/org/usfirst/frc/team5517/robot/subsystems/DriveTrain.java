@@ -193,6 +193,10 @@ public class DriveTrain extends Subsystem {
 		return gyro.isCalibrating();
 	}
 	
+	public void calibrateGyro() {
+		gyro.calibrate();
+	}
+	
 	public void reinitGyro() {
 		curAngle = getAngle();
 		gyroCalibrating = isGyroCalibrating();
