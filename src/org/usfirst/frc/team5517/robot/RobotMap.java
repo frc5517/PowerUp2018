@@ -38,7 +38,7 @@ public class RobotMap {
 	public static int intakeSolenoidLower = 0;   // color: orange
 	
 	// Encoder Digital Ports
-	public static int encoderLeftA  = 0, encoderLeftB  = 1,
-					  encoderRightA = 2, encoderRightB = 3;
+	public static int driveEncoderA  = 0, driveEncoderB  = 1,
+					  elevatorEncoderA = 2, elevatorEncoderB = 3;
 	
 }

@@ -21,25 +21,24 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class DriveTrain extends Subsystem {
 	
-	private final static double angleP = 1.0,
+	private final static double MAX_PID_DRIVE_SPEED = 0.65;
+	private final static double angleP = 0.4,
 								angleI = 0.0, 
 								angleD = 0.0,
 								distP  = 1.0, 
 								distI  = 0.0, 
 								distD  = 0.0;
 
-	// Creating the drivetrain.
+	// Drive train motors
 	Spark driveLeft = new Spark(RobotMap.driveTrainLeftMotorPWM);
 	Spark driveRight = new Spark(RobotMap.driveTrainRightMotorPWM);
 	DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
 
-	// Creating the sensors that will be tuned with PID loops.
 	PIDController angleController;
 	PIDController distanceController;
 
 	ADXRS453Gyro gyro;
-	Encoder leftEncoder;
-	Encoder rightEncoder;
+	Encoder driveEncoder;
 	
 
 	// Gyro variables
@@ -65,22 +64,6 @@ public class DriveTrain extends Subsystem {
 	// Creating the PIDOutputs coming from distController and angleController.
 	private BasicPIDOutput distPidOutput = new BasicPIDOutput();
 	private BasicPIDOutput anglePidOutput = new BasicPIDOutput();
-	private PIDSource distPIDSource = new PIDSource() {
-		@Override
-		public void setPIDSourceType(PIDSourceType pidSource) {
-		}
-
-		@Override
-		public PIDSourceType getPIDSourceType() {
-			return null;
-		}
-
-		@Override
-		public double pidGet() {
-			return getEncoderValue();
-		}
-		
-	};
 	
 	// Calling everything into the drivetrain and initializing the sensors.
 	public DriveTrain() {
@@ -91,16 +74,18 @@ public class DriveTrain extends Subsystem {
 		
 		gyro.setPIDSourceType(PIDSourceType.kRate);
 		
-		leftEncoder = new Encoder(RobotMap.encoderLeftA, RobotMap.encoderLeftB);
-		rightEncoder = new Encoder(RobotMap.encoderRightA, RobotMap.encoderRightB);
+		driveEncoder = new Encoder(RobotMap.driveEncoderA, RobotMap.driveEncoderB, false, Encoder.EncodingType.k4X);
 		
-		leftEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
-		rightEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		driveEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
+		driveEncoder.setDistancePerPulse(6*Math.PI/360);
+		driveEncoder.setReverseDirection(true);
 		
 		angleController = new PIDController(angleP, angleI, angleD, gyro, anglePidOutput);
-		distanceController = new PIDController(distP, distI, distD, distPIDSource, distPidOutput);
+		distanceController = new PIDController(distP, distI, distD, driveEncoder, distPidOutput);
 		angleController.disable();
 		distanceController.disable();
+		distanceController.setOutputRange(0, MAX_PID_DRIVE_SPEED);
+		
 	}
 
 	protected void initDefaultCommand() {
@@ -108,18 +93,18 @@ public class DriveTrain extends Subsystem {
 	} 
 
 	private double getEncoderValue() {
-		// average of both encoders for now
-		double output = (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
-		return output;
+		return driveEncoder.getDistance();
 	}
 	
 	/**
 	 * Set distance setpoint.
 	 * @param dist
+	 * 
 	 */
 	public void setDistanceSetpoint(double dist) {
 		distanceController.setSetpoint(dist);
-		//distanceController.enable();
+		System.out.println("Setting setpoint to " + dist);
+		distanceController.enable();
 	}
 	
 	/**
@@ -144,9 +129,11 @@ public class DriveTrain extends Subsystem {
 	 * @param distance
 	 */
 	public void drivePidAngleAndDist() {
+		System.out.println("SPEED: " + -distPidOutput.getOutput());
+		System.out.println("ENCODER: " + driveEncoder.getDistance());
 		drive.arcadeDrive(
-			distPidOutput.getOutput(),  
-			anglePidOutput.getOutput()
+			-distPidOutput.getOutput(),
+			0 //anglePidOutput.getOutput()
 		);
 	}
 	
@@ -155,7 +142,13 @@ public class DriveTrain extends Subsystem {
 	 * @return has reached distance
 	 */
 	public boolean hasReachedDistance() {
-		return distanceController.getError() == 0;
+		System.out.println("ERROR: " + distanceController.getError());
+		boolean hasReached = driveEncoder.getDistance() >= distanceController.getSetpoint();
+
+    	if(hasReached)
+    		System.out.println("Robot has reached distance");
+    	
+    	return hasReached;
 	}
 	
 	/**
@@ -183,6 +176,11 @@ public class DriveTrain extends Subsystem {
 		angleController.disable();
 		distanceController.disable();
 		drive.stopMotor();
+	}
+	
+	public void printEncoderAndGyroVals() {
+		System.out.println("DRIVETRAIN ENCODER: " + driveEncoder.getDistance());
+		System.out.println("GYRO: " + gyro.getAngle());
 	}
 	
 	public double getAngle() {

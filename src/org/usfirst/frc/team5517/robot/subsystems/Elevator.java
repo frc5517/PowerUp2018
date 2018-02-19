@@ -2,6 +2,8 @@ package org.usfirst.frc.team5517.robot.subsystems;
 
 import org.usfirst.frc.team5517.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -12,21 +14,29 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Elevator extends Subsystem {
 	
 	// Setting the speed of the miniCIM motors.
-	private final double LIFT_SPEED = .25;
+	private final double LIFT_SPEED = .35;
 	private final double LOWER_SPEED = .25;
 
 	// Creating the motors.
 	private Talon elevatorLeftMotor;
 	private Talon elevatorRightMotor;
 	
+	private Encoder elevatorEncoder;
+	
 	
 	// Initializing the motors.
 	public Elevator() {
 		elevatorLeftMotor = new Talon(RobotMap.elevatorLeftMotorPWMPort);
 		elevatorRightMotor = new Talon(RobotMap.elevatorRightMotorPWMPort);
+		elevatorEncoder = new Encoder(RobotMap.elevatorEncoderA, RobotMap.elevatorEncoderB);
+		elevatorEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 	}
 
     public void initDefaultCommand() {
+    }
+    
+    public void printEncoderVal() {
+    	System.out.println("ELEVATOR ENCODER: " + elevatorEncoder.getRaw());
     }
     
     // Making the left and right motors go in the same direction to lift the elevator.
