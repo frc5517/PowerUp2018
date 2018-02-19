@@ -80,6 +80,7 @@ public class DriveTrain extends Subsystem {
 		driveEncoder.setReverseDirection(true);
 		
 		// if in tune PID mode, get the numbers from SmartDashboard
+		// defaulting to the variable values
 		if(TUNE_PID) {
 			angleP = SmartDashboard.getNumber("AngleP", angleP);
 			angleI = SmartDashboard.getNumber("AngleI", angleI);
@@ -136,13 +137,24 @@ public class DriveTrain extends Subsystem {
 	public void drivePidAngleAndDist() {
 		double speed = -distPidOutput.getOutput();
 		double angle = 0; //anglePidOutput.getOutput();
+		SmartDashboard.putNumber("Drive Speed", speed);
+		SmartDashboard.putNumber("Drive Angle", angle);
+		drive.arcadeDrive(speed, angle);
+	}
+	
+	/**
+	 * Send sensor values to SmartDashboard
+	 */
+	public void sendDataToSmartDashboard() {
 		SmartDashboard.putNumber("Drive PID Setpoint", distancePid.getSetpoint());
 		SmartDashboard.putNumber("Drive PID Error", distancePid.getError());
 		SmartDashboard.putNumber("Drive Encoder Raw Value", driveEncoder.get());
 		SmartDashboard.putNumber("Drove Encoder Distance", driveEncoder.getDistance());
-		SmartDashboard.putNumber("Drive Speed", speed);
-		SmartDashboard.putNumber("Drive Angle", angle);
-		drive.arcadeDrive(speed, angle);
+		
+		SmartDashboard.putNumber("Angle PID Setpoint", anglePid.getSetpoint());
+		SmartDashboard.putNumber("Angle PID Error", anglePid.getError());
+		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
+		SmartDashboard.putNumber("Gyro Rate", gyro.getRate());
 	}
 	
 	/**
@@ -151,9 +163,9 @@ public class DriveTrain extends Subsystem {
 	 */
 	public boolean hasReachedDistance() {
 		boolean hasReached = driveEncoder.getDistance() >= distancePid.getSetpoint();
-    	if(hasReached)
-    		System.out.println("Robot has reached distance");
-    	
+    	if(hasReached) {
+    		System.out.println("Robot has reached distance: " + distancePid.getSetpoint() + "in. with error of " + distancePid.getError());
+    	}
     	return hasReached;
 	}
 	

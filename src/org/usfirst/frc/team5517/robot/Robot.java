@@ -163,6 +163,11 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		//driveTrain.printEncoderAndGyroVals();
 		//elevator.printEncoderVal();
+		// send sensor values from drive train to SmartDashboard
+		driveTrain.sendDataToSmartDashboard();
+		
+		// Send Power Distribution Panel to the SmartDashboard
+		SmartDashboard.putData(pdp);
 	}
 
 	@Override
