@@ -9,7 +9,6 @@ import org.usfirst.frc.team5517.robot.utils.Debouncer;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -22,7 +21,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 public class DriveTrain extends Subsystem {
 	
 	private final static double MAX_PID_DRIVE_SPEED = 0.65;
-	private final static double angleP = 0.4,
+	private final static double angleP = 1.0,
 								angleI = 0.0, 
 								angleD = 0.0,
 								distP  = 1.0, 
@@ -30,18 +29,17 @@ public class DriveTrain extends Subsystem {
 								distD  = 0.0;
 
 	// Drive train motors
-	Spark driveLeft = new Spark(RobotMap.driveTrainLeftMotorPWM);
-	Spark driveRight = new Spark(RobotMap.driveTrainRightMotorPWM);
-	DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
+	private Spark driveLeft = new Spark(RobotMap.driveTrainLeftMotorPWM);
+	private Spark driveRight = new Spark(RobotMap.driveTrainRightMotorPWM);
+	private DifferentialDrive drive = new DifferentialDrive(driveLeft, driveRight);
 
-	PIDController angleController;
-	PIDController distanceController;
-
-	ADXRS453Gyro gyro;
-	Encoder driveEncoder;
+	// PID
+	private PIDController anglePid;
+	private PIDController distancePid;
+	private Encoder driveEncoder;
 	
-
 	// Gyro variables
+	private ADXRS453Gyro gyro;
 	private double curAngle;
 	private double lastAngle;
 	private boolean gyroCalibrating;
@@ -80,11 +78,11 @@ public class DriveTrain extends Subsystem {
 		driveEncoder.setDistancePerPulse(6*Math.PI/360);
 		driveEncoder.setReverseDirection(true);
 		
-		angleController = new PIDController(angleP, angleI, angleD, gyro, anglePidOutput);
-		distanceController = new PIDController(distP, distI, distD, driveEncoder, distPidOutput);
-		angleController.disable();
-		distanceController.disable();
-		distanceController.setOutputRange(0, MAX_PID_DRIVE_SPEED);
+		anglePid = new PIDController(angleP, angleI, angleD, gyro, anglePidOutput);
+		distancePid = new PIDController(distP, distI, distD, driveEncoder, distPidOutput);
+		anglePid.disable();
+		distancePid.disable();
+		distancePid.setOutputRange(0, MAX_PID_DRIVE_SPEED);
 		
 	}
 
@@ -102,9 +100,9 @@ public class DriveTrain extends Subsystem {
 	 * 
 	 */
 	public void setDistanceSetpoint(double dist) {
-		distanceController.setSetpoint(dist);
+		distancePid.setSetpoint(dist);
 		System.out.println("Setting setpoint to " + dist);
-		distanceController.enable();
+		distancePid.enable();
 	}
 	
 	/**
@@ -112,7 +110,7 @@ public class DriveTrain extends Subsystem {
 	 * @param angle
 	 */
 	public void setAngleSetpoint(double angle) {
-		angleController.setSetpoint(angle);
+		anglePid.setSetpoint(angle);
 		//angleController.enable();
 	}
 	
@@ -120,8 +118,8 @@ public class DriveTrain extends Subsystem {
 	 * Set the setpoint  of the angle pid controller to current angle
 	 */
 	public void setAngleToCurrent() {
-		angleController.setSetpoint(gyro.getAngle());
-		angleController.enable();
+		anglePid.setSetpoint(gyro.getAngle());
+		anglePid.enable();
 	}
 
 	/**
@@ -142,8 +140,8 @@ public class DriveTrain extends Subsystem {
 	 * @return has reached distance
 	 */
 	public boolean hasReachedDistance() {
-		System.out.println("ERROR: " + distanceController.getError());
-		boolean hasReached = driveEncoder.getDistance() >= distanceController.getSetpoint();
+		System.out.println("ERROR: " + distancePid.getError());
+		boolean hasReached = driveEncoder.getDistance() >= distancePid.getSetpoint();
 
     	if(hasReached)
     		System.out.println("Robot has reached distance");
@@ -156,7 +154,7 @@ public class DriveTrain extends Subsystem {
 	 * @return has reached angle
 	 */
 	public boolean hasReachedAngle() {
-		return angleController.getError() == 0;	
+		return anglePid.getError() == 0;	
 	}
 
 	// Implementing Tank Drive.
@@ -173,8 +171,8 @@ public class DriveTrain extends Subsystem {
 
 	// Stopping the drivetrain.
 	public void stop() {
-		angleController.disable();
-		distanceController.disable();
+		anglePid.disable();
+		distancePid.disable();
 		drive.stopMotor();
 	}
 	
@@ -205,7 +203,7 @@ public class DriveTrain extends Subsystem {
 			curAngle = getAngle();
 			// reset target angle so when we enable it doesn't try to correct
 			// to the target angle before gyro calibrated
-			angleController.disable();
+			anglePid.disable();
 			System.out.println("Finished auto-reinit gyro");
 		}
 		else if (gyroDriftDetector.update(Math.abs(curAngle - lastAngle) > (0.75 / 50.0))
