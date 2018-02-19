@@ -99,6 +99,7 @@ public class DriveTrain extends Subsystem {
 		setDefaultCommand(new ArcadeDrive());
 	} 
 
+	@SuppressWarnings("unused")
 	private double getEncoderValue() {
 		return driveEncoder.getDistance();
 	}
