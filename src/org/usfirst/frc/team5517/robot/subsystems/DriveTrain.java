@@ -82,7 +82,6 @@ public class DriveTrain extends Subsystem {
 		gyro = new ADXRS453Gyro();
 		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
 		gyro.startThread();
-		
 		gyroDriftDetector = new Debouncer(1.0);
 		
 		driveEncoder = new Encoder(RobotMap.driveEncoderA, RobotMap.driveEncoderB, true, Encoder.EncodingType.k4X);
@@ -92,15 +91,16 @@ public class DriveTrain extends Subsystem {
 		
 		anglePid = new PIDController(angleP, angleI, angleD, gyro, anglePidOutput);
 		anglePid.setOutputRange(-MAX_PID_TURN_SPEED, MAX_PID_TURN_SPEED);
+		
 		distancePid = new PIDController(distP, distI, distD, driveEncoder, distPidOutput);
 		distancePid.setOutputRange(-MAX_PID_DRIVE_SPEED, MAX_PID_DRIVE_SPEED);
 		
-		/*SmartDashboard.putNumber("AngleP", 0.0);
-		SmartDashboard.putNumber("AngleI", 0.0);
-		SmartDashboard.putNumber("AngleD", 0.0);
-		SmartDashboard.putNumber("DistanceP", 0.0);
-		SmartDashboard.putNumber("DistanceI", 0.0);
-		SmartDashboard.putNumber("DistanceD", 0.0);*/
+		/*SmartDashboard.putNumber("AngleP",angleP);
+		SmartDashboard.putNumber("AngleI", angleI);
+		SmartDashboard.putNumber("AngleD", angleD);
+		SmartDashboard.putNumber("DistanceP", distP);
+		SmartDashboard.putNumber("DistanceI", distI);
+		SmartDashboard.putNumber("DistanceD", distD);*/
 		
 	}
 
