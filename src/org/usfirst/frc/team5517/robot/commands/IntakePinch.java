@@ -24,9 +24,8 @@ public class IntakePinch extends Command {
     	Robot.intake.intakePinch();
     }
 
-
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     
