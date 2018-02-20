@@ -1,33 +1,32 @@
 package org.usfirst.frc.team5517.robot.commands.Auto;
 
 import org.usfirst.frc.team5517.robot.Robot;
-import org.usfirst.frc.team5517.robot.commands.SpinIntakeOut;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  * This is for scoring in the switch from the left
- * side of the field with a turn in autonomous.
+ * side of the field without a turn in autonomous.
  */
 
-public class AutoSwitchLeftWithTurn extends CommandGroup {
+public class AutoSwitchLeftStraight extends CommandGroup {
 
-    public AutoSwitchLeftWithTurn() {
-        
+    public AutoSwitchLeftStraight() {
     	if(Robot.getSwitchSide() == 'L') {
-    		addParallel(new AutoDrive(168));
-	    	addSequential(new AutoTurn(90));
-	    	addSequential(new AutoTimedSpinIntakeOut(1));
+    		addSequential(new AutoDrive(140));
+    		addSequential(new AutoTimedSpinIntakeOut(1));
 	    	addParallel(new AutoDrive(-2));
 	    	addSequential(new AutoTurn(-90));
+    		addSequential(new AutoDrive(48));
+    		addSequential(new AutoTurn(90));
     		addSequential(new AutoDrive(33));
-	    	addSequential(new AutoTurn(-90));
+    		addSequential(new AutoTurn(90));
     	}
     	
     	else if(Robot.getSwitchSide() == 'R') {
     		addParallel(new AutoDrive(222));
 	    	addSequential(new AutoTurn(-90));
-	    	addSequential(new AutoDrive(15));
+	    	addSequential(new AutoDrive(180));
 	    	addSequential(new AutoTurn(-90));
 	    	addSequential(new AutoDrive(6));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));

@@ -15,7 +15,7 @@ import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleRight;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeftWithTurn;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchMiddle;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRightWithTurn;
-import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchStraight;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeftStraight;
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5517.robot.subsystems.Elevator;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
@@ -102,7 +102,7 @@ public class Robot extends TimedRobot {
 		autoChooser = new SendableChooser<>();
 		autoChooser.addDefault("Do Nothing", new AutoDoNothing());
 		autoChooser.addObject("Auto Testing", new AutoTestGroup());
-		autoChooser.addObject("Switch Straight", new AutoSwitchStraight());
+		autoChooser.addObject("Switch Straight", new AutoSwitchLeftStraight());
 		autoChooser.addObject("Switch Right", new AutoSwitchRightWithTurn());
 		autoChooser.addObject("Switch Middle", new AutoSwitchMiddle());
 		autoChooser.addObject("Switch Left", new AutoSwitchLeftWithTurn());
