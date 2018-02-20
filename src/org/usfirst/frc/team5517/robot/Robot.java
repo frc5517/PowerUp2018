@@ -12,9 +12,10 @@ import org.usfirst.frc.team5517.robot.commands.Auto.AutoTestGroup;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleLeft;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleMiddle;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleRight;
-import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeft;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeftWithTurn;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchMiddle;
-import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRight;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRightWithTurn;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchStraight;
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5517.robot.subsystems.Elevator;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
@@ -27,6 +28,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+//TODO: comment out print statements
+//TODO: change TimedRaise/Lower to encoder values
 
 public class Robot extends TimedRobot {
 
@@ -98,9 +102,10 @@ public class Robot extends TimedRobot {
 		autoChooser = new SendableChooser<>();
 		autoChooser.addDefault("Do Nothing", new AutoDoNothing());
 		autoChooser.addObject("Auto Testing", new AutoTestGroup());
-		autoChooser.addObject("Switch Right", new AutoSwitchRight());
+		autoChooser.addObject("Switch Straight", new AutoSwitchStraight());
+		autoChooser.addObject("Switch Right", new AutoSwitchRightWithTurn());
 		autoChooser.addObject("Switch Middle", new AutoSwitchMiddle());
-		autoChooser.addObject("Switch Left", new AutoSwitchLeft());
+		autoChooser.addObject("Switch Left", new AutoSwitchLeftWithTurn());
 		autoChooser.addObject("Scale Right", new AutoScaleRight());
 		autoChooser.addObject("Scale Middle", new AutoScaleMiddle());
 		autoChooser.addObject("Scale Left", new AutoScaleLeft());

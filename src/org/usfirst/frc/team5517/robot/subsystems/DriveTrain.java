@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-// TODO: comment out print statements
-
 /**
  * Drive Train subsystem
  */
