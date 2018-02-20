@@ -15,47 +15,49 @@ public class AutoTurn extends Command {
 
 	private double angle;
 	private boolean useSmartDashboard = false;
-	
+	private String smartDashboardKey = "Turn To Angle";
+
+	/**
+	 * Turns to specified angle 
+	 * 0 degrees = the orientation robot was placed at start of match
+	 * @param ang angle to turn to
+	 * @param SD whether or not to use SmartDashboard's angle input
+	 */
+	public AutoTurn(int ang, boolean SD) {
+		requires(Robot.driveTrain);
+		angle = ang;
+		useSmartDashboard = SD;
+		SmartDashboard.putNumber(smartDashboardKey, 0);
+	}
 	public AutoTurn(int a) {
 		this(a, false);	
 	}
 	public AutoTurn(boolean SD) {
 		this(0, SD);
 	}
-	
-    public AutoTurn(int a, boolean SD) {
-        requires(Robot.driveTrain);
 
-    	useSmartDashboard = SD;
-        angle = a;
-    }
-
-    protected void initialize() {
-    	if(useSmartDashboard) {
-			double val = SmartDashboard.getNumber("Turn To Angle", 0);
-	    	if(val == 0)
-	    		SmartDashboard.putNumber("Turn To Angle", 0);
-	        angle = val;
-	        System.out.println("Turn to angle from SD = "+angle);
+	protected void initialize() {
+		if(useSmartDashboard) {
+			angle = SmartDashboard.getNumber(smartDashboardKey, angle);
 		}
-    	Robot.driveTrain.setAngleSetpoint(angle);
-    }
-    
-    protected void execute() {
-    	Robot.driveTrain.drivePidAngleAndDist();
-    }
+		Robot.driveTrain.setAngleSetpoint(angle);
+	}
 
-    protected boolean isFinished() {
-    	return Robot.driveTrain.hasReachedAngle();
-    }
+	protected void execute() {
+		Robot.driveTrain.drivePidAngleAndDist();
+	}
 
-    protected void end() {
-    	Robot.driveTrain.stop();
-    }
+	protected boolean isFinished() {
+		return Robot.driveTrain.hasReachedAngle();
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
+	protected void end() {
+		Robot.driveTrain.stop();
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+		end();
+	}
 }
