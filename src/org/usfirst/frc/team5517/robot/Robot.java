@@ -37,50 +37,50 @@ public class Robot extends TimedRobot {
 	 * Set to true to enable debugging print statements
 	 */
 	private static boolean ENABLE_DEBUG_LOGGING = true;
-	
+
 	// Subsystems
 	public static final DriveTrain driveTrain = new DriveTrain();
 	public static final Elevator elevator = new Elevator();
 	public static final Intake intake = new Intake();
 	public static OI oi;
-	
+
 	//private static PowerDistributionPanel pdp = new PowerDistributionPanel();
 	public static boolean matchStarted = false;
 	private static String fmsGameData = "";
-	
+
 	Command autoCommand;
 	SendableChooser<Command> autoChooser;
-	
+
 	public boolean isMatchStarted() {
 		return matchStarted;
 	}
-	
+
 	// Autonomous game data
 	public static String getGameDataString() {
 		return fmsGameData;
 	} 
-	
+
 	public static char getSwitchSide() {
 		if(fmsGameData.length() < 3)  {
 			return ' ';
 		}
-		
+
 		return fmsGameData.charAt(0);
 	}
-	
+
 	public static char getScaleSide() {
 		if(fmsGameData.length() < 3) {
 			return ' ';
 		}
-		
+
 		return fmsGameData.charAt(1);
 	}
-	
+
 	public static char getOpponentSwitchSide() {
 		if(fmsGameData.length() < 3)  {
 			return ' ';
 		}
-		
+
 		return fmsGameData.charAt(2);
 	}
 
@@ -138,10 +138,10 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		System.out.println("Autonomous Init");
 		matchStarted = true;
-		
+
 		// get selected autonomous from dashboard
 		autoCommand = autoChooser.getSelected();
-		
+
 		// get plate assignment from FMS
 		fmsGameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Received plate assignment from FMS: " + fmsGameData);
@@ -170,19 +170,19 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 	}
-	
+
 	@Override
 	public void robotPeriodic() {
 		// send sensor values from drive train to SmartDashboard
 		driveTrain.sendDataToSmartDashboard();
-		
+
 		// Send Power Distribution Panel to the SmartDashboard
 		//SmartDashboard.putData(pdp);
 	}
 
 	@Override
 	public void testPeriodic() {}
-	
+
 	/**
 	 * Logs a debug message to the robot log, if debug logging is enabled
 	 * @param msg message to log
@@ -192,7 +192,7 @@ public class Robot extends TimedRobot {
 			System.out.println(msg);
 		}
 	}
-	
+
 	/**
 	 * Logs a message to robot log
 	 * @param msg message to log
