@@ -8,7 +8,6 @@
 package org.usfirst.frc.team5517.robot;
 
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDoNothing;
-import org.usfirst.frc.team5517.robot.commands.Auto.AutoTestGroup;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleLeft;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleMiddle;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleRight;
@@ -16,13 +15,13 @@ import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeftWithTurn;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchMiddle;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRightWithTurn;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchStraight;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoTestGroup;
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5517.robot.subsystems.Elevator;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -34,13 +33,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
 
+	/**
+	 * Set to true to enable debugging print statements
+	 */
+	private static boolean ENABLE_DEBUG_LOGGING = true;
+	
 	// Subsystems
 	public static final DriveTrain driveTrain = new DriveTrain();
 	public static final Elevator elevator = new Elevator();
 	public static final Intake intake = new Intake();
 	public static OI oi;
 	
-	private PowerDistributionPanel pdp = new PowerDistributionPanel();
+	//private static PowerDistributionPanel pdp = new PowerDistributionPanel();
 	public static boolean matchStarted = false;
 	private static String fmsGameData = " ";
 
@@ -177,4 +181,13 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void testPeriodic() {}
+	
+	/**
+	 * Logs a message to the robot log, if logging is enabled
+	 * @param msg message to log
+	 */
+	public void log(String msg) {
+		if(ENABLE_DEBUG_LOGGING)
+			System.out.println(msg);
+	}
 }
