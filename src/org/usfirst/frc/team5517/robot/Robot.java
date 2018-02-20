@@ -46,8 +46,7 @@ public class Robot extends TimedRobot {
 	
 	//private static PowerDistributionPanel pdp = new PowerDistributionPanel();
 	public static boolean matchStarted = false;
-	private static String fmsGameData = " ";
-
+	private static String fmsGameData = "";
 	
 	Command autoCommand;
 	SendableChooser<Command> autoChooser;
@@ -94,8 +93,12 @@ public class Robot extends TimedRobot {
 
 		System.out.println("Robot initializing...");
 
-		CameraServer server = CameraServer.getInstance();
-		//server.startAutomaticCapture(0);
+		// enable camera if set to true from SmartDashboard
+		// or if value is not set at all
+		if(SmartDashboard.getBoolean("Enable Camera", true)) {
+			CameraServer camera = CameraServer.getInstance();
+			camera.startAutomaticCapture(0);
+		}
 
 		// Create controls
 		oi = new OI();
