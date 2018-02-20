@@ -128,7 +128,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
-		driveTrain.reinitGyro();
+		driveTrain.autoReinitGyro();
 	}
 
 	/**
@@ -173,8 +173,6 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void robotPeriodic() {
-		//driveTrain.printEncoderAndGyroVals();
-		//elevator.printEncoderVal();
 		// send sensor values from drive train to SmartDashboard
 		driveTrain.sendDataToSmartDashboard();
 		
@@ -186,11 +184,20 @@ public class Robot extends TimedRobot {
 	public void testPeriodic() {}
 	
 	/**
-	 * Logs a message to the robot log, if logging is enabled
+	 * Logs a debug message to the robot log, if debug logging is enabled
 	 * @param msg message to log
 	 */
-	public void log(String msg) {
-		if(ENABLE_DEBUG_LOGGING)
+	public static void logDebug(String msg) {
+		if(ENABLE_DEBUG_LOGGING) {
 			System.out.println(msg);
+		}
+	}
+	
+	/**
+	 * Logs a message to robot log
+	 * @param msg message to log
+	 */
+	public static void log(String msg) {
+		System.out.println(msg);
 	}
 }

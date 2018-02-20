@@ -28,15 +28,26 @@ public class DriveTrain extends Subsystem {
 	 */
 	private final boolean TUNE_PID = true;
 	
+	/**
+	 * Speed for PID controlled driving and turning
+	 */
 	private final double MAX_PID_DRIVE_SPEED = 0.75;
 	private final double MAX_PID_TURN_SPEED = 0.75;
 	
+	/**
+	 * PID constants for angle and distance 
+	 * 
+	 * DO NOT CHANGE THESE UNLESS TUNING CONTROL
+	 * TEST VALUES IN SMARTDASHBOARD FIRST 
+	 */
+	/***********************************************/
 	private double angleP = 0.50775,
 				   angleI = 0.2,
 				   angleD = 0.77505,
 				   distP  = 0.6, 
 				   distI  = 0,
 				   distD  = 0.8525;
+	/***********************************************/
 
 	// Drive train motors
 	private Spark driveLeft = new Spark(RobotMap.driveTrainLeftMotorPWM);
@@ -46,8 +57,9 @@ public class DriveTrain extends Subsystem {
 	// PID
 	private PIDController anglePid;
 	private PIDController distancePid;
+	
 	private Encoder driveEncoder;
-	boolean driveTimerStarted = false;
+	private boolean driveTimerStarted = false;
 	private Timer driveTimer = new Timer();
 	
 	// Gyro variables
@@ -58,10 +70,13 @@ public class DriveTrain extends Subsystem {
 	private boolean gyroCalibrating;
 	private boolean lastGyroCalibrating;
 	private int gyroReinits;
-	boolean angleTimerStarted = false;
+	private boolean angleTimerStarted = false;
 	private Timer angleTimer = new Timer();
 	
-	
+	/**
+	 * "Fake" PIDOutput class for the PIDControllers to write to <br>
+	 * So we can apply the outputs to the motors ourselves, simultaneously
+	 */
 	class PIDOutputHandler implements PIDOutput {
 		private double output = 0;
 		public double getOutput() {
@@ -77,7 +92,9 @@ public class DriveTrain extends Subsystem {
 	private PIDOutputHandler distPidOutput = new PIDOutputHandler();
 	private PIDOutputHandler anglePidOutput = new PIDOutputHandler();
 	
-	// Initialize drive train objects, variables, and configuration
+	/**
+	 * Initialize drive train objects, variables, and configuration
+	 */
 	public DriveTrain() {
 		gyro = new ADXRS453Gyro();
 		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
@@ -95,6 +112,7 @@ public class DriveTrain extends Subsystem {
 		distancePid = new PIDController(distP, distI, distD, driveEncoder, distPidOutput);
 		distancePid.setOutputRange(-MAX_PID_DRIVE_SPEED, MAX_PID_DRIVE_SPEED);
 		
+		// send values to SmartDashboard to generate the input boxes
 		/*SmartDashboard.putNumber("AngleP",angleP);
 		SmartDashboard.putNumber("AngleI", angleI);
 		SmartDashboard.putNumber("AngleD", angleD);
@@ -106,11 +124,6 @@ public class DriveTrain extends Subsystem {
 
 	protected void initDefaultCommand() {
 		setDefaultCommand(new ArcadeDrive());
-	} 
-
-	@SuppressWarnings("unused")
-	private double getEncoderValue() {
-		return driveEncoder.getDistance();
 	}
 	
 	/**
@@ -118,9 +131,9 @@ public class DriveTrain extends Subsystem {
 	 * @param dist
 	 */
 	public void setDistanceSetpoint(double dist) {
+		Robot.logDebug("Setting dist setpoint to " + dist);
 		driveEncoder.reset();
 		distancePid.setSetpoint(dist);
-		System.out.println("Setting dist setpoint to " + dist);
 		distancePid.enable();
 		driveTimer.stop();
 		driveTimer.reset();
@@ -132,9 +145,9 @@ public class DriveTrain extends Subsystem {
 	 * @param angle
 	 */
 	public void setAngleSetpoint(double angle) {
+		Robot.logDebug("Setting angle setpoint to " + angle);
 		anglePid.setSetpoint(angle);
 		anglePid.enable();
-		System.out.println("Setting angle setpoint to " + angle);
 	}
 	
 	/**
@@ -146,37 +159,41 @@ public class DriveTrain extends Subsystem {
 
 	/**
 	 * Drive with both PID controllers' outputs.
-	 * @param distance
 	 */
 	public void drivePidAngleAndDist() {
 		double speed = -distPidOutput.getOutput();
-		double angle = anglePidOutput.getOutput();
+		double rotation = anglePidOutput.getOutput();
 		SmartDashboard.putNumber("Drive Speed", speed);
-		SmartDashboard.putNumber("Drive Angle", angle);
-		drive.arcadeDrive(speed, angle);
+		SmartDashboard.putNumber("Drive Rotation Magnitude", rotation);
+		drive.arcadeDrive(speed, rotation);
 	}
 	
-	public void setPIDFromSD() {
-		// if in tune PID mode, get the numbers from SmartDashboard
-		// defaulting to the variable values
-		if(TUNE_PID) {
-			angleP = SmartDashboard.getNumber("AngleP", angleP);
-			angleI = SmartDashboard.getNumber("AngleI", angleI);
-			angleD = SmartDashboard.getNumber("AngleD", angleD);
-			distP  = SmartDashboard.getNumber("DistanceP", distP);
-			distI  = SmartDashboard.getNumber("DistanceI", distI);
-			distD  = SmartDashboard.getNumber("DistanceD", distD);
-			anglePid.setPID(angleP, angleI, angleD);
-			distancePid.setPID(distP, distI, distD);
-			//System.out.println("distP:"+distP);
+	/**
+	 * Read PID values from SmartDashboard into the PID variables
+	 */
+	private void readPIDFromSmartDashboard() {
+		if(!TUNE_PID) {
+			return;
 		}
+		// get PID values from SmartDashboard
+		// default to the defined variable values
+		angleP = SmartDashboard.getNumber("AngleP", angleP);
+		angleI = SmartDashboard.getNumber("AngleI", angleI);
+		angleD = SmartDashboard.getNumber("AngleD", angleD);
+		distP  = SmartDashboard.getNumber("DistanceP", distP);
+		distI  = SmartDashboard.getNumber("DistanceI", distI);
+		distD  = SmartDashboard.getNumber("DistanceD", distD);
+		anglePid.setPID(angleP, angleI, angleD);
+		distancePid.setPID(distP, distI, distD);
 	}
 	
 	/**
 	 * Send sensor values to SmartDashboard
+	 * and retrieve PID values if in tuning mode
 	 */
 	public void sendDataToSmartDashboard() {
-		setPIDFromSD();
+		readPIDFromSmartDashboard();
+		
 		SmartDashboard.putNumber("Drive PID Setpoint", distancePid.getSetpoint());
 		SmartDashboard.putNumber("Drive PID Error", distancePid.getError());
 		SmartDashboard.putNumber("Drive Encoder Raw Value", driveEncoder.get());
@@ -193,26 +210,26 @@ public class DriveTrain extends Subsystem {
 	 * @return has reached distance
 	 */
 	public boolean hasReachedDistance() {
-		//boolean hasReached = driveEncoder.getDistance() >= distancePid.getSetpoint();
-    	boolean hasReachedDist = Math.abs(distancePid.getError()) < 1;
-    	if(hasReachedDist) {
+		// ensure error is within reasonable tolerance
+    	boolean errorWithinTolerance = Math.abs(distancePid.getError()) < 1;
+    	if(errorWithinTolerance) {
     		if(!driveTimerStarted) {
     			driveTimerStarted = true;
     			driveTimer.start();
-    			System.out.println("Enabling drive timer");
+    			Robot.logDebug("Enabling drive timer");
     		}
     		SmartDashboard.putNumber("Drive timer val", driveTimer.get());
     		if(driveTimer.get() >= 0.2) {
-    			System.out.println("DRIVE GOOD. Reached distance, err = " + distancePid.getError());
+    			Robot.logDebug("DRIVE GOOD. Reached distance, err = " + distancePid.getError());
     			stop();
     			return true;
     		}
-    		System.out.println("Trying to reach distance -- error is " + distancePid.getError());
+    		Robot.logDebug("Trying to reach distance during timer -- error is " + distancePid.getError());
     	}
     	else if(driveTimerStarted) {
     		driveTimerStarted = false;
 			driveTimer.reset();
-			System.out.println("Disabling drive timer");
+			Robot.logDebug("Disabling drive timer");
     	}
     	return false;
 	}
@@ -223,25 +240,25 @@ public class DriveTrain extends Subsystem {
 	 */
 	public boolean hasReachedAngle() {
 		// ensure error is within reasonable tolerance
-		boolean hasReachedAngle = Math.abs(anglePid.getError()) < 0.5;
-		if(hasReachedAngle) {
+		boolean errorWithinTolerance = Math.abs(anglePid.getError()) < 0.5;
+		if(errorWithinTolerance) {
 			if(!angleTimerStarted) {
     			angleTimerStarted = true;
     			angleTimer.start();
-    			System.out.println("Enabling angle timer");
+    			Robot.logDebug("Enabling angle timer");
     		}
     		SmartDashboard.putNumber("Angle timer val", driveTimer.get());
     		if(angleTimer.get() >= 0.2) {
-    			System.out.println("ANGLE GOOD. Reached angle, err = " + anglePid.getError());
+    			Robot.logDebug("ANGLE GOOD. Reached angle, err = " + anglePid.getError());
     			stop();
     			return true;
     		}
-    		System.out.println("Trying to reach angle -- error is " + anglePid.getError());
+    		Robot.logDebug("Trying to reach angle during timer -- error is " + anglePid.getError());
 		}
     	else if(angleTimerStarted) {
     		angleTimerStarted = false;
 			angleTimer.reset();
-			System.out.println("Disabling angle timer");
+			Robot.logDebug("Disabling angle timer");
     	}
 		return false;
 	}
@@ -265,42 +282,46 @@ public class DriveTrain extends Subsystem {
 		drive.stopMotor();
 	}
 	
-	public void printEncoderAndGyroVals() {
-		System.out.println("DRIVETRAIN ENCODER: " + driveEncoder.getDistance());
-		System.out.println("GYRO: " + gyro.getAngle());
-	}
-	
 	// Gyro Methods
+	
+	/**
+	 * Returns gyro's current angle
+	 * @return double current angle
+	 */
 	public double getAngle() {
 		return gyro.getAngle();
 	}
 	
-	public boolean isGyroCalibrating() {
-		return gyro.isCalibrating();
-	}
-	
+	/**
+	 * Calibrates the gyro
+	 */
 	public void calibrateGyro() {
 		gyro.calibrate();
 	}
 	
-	public void reinitGyro() {
+	/**
+	 * Auto re-inits gyro if significant drift is detected <br>
+	 * Should only be called while robot is disabled
+	 */
+	public void autoReinitGyro() {
 		curAngle = getAngle();
-		gyroCalibrating = isGyroCalibrating();
+		gyroCalibrating = gyro.isCalibrating();
 
+		// check if we've just finished calibrating the gyro
 		if (lastGyroCalibrating && !gyroCalibrating) {
-			// if we've just finished calibrating the gyro, reset
 			gyroDriftDetector.reset();
 			curAngle = getAngle();
-			// reset target angle so when we enable it doesn't try to correct
-			// to the target angle before gyro calibrated
-			anglePid.disable();
-			System.out.println("Finished auto-reinit gyro");
+			anglePid.disable(); // disables PID and resets angle setpoint
+			Robot.log("Finished auto-reinit gyro");
+			SmartDashboard.putString("Gyro Reinit Status", "Finished (#"+ gyroReinits + ")");
 		}
+		// check if gryo has drifted and is not currently calibrating
 		else if (gyroDriftDetector.update(Math.abs(curAngle - lastAngle) > (0.75 / 50.0))
 				&& !Robot.matchStarted && !gyroCalibrating) {
 			// start calibrating gyro
 			gyroReinits++;
-			System.out.println("!!! Sensed drift, about to auto-reinit gyro (#"+ gyroReinits + ")");
+			Robot.log("!!! Sensed gyro drift, about to auto-reinit (#"+ gyroReinits + ")");
+			SmartDashboard.putString("Gyro Reinit Status", "Reinitializing (#"+ gyroReinits + ")");
 			gyro.calibrate();
 		}
 

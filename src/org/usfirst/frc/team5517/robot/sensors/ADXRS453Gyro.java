@@ -333,7 +333,7 @@ public class ADXRS453Gyro implements PIDSource {
 				reset();
 
 				calCompleted = true;
-				System.out.println("Accumulated Offset: " + driftRate
+				System.out.println("Gyro: Accumulated Offset: " + driftRate
 						+ "\tDelta Time: " + timeElapsed);
 			}
 		}
