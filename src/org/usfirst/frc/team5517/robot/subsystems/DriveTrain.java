@@ -116,7 +116,6 @@ public class DriveTrain extends Subsystem {
 	/**
 	 * Set distance setpoint.
 	 * @param dist
-	 * 
 	 */
 	public void setDistanceSetpoint(double dist) {
 		driveEncoder.reset();
