@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Elevator extends Subsystem {
 	
 	// Setting the speed of the miniCIM motors.
-	private final double LIFT_SPEED = .35;
+	private final double LIFT_SPEED = .45;
 	private final double LOWER_SPEED = .25;
 
 	// Creating the motors.

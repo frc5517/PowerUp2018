@@ -8,7 +8,7 @@
 package org.usfirst.frc.team5517.robot;
 
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDoNothing;
-import org.usfirst.frc.team5517.robot.commands.Auto.AutoDriveForward;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoTestGroup;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleLeft;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleMiddle;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleRight;
@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
 		System.out.println("Robot initializing...");
 
 		CameraServer server = CameraServer.getInstance();
-		server.startAutomaticCapture(0);
+		//server.startAutomaticCapture(0);
 
 		// Create controls
 		oi = new OI();
@@ -97,7 +97,7 @@ public class Robot extends TimedRobot {
 		// Add all auton modes
 		autoChooser = new SendableChooser<>();
 		autoChooser.addDefault("Do Nothing", new AutoDoNothing());
-		autoChooser.addObject("Drive Forward", new AutoDriveForward());
+		autoChooser.addObject("Auto Testing", new AutoTestGroup());
 		autoChooser.addObject("Switch Right", new AutoSwitchRight());
 		autoChooser.addObject("Switch Middle", new AutoSwitchMiddle());
 		autoChooser.addObject("Switch Left", new AutoSwitchLeft());
@@ -167,7 +167,7 @@ public class Robot extends TimedRobot {
 		driveTrain.sendDataToSmartDashboard();
 		
 		// Send Power Distribution Panel to the SmartDashboard
-		SmartDashboard.putData(pdp);
+		//SmartDashboard.putData(pdp);
 	}
 
 	@Override

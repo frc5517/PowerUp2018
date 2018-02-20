@@ -11,9 +11,12 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+// TODO: comment out print statements
 
 /**
  * Drive Train subsystem
@@ -21,15 +24,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveTrain extends Subsystem {
 	
+	/**
+	 * Set this to true to read values from SmartDashboard
+	 * false to read from the below PID variables
+	 */
 	private final boolean TUNE_PID = true;
-	private final double MAX_PID_DRIVE_SPEED = 0.65;
 	
-	private double angleP = 0.1,
-				   angleI = 0,
-				   angleD = 0,
-				   distP  = 0.1, 
+	private final double MAX_PID_DRIVE_SPEED = 0.75;
+	private final double MAX_PID_TURN_SPEED = 0.75;
+	
+	private double angleP = 0.50775,
+				   angleI = 0.2,
+				   angleD = 0.77505,
+				   distP  = 0.6, 
 				   distI  = 0,
-				   distD  = 0;
+				   distD  = 0.8525;
 
 	// Drive train motors
 	private Spark driveLeft = new Spark(RobotMap.driveTrainLeftMotorPWM);
@@ -40,6 +49,8 @@ public class DriveTrain extends Subsystem {
 	private PIDController anglePid;
 	private PIDController distancePid;
 	private Encoder driveEncoder;
+	boolean driveTimerStarted = false;
+	private Timer driveTimer = new Timer();
 	
 	// Gyro variables
 	private ADXRS453Gyro gyro;
@@ -49,6 +60,8 @@ public class DriveTrain extends Subsystem {
 	private boolean gyroCalibrating;
 	private boolean lastGyroCalibrating;
 	private int gyroReinits;
+	boolean angleTimerStarted = false;
+	private Timer angleTimer = new Timer();
 	
 	
 	class PIDOutputHandler implements PIDOutput {
@@ -69,7 +82,7 @@ public class DriveTrain extends Subsystem {
 	// Initialize drive train objects, variables, and configuration
 	public DriveTrain() {
 		gyro = new ADXRS453Gyro();
-		gyro.setPIDSourceType(PIDSourceType.kRate);
+		gyro.setPIDSourceType(PIDSourceType.kDisplacement);
 		gyro.startThread();
 		
 		gyroDriftDetector = new Debouncer(1.0);
@@ -79,19 +92,17 @@ public class DriveTrain extends Subsystem {
 		driveEncoder.setDistancePerPulse(6*Math.PI/360);
 		driveEncoder.setReverseDirection(true);
 		
-		// if in tune PID mode, get the numbers from SmartDashboard
-		// defaulting to the variable values
-		if(TUNE_PID) {
-			angleP = SmartDashboard.getNumber("AngleP", angleP);
-			angleI = SmartDashboard.getNumber("AngleI", angleI);
-			angleD = SmartDashboard.getNumber("AngleD", angleD);
-			distP  = SmartDashboard.getNumber("DistanceP", distP);
-			distI  = SmartDashboard.getNumber("DistanceI", distI);
-			distD  = SmartDashboard.getNumber("DistanceD", distD);
-		}
 		anglePid = new PIDController(angleP, angleI, angleD, gyro, anglePidOutput);
+		anglePid.setOutputRange(-MAX_PID_TURN_SPEED, MAX_PID_TURN_SPEED);
 		distancePid = new PIDController(distP, distI, distD, driveEncoder, distPidOutput);
-		distancePid.setOutputRange(0, MAX_PID_DRIVE_SPEED);
+		distancePid.setOutputRange(-MAX_PID_DRIVE_SPEED, MAX_PID_DRIVE_SPEED);
+		
+		/*SmartDashboard.putNumber("AngleP", 0.0);
+		SmartDashboard.putNumber("AngleI", 0.0);
+		SmartDashboard.putNumber("AngleD", 0.0);
+		SmartDashboard.putNumber("DistanceP", 0.0);
+		SmartDashboard.putNumber("DistanceI", 0.0);
+		SmartDashboard.putNumber("DistanceD", 0.0);*/
 		
 	}
 
@@ -110,9 +121,13 @@ public class DriveTrain extends Subsystem {
 	 * 
 	 */
 	public void setDistanceSetpoint(double dist) {
+		driveEncoder.reset();
 		distancePid.setSetpoint(dist);
-		System.out.println("Setting setpoint to " + dist);
+		System.out.println("Setting dist setpoint to " + dist);
 		distancePid.enable();
+		driveTimer.stop();
+		driveTimer.reset();
+		driveTimerStarted = false;
 	}
 	
 	/**
@@ -121,7 +136,8 @@ public class DriveTrain extends Subsystem {
 	 */
 	public void setAngleSetpoint(double angle) {
 		anglePid.setSetpoint(angle);
-		//angleController.enable();
+		anglePid.enable();
+		System.out.println("Setting angle setpoint to " + angle);
 	}
 	
 	/**
@@ -137,16 +153,33 @@ public class DriveTrain extends Subsystem {
 	 */
 	public void drivePidAngleAndDist() {
 		double speed = -distPidOutput.getOutput();
-		double angle = 0; //anglePidOutput.getOutput();
+		double angle = anglePidOutput.getOutput();
 		SmartDashboard.putNumber("Drive Speed", speed);
 		SmartDashboard.putNumber("Drive Angle", angle);
 		drive.arcadeDrive(speed, angle);
+	}
+	
+	public void setPIDFromSD() {
+		// if in tune PID mode, get the numbers from SmartDashboard
+		// defaulting to the variable values
+		if(TUNE_PID) {
+			angleP = SmartDashboard.getNumber("AngleP", angleP);
+			angleI = SmartDashboard.getNumber("AngleI", angleI);
+			angleD = SmartDashboard.getNumber("AngleD", angleD);
+			distP  = SmartDashboard.getNumber("DistanceP", distP);
+			distI  = SmartDashboard.getNumber("DistanceI", distI);
+			distD  = SmartDashboard.getNumber("DistanceD", distD);
+			anglePid.setPID(angleP, angleI, angleD);
+			distancePid.setPID(distP, distI, distD);
+			//System.out.println("distP:"+distP);
+		}
 	}
 	
 	/**
 	 * Send sensor values to SmartDashboard
 	 */
 	public void sendDataToSmartDashboard() {
+		setPIDFromSD();
 		SmartDashboard.putNumber("Drive PID Setpoint", distancePid.getSetpoint());
 		SmartDashboard.putNumber("Drive PID Error", distancePid.getError());
 		SmartDashboard.putNumber("Drive Encoder Raw Value", driveEncoder.get());
@@ -163,11 +196,28 @@ public class DriveTrain extends Subsystem {
 	 * @return has reached distance
 	 */
 	public boolean hasReachedDistance() {
-		boolean hasReached = driveEncoder.getDistance() >= distancePid.getSetpoint();
-    	if(hasReached) {
-    		System.out.println("Robot has reached distance: " + distancePid.getSetpoint() + "in. with error of " + distancePid.getError());
+		//boolean hasReached = driveEncoder.getDistance() >= distancePid.getSetpoint();
+    	boolean hasReachedDist = Math.abs(distancePid.getError()) < 1;
+    	if(hasReachedDist) {
+    		if(!driveTimerStarted) {
+    			driveTimerStarted = true;
+    			driveTimer.start();
+    			System.out.println("Enabling drive timer");
+    		}
+    		SmartDashboard.putNumber("Drive timer val", driveTimer.get());
+    		if(driveTimer.get() >= 0.2) {
+    			System.out.println("DRIVE GOOD. Reached distance, err = " + distancePid.getError());
+    			stop();
+    			return true;
+    		}
+    		System.out.println("Trying to reach distance -- error is " + distancePid.getError());
     	}
-    	return hasReached;
+    	else if(driveTimerStarted) {
+    		driveTimerStarted = false;
+			driveTimer.reset();
+			System.out.println("Disabling drive timer");
+    	}
+    	return false;
 	}
 	
 	/**
@@ -176,7 +226,27 @@ public class DriveTrain extends Subsystem {
 	 */
 	public boolean hasReachedAngle() {
 		// ensure error is within reasonable tolerance
-		return Math.abs(anglePid.getError()) < 2;
+		boolean hasReachedAngle = Math.abs(anglePid.getError()) < 0.5;
+		if(hasReachedAngle) {
+			if(!angleTimerStarted) {
+    			angleTimerStarted = true;
+    			angleTimer.start();
+    			System.out.println("Enabling angle timer");
+    		}
+    		SmartDashboard.putNumber("Angle timer val", driveTimer.get());
+    		if(angleTimer.get() >= 0.2) {
+    			System.out.println("ANGLE GOOD. Reached angle, err = " + anglePid.getError());
+    			stop();
+    			return true;
+    		}
+    		System.out.println("Trying to reach angle -- error is " + anglePid.getError());
+		}
+    	else if(angleTimerStarted) {
+    		angleTimerStarted = false;
+			angleTimer.reset();
+			System.out.println("Disabling angle timer");
+    	}
+		return false;
 	}
 
 	// Implementing Tank Drive.
