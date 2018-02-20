@@ -194,15 +194,17 @@ public class DriveTrain extends Subsystem {
 	public void sendDataToSmartDashboard() {
 		readPIDFromSmartDashboard();
 
-		SmartDashboard.putNumber("Drive PID Setpoint", distancePid.getSetpoint());
-		SmartDashboard.putNumber("Drive PID Error", distancePid.getError());
-		SmartDashboard.putNumber("Drive Encoder Raw Value", driveEncoder.get());
-		SmartDashboard.putNumber("Drove Encoder Distance", driveEncoder.getDistance());
+		if(Robot.DASHBOARD_OUTPUT) {
+			SmartDashboard.putNumber("Drive PID Setpoint", distancePid.getSetpoint());
+			SmartDashboard.putNumber("Drive PID Error", distancePid.getError());
+			SmartDashboard.putNumber("Drive Encoder Raw Value", driveEncoder.get());
+			SmartDashboard.putNumber("Angle PID Setpoint", anglePid.getSetpoint());
+			SmartDashboard.putNumber("Angle PID Error", anglePid.getError());
+			SmartDashboard.putNumber("Gyro Rate", gyro.getRate());
+		}
 
-		SmartDashboard.putNumber("Angle PID Setpoint", anglePid.getSetpoint());
-		SmartDashboard.putNumber("Angle PID Error", anglePid.getError());
+		SmartDashboard.putNumber("Drive Encoder Distance", driveEncoder.getDistance());		
 		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
-		SmartDashboard.putNumber("Gyro Rate", gyro.getRate());
 	}
 
 	/**
@@ -275,7 +277,9 @@ public class DriveTrain extends Subsystem {
 		rotation = rotation/2;	// Halving the rotation to make it the robot a little easier to control when turning.
 	}
 
-	// Stopping the drivetrain.
+	/**
+	 * Stops drive train motors and disables PID controllers
+	 */
 	public void stop() {
 		anglePid.disable();
 		distancePid.disable();

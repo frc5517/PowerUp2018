@@ -27,10 +27,12 @@ public class AutoTurn extends Command {
 		requires(Robot.driveTrain);
 		angle = ang;
 		useSmartDashboard = SD;
-		SmartDashboard.putNumber(smartDashboardKey, 0);
+		if(!SmartDashboard.containsKey(smartDashboardKey) && Robot.DASHBOARD_OUTPUT) {
+			SmartDashboard.putNumber(smartDashboardKey, 0);
+		}
 	}
-	public AutoTurn(int a) {
-		this(a, false);	
+	public AutoTurn(int angle) {
+		this(angle, false);	
 	}
 	public AutoTurn(boolean SD) {
 		this(0, SD);

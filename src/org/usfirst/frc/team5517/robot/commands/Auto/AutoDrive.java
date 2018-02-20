@@ -26,13 +26,15 @@ public class AutoDrive extends Command {
 		requires(Robot.driveTrain);
 		distance = d;
 		useSmartDashboard = SD;
-		SmartDashboard.putNumber(smartDashboardKey, 0);
+		if(!SmartDashboard.containsKey(smartDashboardKey) && Robot.DASHBOARD_OUTPUT) {
+			SmartDashboard.putNumber(smartDashboardKey, 0);
+		}
 	}
 	public AutoDrive(boolean SD) {
 		this(0, SD);
 	}
-	public AutoDrive(double d) {
-		this(d, false);
+	public AutoDrive(double distance) {
+		this(distance, false);
 	}
 
 	protected void initialize() {

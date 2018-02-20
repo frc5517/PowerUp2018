@@ -36,7 +36,13 @@ public class Robot extends TimedRobot {
 	/**
 	 * Set to true to enable debugging print statements
 	 */
-	private static boolean ENABLE_DEBUG_LOGGING = true;
+	public static final boolean DEBUG_LOGGING = true;
+	
+	/**
+	 * Set to true to send most robot data to SmartDashboard for development/testing purposes
+	 * Should always be false during matches
+	 */
+	public static final boolean DASHBOARD_OUTPUT = true;
 
 	// Subsystems
 	public static final DriveTrain driveTrain = new DriveTrain();
@@ -48,8 +54,8 @@ public class Robot extends TimedRobot {
 	public static boolean matchStarted = false;
 	private static String fmsGameData = "";
 
-	Command autoCommand;
-	SendableChooser<Command> autoChooser;
+	private Command autoCommand;
+	private SendableChooser<Command> autoChooser;
 
 	public boolean isMatchStarted() {
 		return matchStarted;
@@ -95,12 +101,15 @@ public class Robot extends TimedRobot {
 
 		// enable camera if set to true from SmartDashboard
 		// or if value is not set at all
+		if(!SmartDashboard.containsKey("Enable Camera")) {
+			SmartDashboard.putBoolean("Enable Camera", true);
+		}
 		if(SmartDashboard.getBoolean("Enable Camera", true)) {
 			CameraServer camera = CameraServer.getInstance();
 			camera.startAutomaticCapture(0);
 		}
 
-		// Create controls
+		// Create operator interface
 		oi = new OI();
 
 		driveTrain.calibrateGyro();
@@ -116,7 +125,7 @@ public class Robot extends TimedRobot {
 		autoChooser.addObject("Scale Right", new AutoScaleRight());
 		autoChooser.addObject("Scale Middle", new AutoScaleMiddle());
 		autoChooser.addObject("Scale Left", new AutoScaleLeft());
-		SmartDashboard.putData("Auto mode", autoChooser);
+		SmartDashboard.putData("Auto Mode", autoChooser);
 	}
 
 	@Override
@@ -188,7 +197,7 @@ public class Robot extends TimedRobot {
 	 * @param msg message to log
 	 */
 	public static void logDebug(String msg) {
-		if(ENABLE_DEBUG_LOGGING) {
+		if(DEBUG_LOGGING) {
 			System.out.println(msg);
 		}
 	}
