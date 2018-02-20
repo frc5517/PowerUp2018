@@ -154,6 +154,7 @@ public class Robot extends TimedRobot {
 		// get plate assignment from FMS
 		fmsGameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Received plate assignment from FMS: " + fmsGameData);
+		SmartDashboard.putString("FMS Game Data", fmsGameData);
 
 		// schedule the autonomous command
 		if (autoCommand != null) {
@@ -187,6 +188,10 @@ public class Robot extends TimedRobot {
 
 		// Send Power Distribution Panel to the SmartDashboard
 		//SmartDashboard.putData(pdp);
+		
+		// Send match time
+		SmartDashboard.putNumber("Match Time", DriverStation.getInstance().getMatchTime());
+		
 	}
 
 	@Override
