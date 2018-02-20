@@ -7,8 +7,9 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ * Intake subsystem
  */
+
 public class Intake extends Subsystem {
 
 	// Setting the speed of the Bag motors.
