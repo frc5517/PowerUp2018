@@ -15,29 +15,30 @@ public class AutoSwitchMiddle extends CommandGroup {
     public AutoSwitchMiddle() {
         
     	if(Robot.getSwitchSide() == 'L') {
-    		addSequential(new AutoDrive(95));
+    		addSequential(new AutoDrive(31));
 	    	addSequential(new AutoTurn(-90));
-	    	addSequential(new AutoDrive(24));
-	    	addSequential(new AutoTurn(90));
-	    	addSequential(new AutoDrive(44));
+	    	addSequential(new AutoDrive(63));
+	    	addSequential(new AutoTurn(0));
+	    	addSequential(new AutoDrive(31));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addParallel(new AutoDrive(-2));
+	    	addSequential(new AutoDrive(-12));
 	    	addSequential(new AutoTurn(-90));
-    		addSequential(new AutoDrive(33));
-	    	addSequential(new AutoTurn(90));
+    		//addSequential(new AutoDrive(33));
+	    	//addSequential(new AutoTurn(90));
     	}
     	
     	else if(Robot.getSwitchSide() == 'R') {
-    		addSequential(new AutoDrive(95));
+    		addSequential(new AutoDrive(31));
 	    	addSequential(new AutoTurn(90));
-	    	addSequential(new AutoDrive(24));
-	    	addSequential(new AutoTurn(-90));
-	    	addSequential(new AutoDrive(44));
+	    	addSequential(new AutoDrive(63));
+	    	addSequential(new AutoTurn(0));
+	    	addSequential(new AutoDrive(31));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addParallel(new AutoDrive(-2));
+	    	addSequential(new AutoDrive(-12));
 	    	addSequential(new AutoTurn(90));
-    		addSequential(new AutoDrive(33));
-	    	addSequential(new AutoTurn(-90));
+    		//addSequential(new AutoDrive(33));
+	    	//addSequential(new AutoTurn(-90));
     	}
+    	
     }
 }

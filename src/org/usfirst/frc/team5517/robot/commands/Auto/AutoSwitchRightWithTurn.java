@@ -13,26 +13,28 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoSwitchRightWithTurn extends CommandGroup {
 
     public AutoSwitchRightWithTurn() {
+    	System.out.println("plate assignment: " + Robot.getGameDataString());
         
     	if(Robot.getSwitchSide() == 'L') {
-    		addSequential(new AutoDrive(222));
+    		addSequential(new AutoDrive(208));
 	    	addSequential(new AutoTurn(-90));
 	    	addSequential(new AutoDrive(180));
 	    	addSequential(new AutoTurn(-90));
 	    	addSequential(new AutoDrive(6));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addParallel(new AutoDrive(-2));
+	    	addSequential(new AutoDrive(-12));
 	    	addSequential(new AutoTurn(-90));
     	}
     	
     	else if(Robot.getSwitchSide() == 'R') {
-    		addSequential(new AutoDrive(168));
-	    	addSequential(new AutoTurn(-90));
-	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addParallel(new AutoDrive(-2));
-	    	addSequential(new AutoTurn(90));
-    		addSequential(new AutoDrive(33));
-	    	addSequential(new AutoTurn(90));
+    		addSequential(new AutoDrive(146.5));
+        	addSequential(new AutoTurn(-90));
+        	addSequential(new AutoDrive(3));
+        	addSequential(new AutoTimedSpinIntakeOut(1));
+        	addSequential(new AutoDrive(-12));
+        	addSequential(new AutoTurn(0));
+    		//addSequential(new AutoDrive(33));
+        	//addSequential(new AutoTurn(90));
     	}
     }
 }

@@ -26,7 +26,7 @@ public class IntakeRelease extends Command {
 
 
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
 

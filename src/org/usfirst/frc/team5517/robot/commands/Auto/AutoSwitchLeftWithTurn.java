@@ -15,23 +15,24 @@ public class AutoSwitchLeftWithTurn extends CommandGroup {
     public AutoSwitchLeftWithTurn() {
         
     	if(Robot.getSwitchSide() == 'L') {
-    		addParallel(new AutoDrive(168));
+    		addSequential(new AutoDrive(146.5));
 	    	addSequential(new AutoTurn(90));
+	    	addSequential(new AutoDrive(3));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addParallel(new AutoDrive(-2));
-	    	addSequential(new AutoTurn(-90));
-    		addSequential(new AutoDrive(33));
-	    	addSequential(new AutoTurn(-90));
+	    	//addSequential(new AutoDrive(-12));
+	    	addSequential(new AutoTurn(0));
+    		//addSequential(new AutoDrive(33));
+	    	addSequential(new AutoTurn(90));
     	}
     	
     	else if(Robot.getSwitchSide() == 'R') {
-    		addParallel(new AutoDrive(222));
+    		addParallel(new AutoDrive(208));
 	    	addSequential(new AutoTurn(-90));
 	    	addSequential(new AutoDrive(15));
-	    	addSequential(new AutoTurn(-90));
+	    	addSequential(new AutoTurn(0));
 	    	addSequential(new AutoDrive(6));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addParallel(new AutoDrive(-2));
+	    	addSequential(new AutoDrive(-12));
 	    	addSequential(new AutoTurn(90));
     	}
     }

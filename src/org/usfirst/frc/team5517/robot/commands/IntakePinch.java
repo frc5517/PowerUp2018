@@ -25,7 +25,7 @@ public class IntakePinch extends Command {
     }
 
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     

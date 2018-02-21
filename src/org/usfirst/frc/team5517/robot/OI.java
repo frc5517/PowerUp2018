@@ -41,8 +41,8 @@ public class OI {
 	private void bindControls() {
 		operatorGamepad.getButtonA().whileHeld(new SpinIntakeIn());
 		operatorGamepad.getButtonB().whileHeld(new SpinIntakeOut());
-		operatorGamepad.getButtonX().whileHeld(new IntakePinch());
-		operatorGamepad.getButtonY().whileHeld(new IntakeRelease());
+		operatorGamepad.getButtonX().whenPressed(new IntakePinch());
+		operatorGamepad.getButtonY().whenPressed(new IntakeRelease());
 		operatorGamepad.getRightShoulder().whenPressed(new RaiseIntake());
 		operatorGamepad.getLeftShoulder().whenPressed(new LowerIntake());
 		operatorTriggerR.whileActive(new RaiseElevator());

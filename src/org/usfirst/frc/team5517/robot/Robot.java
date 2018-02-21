@@ -14,6 +14,7 @@ import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleRight;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeftStraight;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeftWithTurn;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchMiddle;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRightStraight;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRightWithTurn;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoTestGroup;
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
@@ -32,7 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //TODO: change TimedRaise/Lower to encoder values
 
 public class Robot extends TimedRobot {
-
+	
 	/**
 	 * Set to true to enable debugging print statements
 	 */
@@ -42,7 +43,7 @@ public class Robot extends TimedRobot {
 	 * Set to true to send most robot data to SmartDashboard for development/testing purposes
 	 * Should always be false during matches
 	 */
-	public static final boolean DASHBOARD_OUTPUT = true;
+	public static final boolean DASHBOARD_OUTPUT = false;
 
 	// Subsystems
 	public static final DriveTrain driveTrain = new DriveTrain();
@@ -55,7 +56,7 @@ public class Robot extends TimedRobot {
 	private static String fmsGameData = "";
 
 	private Command autoCommand;
-	private SendableChooser<Command> autoChooser;
+	private SendableChooser<Integer> autoChooser;
 
 	public boolean isMatchStarted() {
 		return matchStarted;
@@ -101,12 +102,9 @@ public class Robot extends TimedRobot {
 
 		// enable camera if set to true from SmartDashboard
 		// or if value is not set at all
-		if(!SmartDashboard.containsKey("Enable Camera")) {
-			SmartDashboard.putBoolean("Enable Camera", true);
-		}
 		if(SmartDashboard.getBoolean("Enable Camera", true)) {
 			CameraServer camera = CameraServer.getInstance();
-			camera.startAutomaticCapture(0);
+			//camera.startAutomaticCapture(0);
 		}
 
 		// Create operator interface
@@ -116,15 +114,15 @@ public class Robot extends TimedRobot {
 
 		// Add all auton modes
 		autoChooser = new SendableChooser<>();
-		autoChooser.addDefault("Do Nothing", new AutoDoNothing());
-		autoChooser.addObject("Auto Testing", new AutoTestGroup());
-		autoChooser.addObject("Switch Straight", new AutoSwitchLeftStraight());
-		autoChooser.addObject("Switch Right", new AutoSwitchRightWithTurn());
-		autoChooser.addObject("Switch Middle", new AutoSwitchMiddle());
-		autoChooser.addObject("Switch Left", new AutoSwitchLeftWithTurn());
-		autoChooser.addObject("Scale Right", new AutoScaleRight());
-		autoChooser.addObject("Scale Middle", new AutoScaleMiddle());
-		autoChooser.addObject("Scale Left", new AutoScaleLeft());
+		autoChooser.addDefault("Do Nothing", 0);
+		autoChooser.addObject("Switch Right Straight", 1);
+		autoChooser.addObject("Switch Right Turnt", 2);
+		autoChooser.addObject("Switch Middle", 3);
+		autoChooser.addObject("Switch Left Straight", 4);
+		autoChooser.addObject("Switch Left Turn", 5);
+		autoChooser.addObject("Scale Right", 6);
+		autoChooser.addObject("Scale Middle", 7);
+		autoChooser.addObject("Scale Left", 8);
 		SmartDashboard.putData("Auto Mode", autoChooser);
 	}
 
@@ -147,16 +145,53 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		System.out.println("Autonomous Init");
 		matchStarted = true;
-
-		// get selected autonomous from dashboard
-		autoCommand = autoChooser.getSelected();
-
+		
 		// get plate assignment from FMS
 		fmsGameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Received plate assignment from FMS: " + fmsGameData);
 
+		// get selected autonomous from dashboard
+		switch(autoChooser.getSelected()) {
+		case 0: 
+			autoCommand = new AutoDoNothing();
+			break;
+			
+		case 1: 
+			autoCommand = new AutoSwitchRightStraight();
+			break;
+			
+		case 2: 
+			autoCommand = new AutoSwitchRightWithTurn();
+			break;
+			
+		case 3: 
+			autoCommand = new AutoSwitchMiddle();
+			break;
+			
+		case 4: 
+			autoCommand = new AutoSwitchLeftStraight();
+			break;
+			
+		case 5: 
+			autoCommand = new AutoSwitchLeftWithTurn();
+			break;
+			
+		case 6: 
+			autoCommand = new AutoScaleRight();
+			break;
+			
+		case 7: 
+			autoCommand = new AutoScaleMiddle();
+			break;
+			
+		case 8: 
+			autoCommand = new AutoScaleLeft();
+			break;
+		}
+
 		// schedule the autonomous command
 		if (autoCommand != null) {
+			System.out.println("auto command" + autoCommand);
 			autoCommand.start();
 		}
 	}

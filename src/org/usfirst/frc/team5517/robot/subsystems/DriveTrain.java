@@ -226,7 +226,7 @@ public class DriveTrain extends Subsystem {
 				stop();
 				return true;
 			}
-			Robot.logDebug("Trying to reach distance during timer -- error is " + distancePid.getError());
+			//Robot.logDebug("Trying to reach distance during timer -- error is " + distancePid.getError());
 		}
 		else if(driveTimerStarted) {
 			driveTimerStarted = false;
@@ -250,7 +250,7 @@ public class DriveTrain extends Subsystem {
 				Robot.logDebug("Enabling angle timer");
 			}
 			SmartDashboard.putNumber("Angle timer val", driveTimer.get());
-			if(angleTimer.get() >= 0.2) {
+			if(angleTimer.get() >= 0.1) {
 				Robot.logDebug("ANGLE GOOD. Reached angle, err = " + anglePid.getError());
 				stop();
 				return true;
