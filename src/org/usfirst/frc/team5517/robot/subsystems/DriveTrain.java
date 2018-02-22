@@ -226,7 +226,7 @@ public class DriveTrain extends Subsystem {
 				stop();
 				return true;
 			}
-			//Robot.logDebug("Trying to reach distance during timer -- error is " + distancePid.getError());
+			Robot.logDebug("Trying to reach distance during timer -- error is " + distancePid.getError());
 		}
 		else if(driveTimerStarted) {
 			driveTimerStarted = false;

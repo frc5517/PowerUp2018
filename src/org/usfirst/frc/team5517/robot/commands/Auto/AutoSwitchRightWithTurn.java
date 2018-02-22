@@ -1,7 +1,6 @@
 package org.usfirst.frc.team5517.robot.commands.Auto;
 
 import org.usfirst.frc.team5517.robot.Robot;
-import org.usfirst.frc.team5517.robot.commands.SpinIntakeOut;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -13,7 +12,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoSwitchRightWithTurn extends CommandGroup {
 
     public AutoSwitchRightWithTurn() {
-    	System.out.println("plate assignment: " + Robot.getGameDataString());
         
     	if(Robot.getSwitchSide() == 'L') {
     		addSequential(new AutoDrive(208));
