@@ -302,6 +302,14 @@ public class DriveTrain extends Subsystem {
 	public void calibrateGyro() {
 		gyro.calibrate();
 	}
+	
+	/**
+	 * Stop the gyro calibration prematurely if gyro is still calibrating
+	 * This will fail gracefully with a partially calibrated gyro zero value 
+	 */
+	public void stopGyroCalibration() {
+		gyro.stopCalibrating();
+	}
 
 	/**
 	 * Auto re-inits gyro if significant drift is detected <br>

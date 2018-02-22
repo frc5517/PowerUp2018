@@ -152,6 +152,9 @@ public class Robot extends TimedRobot {
 		System.out.println("Autonomous Init");
 		matchStarted = true;
 		
+		// stop gyro calibration
+		Robot.driveTrain.stopGyroCalibration();
+		
 		// get plate assignment from FMS
 		fmsGameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Received plate assignment from FMS: " + fmsGameData);
