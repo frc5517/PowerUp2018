@@ -72,6 +72,8 @@ public class DriveTrain extends Subsystem {
 	private int gyroReinits;
 	private boolean angleTimerStarted = false;
 	private Timer angleTimer = new Timer();
+	
+	private double lastAngleSetpoint = 0.0;
 
 	/**
 	 * "Fake" PIDOutput class for the PIDControllers to write to <br>
@@ -141,20 +143,25 @@ public class DriveTrain extends Subsystem {
 	}
 
 	/**
-	 * Set angle setpoint.
+	 * Set angle setpoint and enable the angle PID controller
 	 * @param angle
 	 */
 	public void setAngleSetpoint(double angle) {
 		Robot.logDebug("Setting angle setpoint to " + angle);
 		anglePid.setSetpoint(angle);
 		anglePid.enable();
+		lastAngleSetpoint = angle;
 	}
 
 	/**
-	 * Set the setpoint of the angle PID controller to current angle
+	 * Enable the angle PID controller to keep the robot travelling straight
 	 */
-	public void setAngleToCurrent() {
-		setAngleSetpoint(gyro.getAngle());
+	public void setAngleSetpointToCurrent() {
+		//setAngleSetpoint(gyro.getAngle());
+		// instead of setting to gyro's current angle (which could have a slight error from previous command)
+		// we should set it to the previous setpoint, which will help correct any potential error
+		// from the previous command
+		setAngleSetpoint(lastAngleSetpoint);
 	}
 
 	/**
@@ -297,7 +304,7 @@ public class DriveTrain extends Subsystem {
 	}
 
 	/**
-	 * Calibrates the gyro
+	 * Calibrates the gyro. Takes around 10 seconds.
 	 */
 	public void calibrateGyro() {
 		gyro.calibrate();

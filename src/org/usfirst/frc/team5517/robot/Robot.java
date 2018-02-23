@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
 	
 	/**
 	 * Set to true to send most robot data to SmartDashboard for development/testing purposes
-	 * Should always be false during matches
+	 * Should be false during matches
 	 */
 	public static final boolean DASHBOARD_OUTPUT = false;
 
@@ -153,7 +153,7 @@ public class Robot extends TimedRobot {
 		matchStarted = true;
 		
 		// stop gyro calibration
-		Robot.driveTrain.stopGyroCalibration();
+		driveTrain.stopGyroCalibration();
 		
 		// get plate assignment from FMS
 		fmsGameData = DriverStation.getInstance().getGameSpecificMessage();
