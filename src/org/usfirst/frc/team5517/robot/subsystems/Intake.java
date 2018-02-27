@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Intake extends Subsystem {
 
 	// Setting the speed of the Bag motors.
-    private final double INTAKE_IN_SPEED = 0.5;
+    private final double INTAKE_IN_SPEED = 0.75;
     private final double INTAKE_OUT_SPEED = 1;
     
     // Creating the intake motors and solenoids.

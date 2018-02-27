@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5517.robot.commands.Auto;
 
 import org.usfirst.frc.team5517.robot.Robot;
+import org.usfirst.frc.team5517.robot.commands.LowerIntake;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -13,25 +14,27 @@ public class AutoSwitchLeftStraight extends CommandGroup {
 
     public AutoSwitchLeftStraight() {
     	if(Robot.getSwitchSide() == 'L') {
-    		addSequential(new AutoDrive(140));
+    		addSequential(new AutoDrive(99));
     		addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addParallel(new AutoDrive(-2));
+	    	addSequential(new AutoDrive(-12));
 	    	addSequential(new AutoTurn(-90));
     		addSequential(new AutoDrive(48));
     		addSequential(new AutoTurn(90));
     		addSequential(new AutoDrive(33));
     		addSequential(new AutoTurn(90));
+	    	addSequential(new LowerIntake());
     	}
     	
     	else if(Robot.getSwitchSide() == 'R') {
-    		addParallel(new AutoDrive(222));
+    		addSequential(new AutoDrive(222));
 	    	addSequential(new AutoTurn(-90));
 	    	addSequential(new AutoDrive(180));
 	    	addSequential(new AutoTurn(-90));
 	    	addSequential(new AutoDrive(6));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addParallel(new AutoDrive(-2));
+	    	addSequential(new AutoDrive(-2));
 	    	addSequential(new AutoTurn(90));
+	    	addSequential(new LowerIntake());
     	}
     }
 }

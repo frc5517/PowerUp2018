@@ -16,20 +16,19 @@ public class AutoSwitchRightWithTurn extends CommandGroup {
     	System.out.println("plate assignment: " + Robot.getGameDataString());
         
     	if(Robot.getSwitchSide() == 'L') {
-    		addSequential(new AutoDrive(208));
+    		addSequential(new AutoDrive(211.5));
 	    	addSequential(new AutoTurn(-90));
-	    	addSequential(new AutoDrive(180));
-	    	addSequential(new AutoTurn(-90));
-	    	addSequential(new AutoDrive(6));
+	    	addSequential(new AutoDrive(173));
+	    	addSequential(new AutoTurn(-180));
+	    	addSequential(new AutoDrive(25));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
 	    	addSequential(new AutoDrive(-12));
-	    	addSequential(new AutoTurn(-90));
     	}
     	
     	else if(Robot.getSwitchSide() == 'R') {
     		addSequential(new AutoDrive(146.5));
         	addSequential(new AutoTurn(-90));
-        	addSequential(new AutoDrive(3));
+        	addSequential(new AutoDrive(35));
         	addSequential(new AutoTimedSpinIntakeOut(1));
         	addSequential(new AutoDrive(-12));
         	addSequential(new AutoTurn(0));

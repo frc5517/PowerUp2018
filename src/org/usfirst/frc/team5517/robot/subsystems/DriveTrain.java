@@ -274,7 +274,7 @@ public class DriveTrain extends Subsystem {
 	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
 		speed = speed*speed;	// Squaring the speed to have a smooth gain in speed rather than an instant jolt.
-		rotation = rotation/2;	// Halving the rotation to make it the robot a little easier to control when turning.
+		rotation = rotation/3;	// Halving the rotation to make it the robot a little easier to control when turning.
 	}
 
 	/**

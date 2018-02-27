@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team5517.robot;
 
+import org.usfirst.frc.team5517.robot.commands.Climb;
 import org.usfirst.frc.team5517.robot.commands.IntakePinch;
 import org.usfirst.frc.team5517.robot.commands.IntakeRelease;
 import org.usfirst.frc.team5517.robot.commands.LowerElevator;
@@ -45,6 +46,7 @@ public class OI {
 		operatorGamepad.getButtonY().whenPressed(new IntakeRelease());
 		operatorGamepad.getRightShoulder().whenPressed(new RaiseIntake());
 		operatorGamepad.getLeftShoulder().whenPressed(new LowerIntake());
+		operatorGamepad.getStartButton().whileHeld(new Climb());
 		operatorTriggerR.whileActive(new RaiseElevator());
 		operatorTriggerL.whileActive(new LowerElevator());
 	}
@@ -82,5 +84,10 @@ public class OI {
 			x = -x;
 		}
 		return -(x * x * sign);
+	}
+	
+	public double getOperatorGamepadY() {
+		double y = operatorGamepad.getLeftY();
+		return y;
 	}
 }
