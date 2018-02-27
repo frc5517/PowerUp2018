@@ -15,7 +15,8 @@ public class Elevator extends Subsystem {
 	
 	// Setting the speed of the miniCIM motors.
 	private final double LIFT_SPEED = .55;
-	private final double LOWER_SPEED = .25;
+	private final double LOWER_SPEED = .30;
+	private final double CLIMB_SPEED = 1;
 
 	// Creating the motors.
 	private Talon elevatorLeftMotor;
@@ -58,7 +59,7 @@ public class Elevator extends Subsystem {
     }
     
     public void climb(double y) {
-    	elevatorLeftMotor.set(y);
-    	elevatorRightMotor.set(-y);
+    	elevatorLeftMotor.set(CLIMB_SPEED);
+    	elevatorRightMotor.set(-CLIMB_SPEED);
     }
 }
