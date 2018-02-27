@@ -27,7 +27,7 @@ public class AutoTurn extends Command {
 		requires(Robot.driveTrain);
 		angle = ang;
 		useSmartDashboard = SD;
-		if(!SmartDashboard.containsKey(smartDashboardKey) && Robot.DASHBOARD_OUTPUT) {
+		if(!SmartDashboard.containsKey(smartDashboardKey) && useSmartDashboard) {
 			SmartDashboard.putNumber(smartDashboardKey, 0);
 		}
 	}

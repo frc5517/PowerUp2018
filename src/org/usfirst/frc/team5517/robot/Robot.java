@@ -8,6 +8,7 @@
 package org.usfirst.frc.team5517.robot;
 
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDoNothing;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoDrivePastLine;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleLeft;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleMiddle;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleRight;
@@ -16,7 +17,6 @@ import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeftWithTurn;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchMiddle;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRightStraight;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRightWithTurn;
-import org.usfirst.frc.team5517.robot.commands.Auto.AutoTestGroup;
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5517.robot.subsystems.Elevator;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
 	
 	/**
 	 * Set to true to send most robot data to SmartDashboard for development/testing purposes
-	 * Should always be false during matches
+	 * Should be false during matches
 	 */
 	public static final boolean DASHBOARD_OUTPUT = false;
 
@@ -56,7 +56,7 @@ public class Robot extends TimedRobot {
 	private static String fmsGameData = "";
 
 	private Command autoCommand;
-	private SendableChooser<Integer> autoChooser;
+	private SendableChooser<String> autoChooser;
 
 	public boolean isMatchStarted() {
 		return matchStarted;
@@ -110,19 +110,24 @@ public class Robot extends TimedRobot {
 		// Create operator interface
 		oi = new OI();
 
+		// Calibrate the gyro on robot code startup
 		driveTrain.calibrateGyro();
 
 		// Add all auton modes
+		// Passing the class name as a string using .class.getName() 
+		// which maintains eclipse's error checking and refactoring abilities 
+		// (versus passing in a direct string of the class name)
 		autoChooser = new SendableChooser<>();
-		autoChooser.addDefault("Do Nothing", 0);
-		autoChooser.addObject("Switch Right Straight", 1);
-		autoChooser.addObject("Switch Right Turnt", 2);
-		autoChooser.addObject("Switch Middle", 3);
-		autoChooser.addObject("Switch Left Straight", 4);
-		autoChooser.addObject("Switch Left Turn", 5);
-		autoChooser.addObject("Scale Right", 6);
-		autoChooser.addObject("Scale Middle", 7);
-		autoChooser.addObject("Scale Left", 8);
+		autoChooser.addDefault("Do Nothing", AutoDoNothing.class.getName());
+		autoChooser.addObject("Drive Past Line", AutoDrivePastLine.class.getName());
+		autoChooser.addObject("Switch Right Straight", AutoSwitchRightStraight.class.getName());
+		autoChooser.addObject("Switch Right Turn", AutoSwitchRightWithTurn.class.getName());
+		autoChooser.addObject("Switch Middle", AutoSwitchMiddle.class.getName());
+		autoChooser.addObject("Switch Left Straight", AutoSwitchLeftStraight.class.getName());
+		autoChooser.addObject("Switch Left Turn", AutoSwitchLeftWithTurn.class.getName());
+		autoChooser.addObject("Scale Right", AutoScaleRight.class.getName());
+		autoChooser.addObject("Scale Middle", AutoScaleMiddle.class.getName());
+		autoChooser.addObject("Scale Left", AutoScaleLeft.class.getName());
 		SmartDashboard.putData("Auto Mode", autoChooser);
 	}
 
@@ -135,6 +140,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		// constantly check for gyro change and re-init if needed while disabled
 		driveTrain.autoReinitGyro();
 	}
 
@@ -146,54 +152,31 @@ public class Robot extends TimedRobot {
 		System.out.println("Autonomous Init");
 		matchStarted = true;
 		
+		// stop gyro calibration
+		driveTrain.stopGyroCalibration();
+		
 		// get plate assignment from FMS
 		fmsGameData = DriverStation.getInstance().getGameSpecificMessage();
 		System.out.println("Received plate assignment from FMS: " + fmsGameData);
 
-		// get selected autonomous from dashboard
-		switch(autoChooser.getSelected()) {
-		case 0: 
-			autoCommand = new AutoDoNothing();
-			break;
-			
-		case 1: 
-			autoCommand = new AutoSwitchRightStraight();
-			break;
-			
-		case 2: 
-			autoCommand = new AutoSwitchRightWithTurn();
-			break;
-			
-		case 3: 
-			autoCommand = new AutoSwitchMiddle();
-			break;
-			
-		case 4: 
-			autoCommand = new AutoSwitchLeftStraight();
-			break;
-			
-		case 5: 
-			autoCommand = new AutoSwitchLeftWithTurn();
-			break;
-			
-		case 6: 
-			autoCommand = new AutoScaleRight();
-			break;
-			
-		case 7: 
-			autoCommand = new AutoScaleMiddle();
-			break;
-			
-		case 8: 
-			autoCommand = new AutoScaleLeft();
-			break;
+		// get selected command class name string from sendable chooser (on dashboard) 
+		// and create instance of the selected command
+		try {
+			if(autoChooser.getSelected() != null) {
+				autoCommand = (Command) Class.forName(autoChooser.getSelected()).newInstance();
+			}
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			System.out.println("ERROR: !!! Autonomous Command Instantiation Error !!! - " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		// failsafe for if auto command is still null for some reason
+		if(autoCommand == null) {
+			autoCommand = new AutoDrivePastLine();
 		}
 
 		// schedule the autonomous command
-		if (autoCommand != null) {
-			System.out.println("auto command" + autoCommand);
-			autoCommand.start();
-		}
+		autoCommand.start();
 	}
 
 	@Override

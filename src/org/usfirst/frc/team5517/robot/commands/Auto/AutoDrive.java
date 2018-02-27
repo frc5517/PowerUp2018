@@ -26,7 +26,7 @@ public class AutoDrive extends Command {
 		requires(Robot.driveTrain);
 		distance = d;
 		useSmartDashboard = SD;
-		if(!SmartDashboard.containsKey(smartDashboardKey) && Robot.DASHBOARD_OUTPUT) {
+		if(!SmartDashboard.containsKey(smartDashboardKey) && useSmartDashboard) {
 			SmartDashboard.putNumber(smartDashboardKey, 0);
 		}
 	}
@@ -42,8 +42,8 @@ public class AutoDrive extends Command {
 			distance = SmartDashboard.getNumber(smartDashboardKey, distance);
 		}
 
-		Robot.driveTrain.setAngleToCurrent();
-		Robot.driveTrain.setDistanceSetpoint(distance);
+		Robot.driveTrain.setAngleSetpointToCurrent(); // keep robot going straight
+		Robot.driveTrain.setDistanceSetpoint(distance); // drive to distance
 	}
 
 	protected void execute() {
