@@ -17,6 +17,7 @@ import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeftWithTurn;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchMiddle;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRightStraight;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchRightWithTurn;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoTestGroup;
 import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5517.robot.subsystems.Elevator;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
@@ -104,7 +105,7 @@ public class Robot extends TimedRobot {
 		// or if value is not set at all
 		if(SmartDashboard.getBoolean("Enable Camera", true)) {
 			CameraServer camera = CameraServer.getInstance();
-			//camera.startAutomaticCapture(0);
+			camera.startAutomaticCapture(0);
 		}
 
 		// Create operator interface
@@ -128,6 +129,7 @@ public class Robot extends TimedRobot {
 		autoChooser.addObject("Scale Right", AutoScaleRight.class.getName());
 		autoChooser.addObject("Scale Middle", AutoScaleMiddle.class.getName());
 		autoChooser.addObject("Scale Left", AutoScaleLeft.class.getName());
+		autoChooser.addObject("Test", AutoTestGroup.class.getName());
 		SmartDashboard.putData("Auto Mode", autoChooser);
 	}
 

@@ -15,6 +15,7 @@ public class Intake extends Subsystem {
 	// Setting the speed of the Bag motors.
     private final double INTAKE_IN_SPEED = 0.75;
     private final double INTAKE_OUT_SPEED = 1;
+    private final double SLOW_INTAKE_OUT_SPEED = .60;
     
     // Creating the intake motors and solenoids.
     private Talon intakeLeftMotor;
@@ -44,6 +45,11 @@ public class Intake extends Subsystem {
     public void intakeOut() {
     	intakeLeftMotor.set(-INTAKE_OUT_SPEED);
     	intakeRightMotor.set(INTAKE_OUT_SPEED);
+    }
+    
+    public void slowIntakeOut() {
+    	intakeLeftMotor.set(-SLOW_INTAKE_OUT_SPEED);
+    	intakeRightMotor.set(SLOW_INTAKE_OUT_SPEED);
     }
     
     // Stopping both intake motors.

@@ -58,7 +58,7 @@ public class Elevator extends Subsystem {
     	elevatorRightMotor.set(0);
     }
     
-    public void climb(double y) {
+    public void climb() {
     	elevatorLeftMotor.set(CLIMB_SPEED);
     	elevatorRightMotor.set(-CLIMB_SPEED);
     }

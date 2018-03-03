@@ -14,6 +14,7 @@ import org.usfirst.frc.team5517.robot.commands.LowerElevator;
 import org.usfirst.frc.team5517.robot.commands.LowerIntake;
 import org.usfirst.frc.team5517.robot.commands.RaiseElevator;
 import org.usfirst.frc.team5517.robot.commands.RaiseIntake;
+import org.usfirst.frc.team5517.robot.commands.SlowIntakeOut;
 import org.usfirst.frc.team5517.robot.commands.SpinIntakeIn;
 import org.usfirst.frc.team5517.robot.commands.SpinIntakeOut;
 import org.usfirst.frc.team5517.robot.utils.Gamepad;
@@ -41,12 +42,13 @@ public class OI {
 	// Setting the operator's controls.
 	private void bindControls() {
 		operatorGamepad.getButtonA().whileHeld(new SpinIntakeIn());
-		operatorGamepad.getButtonB().whileHeld(new SpinIntakeOut());
+		operatorGamepad.getButtonB().whileHeld(new SlowIntakeOut());
 		operatorGamepad.getButtonX().whenPressed(new IntakePinch());
 		operatorGamepad.getButtonY().whenPressed(new IntakeRelease());
 		operatorGamepad.getRightShoulder().whenPressed(new RaiseIntake());
 		operatorGamepad.getLeftShoulder().whenPressed(new LowerIntake());
 		operatorGamepad.getStartButton().whileHeld(new Climb());
+		operatorGamepad.getBackButton().whileHeld(new SpinIntakeOut());
 		operatorTriggerR.whileActive(new RaiseElevator());
 		operatorTriggerL.whileActive(new LowerElevator());
 	}
@@ -86,7 +88,7 @@ public class OI {
 		return -(x * x * sign);
 	}
 	
-	public double getOperatorGamepadY() {
+	public double getOperatorLeftY() {
 		double y = operatorGamepad.getLeftY();
 		return y;
 	}

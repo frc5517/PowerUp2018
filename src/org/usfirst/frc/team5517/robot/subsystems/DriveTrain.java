@@ -43,7 +43,7 @@ public class DriveTrain extends Subsystem {
 	/***********************************************/
     private double angleP = 0.50775,
                    angleI = 0.2,
-                   angleD = 0.77505,
+                   angleD = 0.7755,
                    distP  = 0.6, 
                    distI  = 0,
                    distD  = 0.8525;
@@ -249,7 +249,7 @@ public class DriveTrain extends Subsystem {
 	 */
 	public boolean hasReachedAngle() {
 		// ensure error is within reasonable tolerance
-		boolean errorWithinTolerance = Math.abs(anglePid.getError()) < 0.5;
+		boolean errorWithinTolerance = Math.abs(anglePid.getError()) < 1;
 		if(errorWithinTolerance) {
 			if(!angleTimerStarted) {
 				angleTimerStarted = true;

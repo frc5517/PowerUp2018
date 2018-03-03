@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5517.robot.commands.Auto;
 
 import org.usfirst.frc.team5517.robot.Robot;
+import org.usfirst.frc.team5517.robot.commands.SpitCubeAfterTime;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -16,17 +17,19 @@ public class AutoSwitchRightWithTurn extends CommandGroup {
     	if(Robot.getSwitchSide() == 'L') {
     		addSequential(new AutoDrive(211.5));
 	    	addSequential(new AutoTurn(-90));
-	    	addSequential(new AutoDrive(173));
-	    	addSequential(new AutoTurn(-180));
-	    	addSequential(new AutoDrive(25));
+	    	addSequential(new AutoDrive(116));
+	    	addSequential(new AutoTurn(-135));
+	    	addParallel(new SpitCubeAfterTime(3, 2));
+	    	addSequential(new AutoDrive(50));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
 	    	addSequential(new AutoDrive(-12));
     	}
     	
     	else if(Robot.getSwitchSide() == 'R') {
-    		addSequential(new AutoDrive(146.5));
+    		addSequential(new AutoDrive(149.5));
         	addSequential(new AutoTurn(-90));
-        	addSequential(new AutoDrive(35));
+	    	addParallel(new SpitCubeAfterTime(2, 2));
+        	addSequential(new AutoDrive(60));
         	addSequential(new AutoTimedSpinIntakeOut(1));
         	addSequential(new AutoDrive(-12));
         	addSequential(new AutoTurn(0));
