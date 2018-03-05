@@ -30,9 +30,11 @@ public class AutoDrive extends Command {
 			SmartDashboard.putNumber(smartDashboardKey, 0);
 		}
 	}
+	
 	public AutoDrive(boolean SD) {
 		this(0, SD);
 	}
+	
 	public AutoDrive(double distance) {
 		this(distance, false);
 	}
