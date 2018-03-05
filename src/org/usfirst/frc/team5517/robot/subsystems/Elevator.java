@@ -28,7 +28,7 @@ public class Elevator extends Subsystem {
 	
 	
 	/***********************************************/
-    private double elevatorP  = 0, 
+    private double elevatorP  = 0.2, 
                    elevatorI  = 0,
                    elevatorD  = 0;
 	/***********************************************/
@@ -67,10 +67,10 @@ public class Elevator extends Subsystem {
 		
 		elevatorEncoder = new Encoder(RobotMap.elevatorEncoderA, RobotMap.elevatorEncoderB);
 		elevatorEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
-		elevatorEncoder.setDistancePerPulse(1.315*Math.PI/360);
+		elevatorEncoder.setDistancePerPulse(0.1659529);
 		
 		elevatorPid = new PIDController(elevatorP, elevatorI, elevatorD, elevatorEncoder, elevatorPidOutput);
-		elevatorPid.setOutputRange(-MAX_PID_ELEVATOR_SPEED, MAX_PID_ELEVATOR_SPEED);
+		elevatorPid.setOutputRange(-0.4, 0.4);
 	}
 	
 
@@ -119,6 +119,10 @@ public class Elevator extends Subsystem {
 		double speed = elevatorPidOutput.getOutput();
 		elevatorLeftMotor.set(-speed);
 		elevatorRightMotor.set(speed);
+	}
+	
+	public double getEncoderDistance() {
+		return elevatorEncoder.getDistance();
 	}
 
     public void initDefaultCommand() {

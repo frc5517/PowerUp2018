@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class AutoSetElevatorHeight extends Command {
 	
 	private double distance;
-	private boolean useSmartDashboard = false;
+	private boolean useSmartDashboard = true;
 	private String smartDashboardKey = "Drive To Distance";
 
     public AutoSetElevatorHeight(double d, boolean SD) {
@@ -43,7 +43,7 @@ public class AutoSetElevatorHeight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.pidSetElevatorHeight();
+    	Robot.elevator.pidSetElevatorHeight(); // 9.92 ticks per inch
     }
 
     // Make this return true when this Command no longer needs to run execute()
