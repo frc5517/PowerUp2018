@@ -20,9 +20,9 @@ public class AutoScaleMiddle extends CommandGroup {
 	    	addSequential(new AutoDrive(81));
 	    	addSequential(new AutoTurn(110));
 	    	addParallel(new AutoDrive(79));
-	    	addSequential(new TimedRaise(4));
+	    	addSequential(new AutoSetElevatorHeight(4));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addSequential(new TimedLower(4));
+	    	addSequential(new AutoSetElevatorHeight(0));
 	    }
     	
     	else if(Robot.getScaleSide() == 'R') {
@@ -31,9 +31,9 @@ public class AutoScaleMiddle extends CommandGroup {
 	    	addSequential(new AutoDrive(81));
 	    	addSequential(new AutoTurn(-110));
 	    	addParallel(new AutoDrive(79));
-	    	addSequential(new TimedRaise(4));
+	    	addSequential(new AutoSetElevatorHeight(4));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addSequential(new TimedLower(4));
+	    	addSequential(new AutoSetElevatorHeight(0));
 	    }    
     }
 }

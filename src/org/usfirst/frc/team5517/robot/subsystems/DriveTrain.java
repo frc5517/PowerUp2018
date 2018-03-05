@@ -154,7 +154,7 @@ public class DriveTrain extends Subsystem {
 	}
 
 	/**
-	 * Enable the angle PID controller to keep the robot travelling straight
+	 * Enable the angle PID controller to keep the robot traveling straight
 	 */
 	public void setAngleSetpointToCurrent() {
 		//setAngleSetpoint(gyro.getAngle());

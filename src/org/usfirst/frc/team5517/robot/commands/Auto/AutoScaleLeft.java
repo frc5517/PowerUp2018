@@ -14,20 +14,24 @@ public class AutoScaleLeft extends CommandGroup {
 
     public AutoScaleLeft() {
     	if(Robot.getScaleSide() == 'L') {
-    		addParallel(new AutoDrive(299));
-	    	addSequential(new TimedRaise(4));
+    		addSequential(new AutoDrive(303));
+    		addSequential(new AutoTurn(90));
+    		addSequential(new AutoSetElevatorHeight(72));
 	    	addSequential(new AutoTimedSpinIntakeOut(2));
-	    	addSequential(new TimedLower(4));
+	    	addSequential(new AutoSetElevatorHeight(0));
+	    	addSequential(new AutoTurn(180));
     	}
     	
     	else if(Robot.getScaleSide() == 'R') {
 	    	addSequential(new AutoDrive(222));
 	    	addSequential(new AutoTurn(90));
-	    	addParallel(new AutoDrive(251));
-	    	addSequential(new TimedRaise(4)); 
+	    	addSequential(new AutoDrive(240));
+	    	addSequential(new AutoTurn(0));
+	    	addSequential(new AutoDrive(102));
 	    	addSequential(new AutoTurn(-90));
+	    	addSequential(new AutoSetElevatorHeight(72));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addSequential(new TimedLower(4)); 
+	    	addSequential(new AutoSetElevatorHeight(0)); 
     	}
     }
 }
