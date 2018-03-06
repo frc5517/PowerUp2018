@@ -22,15 +22,13 @@ public class Elevator extends Subsystem {
 	private final double LIFT_SPEED = .55;
 	private final double LOWER_SPEED = .30;
 	private final double CLIMB_SPEED = 1;
-	private final double MAX_PID_ELEVATOR_SPEED = .75;
-	
-	private final double maxHeight = 86;
+	private final double MAX_PID_ELEVATOR_SPEED = 1;
 	
 	
 	/***********************************************/
-    private double elevatorP  = 0.2, 
+    private double elevatorP  = 0.1, 
                    elevatorI  = 0,
-                   elevatorD  = 0;
+                   elevatorD  = 0.032066348925;
 	/***********************************************/
 
 	// Creating the motors.
@@ -68,30 +66,27 @@ public class Elevator extends Subsystem {
 		elevatorEncoder = new Encoder(RobotMap.elevatorEncoderA, RobotMap.elevatorEncoderB);
 		elevatorEncoder.setPIDSourceType(PIDSourceType.kDisplacement);
 		elevatorEncoder.setDistancePerPulse(0.1659529);
+		elevatorEncoder.setReverseDirection(true);
 		
 		elevatorPid = new PIDController(elevatorP, elevatorI, elevatorD, elevatorEncoder, elevatorPidOutput);
-		elevatorPid.setOutputRange(-0.4, 0.4);
+		elevatorPid.setOutputRange(-.6, MAX_PID_ELEVATOR_SPEED);
 	}
 	
 
 
 	public void setElevatorSetpoint(double dist) {
 		Robot.logDebug("Setting elevator setpoint to " + dist);
-		elevatorEncoder.reset();
 		elevatorPid.setSetpoint(dist);
 		elevatorPid.enable();
 		elevatorTimer.stop();
 		elevatorTimer.reset();
 		elevatorTimerStarted = false;
 		
-		if(dist > maxHeight) {
-			dist = maxHeight;
-		}
 	}
 	
 	public boolean hasReachedDistance() {
 		// ensure error is within reasonable tolerance
-		boolean errorWithinTolerance = Math.abs(elevatorPid.getError()) < 1;
+		boolean errorWithinTolerance = Math.abs(elevatorPid.getError()) < 15;
 		if(errorWithinTolerance) {
 			if(!elevatorTimerStarted) {
 				elevatorTimerStarted = true;
@@ -99,7 +94,7 @@ public class Elevator extends Subsystem {
 				Robot.logDebug("Enabling elevator timer");
 			}
 			SmartDashboard.putNumber("Elevator timer val", elevatorTimer.get());
-			if(elevatorTimer.get() >= 0.2) {
+			if(elevatorTimer.get() >= 0.0225) {
 				Robot.logDebug("ELEVATOR GOOD. Reached distance, err = " + elevatorPid.getError());
 				stop();
 				return true;
@@ -119,6 +114,9 @@ public class Elevator extends Subsystem {
 		double speed = elevatorPidOutput.getOutput();
 		elevatorLeftMotor.set(-speed);
 		elevatorRightMotor.set(speed);
+		System.out.println("e encoder" + elevatorEncoder.getDistance());
+		System.out.println("pid out: " + speed);
+		System.out.println("error " + elevatorPid.getError());
 	}
 	
 	public double getEncoderDistance() {

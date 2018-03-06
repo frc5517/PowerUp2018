@@ -1,4 +1,4 @@
-package org.usfirst.frc.team5517.robot.commands.Auto;
+package org.usfirst.frc.team5517.robot.commands;
 
 import org.usfirst.frc.team5517.robot.Robot;
 
@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class AutoSetElevatorHeight extends Command {
+public class SetElevatorHeight extends Command {
 	
 	private double distance;
 	private boolean useSmartDashboard = true;
 	private String smartDashboardKey = "Drive To Distance";
 
-    public AutoSetElevatorHeight(double d, boolean SD) {
+    public SetElevatorHeight(double d, boolean SD) {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.elevator);
         distance = d;
@@ -24,11 +24,11 @@ public class AutoSetElevatorHeight extends Command {
 		}
     }
 	
-	public AutoSetElevatorHeight(boolean SD) {
+	public SetElevatorHeight(boolean SD) {
 		this(0, SD);
 	}
 	
-	public AutoSetElevatorHeight(double distance) {
+	public SetElevatorHeight(double distance) {
 		this(distance, false);
 	}
 
@@ -48,7 +48,7 @@ public class AutoSetElevatorHeight extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return Robot.elevator.hasReachedDistance();
     }
 
     // Called once after isFinished returns true
