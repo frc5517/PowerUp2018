@@ -76,12 +76,12 @@ public class Elevator extends Subsystem {
 	public void initDefaultCommand() {
 	}
 
-	public void setElevatorSetpoint(double dist) {
-		if(dist > maxHeight) {
-			dist = maxHeight;
+	public void setElevatorSetpoint(double height) {
+		if(height > maxHeight) {
+			height = maxHeight;
 		}
-		Robot.logDebug("Setting elevator setpoint to " + dist);
-		elevatorPid.setSetpoint(dist);
+		Robot.logDebug("Setting elevator setpoint to " + height);
+		elevatorPid.setSetpoint(height);
 		elevatorPid.enable();
 		elevatorTimer.stop();
 		elevatorTimer.reset();
@@ -99,11 +99,11 @@ public class Elevator extends Subsystem {
 			}
 			SmartDashboard.putNumber("Elevator timer val", elevatorTimer.get());
 			if(elevatorTimer.get() >= 0.0225) {
-				Robot.logDebug("ELEVATOR GOOD. Reached distance, err = " + elevatorPid.getError());
+				Robot.logDebug("ELEVATOR GOOD. Reached height, err = " + elevatorPid.getError());
 				stop();
 				return true;
 			}
-			Robot.logDebug("Trying to reach distance during timer -- error is " + elevatorPid.getError());
+			Robot.logDebug("Trying to reach height during timer -- error is " + elevatorPid.getError());
 		}
 		else if(elevatorTimerStarted) {
 			elevatorTimerStarted = false;
@@ -118,7 +118,7 @@ public class Elevator extends Subsystem {
 		double speed = elevatorPidOutput.getOutput();
 		elevatorLeftMotor.set(-speed);
 		elevatorRightMotor.set(speed);
-		System.out.println("e encoder" + elevatorEncoder.getDistance());
+		System.out.println("elev encoder" + elevatorEncoder.getDistance());
 		System.out.println("pid out: " + speed);
 		System.out.println("error " + elevatorPid.getError());
 	}
