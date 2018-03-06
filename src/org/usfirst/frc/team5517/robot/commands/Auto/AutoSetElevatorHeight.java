@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class AutoRaiseElevator extends Command {
+public class AutoSetElevatorHeight extends Command {
 	
 	private double distance;
 	private boolean useSmartDashboard = false;
 	private String smartDashboardKey = "Drive To Distance";
 
-    public AutoRaiseElevator(double d, boolean SD) {
+    public AutoSetElevatorHeight(double d, boolean SD) {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.elevator);
         distance = d;
@@ -24,11 +24,11 @@ public class AutoRaiseElevator extends Command {
 		}
     }
 	
-	public AutoRaiseElevator(boolean SD) {
+	public AutoSetElevatorHeight(boolean SD) {
 		this(0, SD);
 	}
 	
-	public AutoRaiseElevator(double distance) {
+	public AutoSetElevatorHeight(double distance) {
 		this(distance, false);
 	}
 
@@ -43,7 +43,7 @@ public class AutoRaiseElevator extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.elevator.pidRaise();
+    	Robot.elevator.pidSetElevatorHeight();
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -16,18 +16,21 @@ public class AutoScaleRight extends CommandGroup {
     	if(Robot.getScaleSide() == 'L') {
 	    	addSequential(new AutoDrive(222));
 	    	addSequential(new AutoTurn(-90));
-	    	addParallel(new AutoDrive(251));
-	    	addSequential(new TimedRaise(4)); 
-	    	addSequential(new AutoTurn(90));
+	    	addSequential(new AutoDrive(240));
+	    	addSequential(new AutoTurn(0));
+	    	addSequential(new AutoDrive(102));
+	    	addSequential(new AutoSetElevatorHeight(72));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addSequential(new TimedLower(4)); 
+	    	addSequential(new AutoSetElevatorHeight(0)); 
     	}
     	
     	else if(Robot.getScaleSide() == 'R') {
-    		addParallel(new AutoDrive(140));
-    		addSequential(new TimedRaise(4)); 
-        	addSequential(new AutoTimedSpinIntakeOut(1));
-    		addSequential(new TimedLower(4)); 
+    		addSequential(new AutoDrive(303));
+    		addSequential(new AutoTurn(-90));
+    		addSequential(new AutoSetElevatorHeight(72));
+	    	addSequential(new AutoTimedSpinIntakeOut(2));
+	    	addSequential(new AutoSetElevatorHeight(0));
+	    	addSequential(new AutoTurn(-180));
     	}
     }
 }

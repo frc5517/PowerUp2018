@@ -22,11 +22,13 @@ public class Elevator extends Subsystem {
 	private final double LIFT_SPEED = .55;
 	private final double LOWER_SPEED = .30;
 	private final double CLIMB_SPEED = 1;
-	
 	private final double MAX_PID_ELEVATOR_SPEED = .75;
 	
+	private final double maxHeight = 86;
+	
+	
 	/***********************************************/
-    private double elevatorP  = 1, 
+    private double elevatorP  = 0, 
                    elevatorI  = 0,
                    elevatorD  = 0;
 	/***********************************************/
@@ -81,6 +83,10 @@ public class Elevator extends Subsystem {
 		elevatorTimer.stop();
 		elevatorTimer.reset();
 		elevatorTimerStarted = false;
+		
+		if(dist > maxHeight) {
+			dist = maxHeight;
+		}
 	}
 	
 	public boolean hasReachedDistance() {
@@ -109,14 +115,10 @@ public class Elevator extends Subsystem {
 	}
 	
 
-	public void raisePidDist() {
-		elevatorPidOutput.getOutput();
-		pidRaise();
-	}
-	
-	public void lowerPidDist() {
-		elevatorPidOutput.getOutput();
-		pidLower();
+	public void pidSetElevatorHeight() {
+		double speed = elevatorPidOutput.getOutput();
+		elevatorLeftMotor.set(-speed);
+		elevatorRightMotor.set(speed);
 	}
 
     public void initDefaultCommand() {
@@ -149,17 +151,5 @@ public class Elevator extends Subsystem {
     public void climb() {
     	elevatorLeftMotor.set(CLIMB_SPEED);
     	elevatorRightMotor.set(-CLIMB_SPEED);
-    }
-    
-    // Same as raise command but raises based on MAX_PID_ELEVATOR__SPEED
-    public void pidRaise() {
-    	elevatorLeftMotor.set(-MAX_PID_ELEVATOR_SPEED);
-    	elevatorRightMotor.set(MAX_PID_ELEVATOR_SPEED);
-    }
-    
-    // Same as lower command but lowers based on MAX_PID_ELEVATOR__SPEED
-    public void pidLower() {
-    	elevatorLeftMotor.set(MAX_PID_ELEVATOR_SPEED);
-    	elevatorRightMotor.set(-MAX_PID_ELEVATOR_SPEED);
     }
 }
