@@ -22,7 +22,6 @@ import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5517.robot.subsystems.Elevator;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -100,13 +99,6 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 
 		System.out.println("Robot initializing...");
-
-		// enable camera if set to true from SmartDashboard
-		// or if value is not set at all
-		if(SmartDashboard.getBoolean("Enable Camera", true)) {
-			CameraServer camera = CameraServer.getInstance();
-			camera.startAutomaticCapture(0);
-		}
 
 		// Create operator interface
 		oi = new OI();

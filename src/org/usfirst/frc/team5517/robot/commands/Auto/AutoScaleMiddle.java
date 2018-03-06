@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5517.robot.commands.Auto;
 
 import org.usfirst.frc.team5517.robot.Robot;
+import org.usfirst.frc.team5517.robot.commands.SetElevatorHeight;
 import org.usfirst.frc.team5517.robot.commands.SpinIntakeOut;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -20,9 +21,15 @@ public class AutoScaleMiddle extends CommandGroup {
 	    	addSequential(new AutoDrive(81));
 	    	addSequential(new AutoTurn(110));
 	    	addParallel(new AutoDrive(79));
+<<<<<<< HEAD
 	    	addSequential(new AutoSetElevatorHeight(4));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
 	    	addSequential(new AutoSetElevatorHeight(0));
+=======
+	    	addSequential(new SetElevatorHeight(4));
+	    	addSequential(new AutoTimedSpinIntakeOut(1));
+	    	addSequential(new SetElevatorHeight(0));
+>>>>>>> a79ef01a501bcaace4c353c303ef724be48e646a
 	    }
     	
     	else if(Robot.getScaleSide() == 'R') {
@@ -31,9 +38,15 @@ public class AutoScaleMiddle extends CommandGroup {
 	    	addSequential(new AutoDrive(81));
 	    	addSequential(new AutoTurn(-110));
 	    	addParallel(new AutoDrive(79));
+<<<<<<< HEAD
 	    	addSequential(new AutoSetElevatorHeight(4));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
 	    	addSequential(new AutoSetElevatorHeight(0));
+=======
+	    	addSequential(new SetElevatorHeight(4));
+	    	addSequential(new AutoTimedSpinIntakeOut(1));
+	    	addSequential(new SetElevatorHeight(0));
+>>>>>>> a79ef01a501bcaace4c353c303ef724be48e646a
 	    }    
     }
 }

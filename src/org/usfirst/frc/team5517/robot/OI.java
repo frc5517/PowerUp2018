@@ -14,6 +14,7 @@ import org.usfirst.frc.team5517.robot.commands.LowerElevator;
 import org.usfirst.frc.team5517.robot.commands.LowerIntake;
 import org.usfirst.frc.team5517.robot.commands.RaiseElevator;
 import org.usfirst.frc.team5517.robot.commands.RaiseIntake;
+import org.usfirst.frc.team5517.robot.commands.SetElevatorHeight;
 import org.usfirst.frc.team5517.robot.commands.SlowIntakeOut;
 import org.usfirst.frc.team5517.robot.commands.SpinIntakeIn;
 import org.usfirst.frc.team5517.robot.commands.SpinIntakeOut;
@@ -51,6 +52,11 @@ public class OI {
 		operatorGamepad.getBackButton().whileHeld(new SpinIntakeOut());
 		operatorTriggerR.whileActive(new RaiseElevator());
 		operatorTriggerL.whileActive(new LowerElevator());
+		mainDriverGamepad.getButtonA().whenPressed(new SetElevatorHeight(575.36));
+		mainDriverGamepad.getButtonB().whenPressed(new SetElevatorHeight(0));
+		mainDriverGamepad.getButtonX().whenPressed(new SetElevatorHeight(357.12));
+		mainDriverGamepad.getButtonY().whenPressed(new SetElevatorHeight(446.4));
+		
 	}
 	
 	// Initializing the main driver's gamepad.
