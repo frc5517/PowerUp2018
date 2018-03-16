@@ -2,8 +2,6 @@ package org.usfirst.frc.team5517.robot.commands.Auto;
 
 import org.usfirst.frc.team5517.robot.Robot;
 import org.usfirst.frc.team5517.robot.commands.SetElevatorHeight;
-import org.usfirst.frc.team5517.robot.commands.SpinIntakeOut;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
