@@ -8,6 +8,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoDrivePastLine extends CommandGroup {
 
     public AutoDrivePastLine() {
-        addSequential(new AutoDrive(130)); // auto line is 120 inches from wall
+        addSequential(new AutoDrive(149.5)); // auto line is 120 inches from wall
     }
 }
