@@ -31,7 +31,7 @@ public class DriveTrain extends Subsystem {
 	/**
 	 * Speed for PID controlled driving and turning
 	 */
-	private final double MAX_PID_DRIVE_SPEED = 0.75;
+	private final double MAX_PID_DRIVE_SPEED = 0.8;
 	private final double MAX_PID_TURN_SPEED = 0.75;
 
 	/**

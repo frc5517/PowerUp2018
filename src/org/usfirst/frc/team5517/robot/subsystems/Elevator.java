@@ -24,8 +24,6 @@ public class Elevator extends Subsystem {
 	private final double CLIMB_SPEED = 1;
 	private final double MAX_PID_ELEVATOR_SPEED = 1;
 	
-	private final double maxHeight = 86;
-	
 	/***********************************************/
     private double elevatorP  = 0.1, 
                    elevatorI  = 0,
@@ -77,9 +75,6 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setElevatorSetpoint(double height) {
-		if(height > maxHeight) {
-			height = maxHeight;
-		}
 		Robot.logDebug("Setting elevator setpoint to " + height);
 		elevatorPid.setSetpoint(height);
 		elevatorPid.enable();
@@ -118,9 +113,7 @@ public class Elevator extends Subsystem {
 		double speed = elevatorPidOutput.getOutput();
 		elevatorLeftMotor.set(-speed);
 		elevatorRightMotor.set(speed);
-		System.out.println("elev encoder" + elevatorEncoder.getDistance());
-		System.out.println("pid out: " + speed);
-		System.out.println("error " + elevatorPid.getError());
+		System.out.println("elev encoder: " + elevatorEncoder.getDistance());
 	}
 	
 	public double getEncoderDistance() {
