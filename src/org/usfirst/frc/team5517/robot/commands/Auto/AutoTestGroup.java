@@ -16,8 +16,8 @@ public class AutoTestGroup extends CommandGroup {
     	addSequential(new AutoTurn(45));
     	addSequential(new AutoDrive(60));
     	addSequential(new AutoTurn(0));
-    	addParallel(new SpitCubeAfterTime(2,2));
-    	addSequential(new AutoDrive(30));
+    	addParallel(new SpitCubeAfterTime(2, 2));
+    	addSequential(new AutoDrive(60));
     	addSequential(new AutoTimedSpinIntakeOut(1));
     }
  

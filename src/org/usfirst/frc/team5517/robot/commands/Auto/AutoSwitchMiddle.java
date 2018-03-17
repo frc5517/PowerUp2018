@@ -20,7 +20,7 @@ public class AutoSwitchMiddle extends CommandGroup {
 	    	addSequential(new AutoTurn(-90));
 	    	addSequential(new AutoDrive(58));
 	    	addSequential(new AutoTurn(0));
-	    	addParallel(new SpitCubeAfterTime(3, 2));
+	    	addParallel(new SpitCubeAfterTime(2, 1));
 	    	addSequential(new AutoDrive(80));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
 	    	addSequential(new AutoDrive(-12));
@@ -33,7 +33,7 @@ public class AutoSwitchMiddle extends CommandGroup {
 	    	addSequential(new AutoTurn(90));
 	    	addSequential(new AutoDrive(58));
 	    	addSequential(new AutoTurn(0));
-	    	addParallel(new SpitCubeAfterTime(3, 2));
+	    	addParallel(new SpitCubeAfterTime(2, 1));
 	    	addSequential(new AutoDrive(80));
 	    	addSequential(new AutoTimedSpinIntakeOut(1));
 	    	addSequential(new AutoDrive(-12));
