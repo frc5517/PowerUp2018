@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutoTestGroup extends CommandGroup {
+public class AutoLeftSwitchOrScale extends CommandGroup {
 
-    public AutoTestGroup() {
+    public AutoLeftSwitchOrScale() {
     	if(Robot.getScaleSide() == 'L') {
     		addSequential(new AutoDrive(308));
     		addSequential(new AutoTurn(90));

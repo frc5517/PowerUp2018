@@ -15,7 +15,7 @@ public class Intake extends Subsystem {
 	// Setting the speed of the Bag motors.
     private final double INTAKE_IN_SPEED = 0.75;
     private final double INTAKE_OUT_SPEED = 1;
-    private final double SLOW_INTAKE_OUT_SPEED = .60;
+    private final double SLOW_INTAKE_OUT_SPEED = .4;
     
     // Creating the intake motors and solenoids.
     private Talon intakeLeftMotor;

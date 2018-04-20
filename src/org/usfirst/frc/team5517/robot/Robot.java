@@ -9,6 +9,8 @@ package org.usfirst.frc.team5517.robot;
 
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDoNothing;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDrivePastLine;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoLeftSwitchOrScale;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoRightSwitchOrScale;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleLeft;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleMiddle;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleRight;
@@ -121,6 +123,8 @@ public class Robot extends TimedRobot {
 		autoChooser.addObject("Scale Right", AutoScaleRight.class.getName());
 		autoChooser.addObject("Scale Middle", AutoScaleMiddle.class.getName());
 		autoChooser.addObject("Scale Left", AutoScaleLeft.class.getName());
+		autoChooser.addObject("Scale or Switch Left", AutoLeftSwitchOrScale.class.getName());
+		autoChooser.addObject("Scale or Switch Right", AutoRightSwitchOrScale.class.getName());
 		autoChooser.addObject("Test", AutoTestGroup.class.getName());
 		SmartDashboard.putData("Auto Mode", autoChooser);
 	}

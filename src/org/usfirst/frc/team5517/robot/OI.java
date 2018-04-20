@@ -52,7 +52,7 @@ public class OI {
 		operatorGamepad.getBackButton().whileHeld(new SpinIntakeOut());
 		operatorTriggerR.whileActive(new RaiseElevator());
 		operatorTriggerL.whileActive(new LowerElevator());
-		mainDriverGamepad.getButtonA().whenPressed(new SetElevatorHeight(595.2));
+		mainDriverGamepad.getButtonA().whenPressed(new SetElevatorHeight(610.08));
 		mainDriverGamepad.getButtonB().whenPressed(new SetElevatorHeight(9.92));
 		mainDriverGamepad.getButtonX().whenPressed(new SetElevatorHeight(357.12));
 		mainDriverGamepad.getButtonY().whenPressed(new SetElevatorHeight(446.4));

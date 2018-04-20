@@ -17,8 +17,8 @@ public class AutoScaleLeft extends CommandGroup {
     	if(Robot.getScaleSide() == 'L') {
     		addSequential(new AutoDrive(303));
     		addSequential(new AutoTurn(90));
-    		addSequential(new SetElevatorHeight(446.4));
-	    	addSequential(new AutoTimedSpinIntakeOut(2));
+    		addSequential(new SetElevatorHeight(610.08));
+	    	addSequential(new AutoTimedSpinIntakeOut(1));
 	    	addSequential(new SetElevatorHeight(0));
 	    	addSequential(new AutoTurn(180));
     	}
@@ -30,9 +30,9 @@ public class AutoScaleLeft extends CommandGroup {
 	    	addSequential(new AutoTurn(0));
 	    	addSequential(new AutoDrive(102));
 	    	addSequential(new AutoTurn(-90));
-	    	addSequential(new SetElevatorHeight(446.4));
-	    	addSequential(new AutoTimedSpinIntakeOut(1));
-	    	addSequential(new SetElevatorHeight(0)); 
+	    	addSequential(new SetElevatorHeight(610.08));
+	    	//addSequential(new AutoTimedSpinIntakeOut(1));
+	    	//addSequential(new SetElevatorHeight(0)); 
     	}
     }
 }

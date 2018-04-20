@@ -201,14 +201,14 @@ public class DriveTrain extends Subsystem {
 	public void sendDataToSmartDashboard() {
 		readPIDFromSmartDashboard();
 
-		if(Robot.DASHBOARD_OUTPUT) {
+		/*if(Robot.DASHBOARD_OUTPUT) {
 			SmartDashboard.putNumber("Drive PID Setpoint", distancePid.getSetpoint());
 			SmartDashboard.putNumber("Drive PID Error", distancePid.getError());
 			SmartDashboard.putNumber("Drive Encoder Raw Value", driveEncoder.get());
 			SmartDashboard.putNumber("Angle PID Setpoint", anglePid.getSetpoint());
 			SmartDashboard.putNumber("Angle PID Error", anglePid.getError());
 			SmartDashboard.putNumber("Gyro Rate", gyro.getRate());
-		}
+		}*/
 
 		SmartDashboard.putNumber("Drive Encoder Distance", driveEncoder.getDistance());		
 		SmartDashboard.putNumber("Gyro Angle", gyro.getAngle());
@@ -249,7 +249,7 @@ public class DriveTrain extends Subsystem {
 	 */
 	public boolean hasReachedAngle() {
 		// ensure error is within reasonable tolerance
-		boolean errorWithinTolerance = Math.abs(anglePid.getError()) < 1;
+		boolean errorWithinTolerance = Math.abs(anglePid.getError()) < 1.5;
 		if(errorWithinTolerance) {
 			if(!angleTimerStarted) {
 				angleTimerStarted = true;
