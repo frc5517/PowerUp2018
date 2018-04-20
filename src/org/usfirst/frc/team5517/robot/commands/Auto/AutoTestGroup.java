@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoTestGroup extends CommandGroup {
 
     public AutoTestGroup() {
+<<<<<<< HEAD
     	if(Robot.getScaleSide() == 'L') {
     		addSequential(new AutoDrive(308));
     		addSequential(new AutoTurn(90));
@@ -40,5 +41,14 @@ public class AutoTestGroup extends CommandGroup {
 	    	addSequential(new AutoTurn(90));
 	    	addSequential(new AutoDrive(120));
     	}
+=======
+    	addSequential(new AutoDrive(24.25));
+    	addSequential(new AutoTurn(45));
+    	addSequential(new AutoDrive(60));
+    	addSequential(new AutoTurn(0));
+    	addParallel(new SpitCubeAfterTime(2, 2));
+    	addSequential(new AutoDrive(60));
+    	addSequential(new AutoTimedSpinIntakeOut(1));
+>>>>>>> 1fdc44adcdcb4ba2d627aec526caec4c30178ac0
     }
 }
