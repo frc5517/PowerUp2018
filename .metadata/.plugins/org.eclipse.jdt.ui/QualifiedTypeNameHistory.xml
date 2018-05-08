@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Joystick"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.SpeedControllerGroup"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team5517.robot.RobotMap"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Spark"/>
+<fullyQualifiedTypeName name="java.awt.Robot"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team5517.robot.subsystems.DriveTrain"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.drive.DifferentialDrive"/>
+<fullyQualifiedTypeName name="org.usfirst.frc.team5517.robot.commands.ArcadeDrive"/>
+</qualifiedTypeNameHistroy>
