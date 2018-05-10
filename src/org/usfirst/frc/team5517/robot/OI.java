@@ -21,6 +21,8 @@ import org.usfirst.frc.team5517.robot.commands.SpinIntakeOut;
 import org.usfirst.frc.team5517.robot.utils.Gamepad;
 import org.usfirst.frc.team5517.robot.utils.JoystickAnalogButton;
 
+import edu.wpi.first.wpilibj.Joystick;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -30,6 +32,8 @@ public class OI {
 
 	Gamepad mainDriverGamepad = new Gamepad(RobotMap.mainDriverGamepadPort);
 	Gamepad operatorGamepad = new Gamepad(RobotMap.operatorGamepadPort);
+	Joystick steeringWheel = new Joystick(RobotMap.steeringWheelPort);
+	Joystick throttle = new Joystick(RobotMap.throttlePort);
 	
 	private JoystickAnalogButton operatorTriggerR, operatorTriggerL;
 	
@@ -68,6 +72,16 @@ public class OI {
 	public Gamepad getOperatorController() {
 		return operatorGamepad;
 	}
+	
+	// Initializing the steering wheel controller.
+	public Joystick getSteeringWheel() {
+		return steeringWheel;
+	}
+	
+	// Initializing the throttle controller.
+	public Joystick getThrottle() {
+		return throttle;
+	}
 
 	
 	// Getting the Y-value of the left stick on the main driver's gamepad.
@@ -94,8 +108,29 @@ public class OI {
 		return -(x * x * sign);
 	}
 	
+	public double getSteeringWheelX() {
+		double x = steeringWheel.getX();
+		return x;
+	}
+	
+	public double getThrottleY() {
+		double y = throttle.getY();
+		return y;
+	}
+	
 	public double getOperatorLeftY() {
 		double y = operatorGamepad.getLeftY();
 		return y;
+	}
+	
+	public enum DriveControlMode {
+		WHEEL_THROTTLE,
+		GAMEPAD
+	}
+	
+	public enum DriveMode {
+		CURVATURE_DRIVE,
+		ARCADE_DRIVE,
+		TANK_DRIVE
 	}
 }

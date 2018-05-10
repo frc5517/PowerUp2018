@@ -272,14 +272,19 @@ public class DriveTrain extends Subsystem {
 		return false;
 	}
 
-	// Implementing Tank Drive.
+	// Implementing Tank Drive
 	public void tankDrive(double left, double right) {
 		drive.tankDrive(left, right);
 	}
 
-	// Implementing Arcade Drive.
+	// Implementing Arcade Drive
 	public void arcadeDrive(double speed, double rotation) {
 		drive.arcadeDrive(speed, rotation);
+	}
+	
+	// Implementing Curvature Drive (Cheesy Drive)
+	public void curvatureDrive(double speed, double rotation) {
+		drive.curvatureDrive(speed, rotation, true);
 	}
 
 	/**

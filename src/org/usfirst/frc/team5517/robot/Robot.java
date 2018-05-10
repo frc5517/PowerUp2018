@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team5517.robot;
 
+import org.usfirst.frc.team5517.robot.OI.DriveMode;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDoNothing;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDrivePastLine;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoLeftSwitchOrScale;
@@ -59,6 +60,7 @@ public class Robot extends TimedRobot {
 
 	private Command autoCommand;
 	private SendableChooser<String> autoChooser;
+	private SendableChooser<DriveMode> driveChooser;
 
 	public boolean isMatchStarted() {
 		return matchStarted;

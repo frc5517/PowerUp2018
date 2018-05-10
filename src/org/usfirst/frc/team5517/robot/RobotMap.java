@@ -19,6 +19,8 @@ public class RobotMap {
 	// Gamepads
 	public static int mainDriverGamepadPort = 0;
 	public static int operatorGamepadPort = 1;
+	public static int steeringWheelPort = 2;
+	public static int throttlePort = 3;
 
 	// Drive Motors
 	public static int driveTrainRightMotorPWM = 0;
