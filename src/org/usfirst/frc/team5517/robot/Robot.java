@@ -11,6 +11,7 @@ import org.usfirst.frc.team5517.robot.OI.DriveMode;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDoNothing;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDrivePastLine;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoLeftSwitchOrScale;
+import org.usfirst.frc.team5517.robot.commands.Auto.AutoLeftSwitchOrScaleSwitchPriority;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoRightSwitchOrScale;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleLeft;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleMiddle;
@@ -25,6 +26,7 @@ import org.usfirst.frc.team5517.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team5517.robot.subsystems.Elevator;
 import org.usfirst.frc.team5517.robot.subsystems.Intake;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -103,6 +105,9 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 
 		System.out.println("Robot initializing...");
+		
+		CameraServer server = CameraServer.getInstance();
+		server.startAutomaticCapture(0);
 
 		// Create operator interface
 		oi = new OI();
@@ -128,6 +133,7 @@ public class Robot extends TimedRobot {
 		autoChooser.addObject("Scale or Switch Left", AutoLeftSwitchOrScale.class.getName());
 		autoChooser.addObject("Scale or Switch Right", AutoRightSwitchOrScale.class.getName());
 		autoChooser.addObject("Test", AutoTestGroup.class.getName());
+		autoChooser.addObject("Switch Priority Left", AutoLeftSwitchOrScaleSwitchPriority.class.getName());
 		SmartDashboard.putData("Auto Mode", autoChooser);
 	}
 
