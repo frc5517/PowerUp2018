@@ -14,7 +14,6 @@ import org.usfirst.frc.team5517.robot.commands.Auto.AutoLeftSwitchOrScale;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoLeftSwitchOrScaleSwitchPriority;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoRightSwitchOrScale;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleLeft;
-import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleMiddle;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoScaleRight;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeftStraight;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoSwitchLeftWithTurn;
@@ -128,7 +127,6 @@ public class Robot extends TimedRobot {
 		autoChooser.addObject("Switch Left Straight", AutoSwitchLeftStraight.class.getName());
 		autoChooser.addObject("Switch Left Turn", AutoSwitchLeftWithTurn.class.getName());
 		autoChooser.addObject("Scale Right", AutoScaleRight.class.getName());
-		autoChooser.addObject("Scale Middle", AutoScaleMiddle.class.getName());
 		autoChooser.addObject("Scale Left", AutoScaleLeft.class.getName());
 		autoChooser.addObject("Scale or Switch Left", AutoLeftSwitchOrScale.class.getName());
 		autoChooser.addObject("Scale or Switch Right", AutoRightSwitchOrScale.class.getName());
