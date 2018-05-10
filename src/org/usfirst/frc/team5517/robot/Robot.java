@@ -7,6 +7,7 @@
 
 package org.usfirst.frc.team5517.robot;
 
+import org.usfirst.frc.team5517.robot.OI.ControlMode;
 import org.usfirst.frc.team5517.robot.OI.DriveMode;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDoNothing;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDrivePastLine;
@@ -60,8 +61,9 @@ public class Robot extends TimedRobot {
 	private static String fmsGameData = "";
 
 	private Command autoCommand;
-	private SendableChooser<String> autoChooser;
 	private SendableChooser<DriveMode> driveChooser;
+	private SendableChooser<ControlMode> controlChooser;
+	private SendableChooser<String> autoChooser;
 
 	public boolean isMatchStarted() {
 		return matchStarted;
@@ -113,12 +115,24 @@ public class Robot extends TimedRobot {
 
 		// Calibrate the gyro on robot code startup
 		driveTrain.calibrateGyro();
+		
+		// Add all choosers for the SmartDashboard
+		driveChooser = new SendableChooser<>();
+		controlChooser = new SendableChooser<>();
+		autoChooser = new SendableChooser<>();
+		
+		// Add all drive modes
+		driveChooser.addDefault("Arcade Drive", DriveMode.ARCADE_DRIVE);
+		driveChooser.addObject("Curvature Drive", DriveMode.CURVATURE_DRIVE);
+		
+		// Add all driver control modes
+		controlChooser.addDefault("Steering Wheel + Throttle Stick", ControlMode.WHEEL_THROTTLE);
+		controlChooser.addObject("Xbox Controller", ControlMode.GAMEPAD);
 
 		// Add all auton modes
 		// Passing the class name as a string using .class.getName() 
 		// which maintains eclipse's error checking and refactoring abilities 
 		// (versus passing in a direct string of the class name)
-		autoChooser = new SendableChooser<>();
 		autoChooser.addDefault("Do Nothing", AutoDoNothing.class.getName());
 		autoChooser.addObject("Drive Past Line", AutoDrivePastLine.class.getName());
 		autoChooser.addObject("Switch Right Straight", AutoSwitchRightStraight.class.getName());

@@ -123,14 +123,13 @@ public class OI {
 		return y;
 	}
 	
-	public enum DriveControlMode {
-		WHEEL_THROTTLE,
-		GAMEPAD
-	}
-	
 	public enum DriveMode {
 		CURVATURE_DRIVE,
-		ARCADE_DRIVE,
-		TANK_DRIVE
+		ARCADE_DRIVE
+	}
+	
+	public enum ControlMode {
+		WHEEL_THROTTLE,
+		GAMEPAD
 	}
 }
