@@ -40,10 +40,12 @@ public class OI {
 	
 	private SendableChooser<DriveMode> driveChooser;
 	private SendableChooser<ControlMode> controlChooser;
+	
 	public enum DriveMode {
 		CURVATURE_DRIVE,
 		ARCADE_DRIVE
 	}
+	
 	public enum ControlMode {
 		WHEEL_THROTTLE,
 		GAMEPAD
@@ -106,22 +108,12 @@ public class OI {
 	
 	public double getMainDriverGamepadY() {
 		double y = mainDriverGamepad.getLeftY();
-		double sign = 1;
-		if(y < 0) {
-			sign = -1;
-			y = -y;
-		}
-		return -(y * y * sign);
+		return y;
 	}
 	
 	public double getMainDriverGamepadX() {
 		double x = mainDriverGamepad.getRightX();
-		double sign = 1;
-		if(x < 0) {
-			sign = -1;
-			x = -x;
-		}
-		return -(x * x * sign);
+		return x;
 	}
 	
 	public double getSteeringWheelX() {
@@ -140,34 +132,35 @@ public class OI {
 	}
 
 	/**
-	 * Gets the x value from either main driver game pad, or steering wheel
+	 * Gets the x value from either main driver gamepad, or steering wheel
 	 * (based on chosen control mode)
 	 * @return double
 	 */
 	public double getDriveX() {
 		switch(controlChooser.getSelected()) {
 			case WHEEL_THROTTLE:
-				return getMainDriverGamepadX();
-		
-			case GAMEPAD:
-			default:
 				return getSteeringWheelX();
+				
+			case GAMEPAD:
+			default: 
+				return getMainDriverGamepadX();
+				
 		}
 	}
 
 	/**
-	 * Gets the y value from either main driver game pad, or throttle stick
+	 * Gets the y value from either main driver gamepad, or throttle stick
 	 * (based on chosen control mode)
 	 * @return double
 	 */
 	public double getDriveY() {
 		switch(controlChooser.getSelected()) {
 			case WHEEL_THROTTLE:
-				return getMainDriverGamepadY();
+				return getThrottleY();
 		
 			case GAMEPAD:
 			default:
-				return getThrottleY();
+				return getMainDriverGamepadY();
 		}
 	}
 }
