@@ -7,8 +7,6 @@
 
 package org.usfirst.frc.team5517.robot;
 
-import org.usfirst.frc.team5517.robot.OI.ControlMode;
-import org.usfirst.frc.team5517.robot.OI.DriveMode;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDoNothing;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoDrivePastLine;
 import org.usfirst.frc.team5517.robot.commands.Auto.AutoLeftSwitchOrScale;
@@ -34,9 +32,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-//TODO: comment out print statements
-//TODO: change TimedRaise/Lower to encoder values
-
 public class Robot extends TimedRobot {
 	
 	/**
@@ -61,8 +56,6 @@ public class Robot extends TimedRobot {
 	private static String fmsGameData = "";
 
 	private Command autoCommand;
-	private SendableChooser<DriveMode> driveChooser;
-	private SendableChooser<ControlMode> controlChooser;
 	private SendableChooser<String> autoChooser;
 
 	public boolean isMatchStarted() {
@@ -117,17 +110,7 @@ public class Robot extends TimedRobot {
 		driveTrain.calibrateGyro();
 		
 		// Add all choosers for the SmartDashboard
-		driveChooser = new SendableChooser<>();
-		controlChooser = new SendableChooser<>();
 		autoChooser = new SendableChooser<>();
-		
-		// Add all drive modes
-		driveChooser.addDefault("Arcade Drive", DriveMode.ARCADE_DRIVE);
-		driveChooser.addObject("Curvature Drive", DriveMode.CURVATURE_DRIVE);
-		
-		// Add all driver control modes
-		controlChooser.addDefault("Steering Wheel + Throttle Stick", ControlMode.WHEEL_THROTTLE);
-		controlChooser.addObject("Xbox Controller", ControlMode.GAMEPAD);
 
 		// Add all auton modes
 		// Passing the class name as a string using .class.getName() 

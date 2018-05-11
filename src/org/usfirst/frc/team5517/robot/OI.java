@@ -22,6 +22,8 @@ import org.usfirst.frc.team5517.robot.utils.Gamepad;
 import org.usfirst.frc.team5517.robot.utils.JoystickAnalogButton;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -30,21 +32,45 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class OI {
 
-	Gamepad mainDriverGamepad = new Gamepad(RobotMap.mainDriverGamepadPort);
-	Gamepad operatorGamepad = new Gamepad(RobotMap.operatorGamepadPort);
-	Joystick steeringWheel = new Joystick(RobotMap.steeringWheelPort);
-	Joystick throttle = new Joystick(RobotMap.throttlePort);
-	
+	private Gamepad mainDriverGamepad = new Gamepad(RobotMap.mainDriverGamepadPort);
+	private Gamepad operatorGamepad = new Gamepad(RobotMap.operatorGamepadPort);
+	private Joystick steeringWheel = new Joystick(RobotMap.steeringWheelPort);
+	private Joystick throttle = new Joystick(RobotMap.throttlePort);
 	private JoystickAnalogButton operatorTriggerR, operatorTriggerL;
 	
+	private SendableChooser<DriveMode> driveChooser;
+	private SendableChooser<ControlMode> controlChooser;
+	public enum DriveMode {
+		CURVATURE_DRIVE,
+		ARCADE_DRIVE
+	}
+	public enum ControlMode {
+		WHEEL_THROTTLE,
+		GAMEPAD
+	}
+	
 	public OI() {
+		controlChooser = new SendableChooser<>();
+		driveChooser = new SendableChooser<>();
+		
+		// Add all drive modes
+		driveChooser.addDefault("Arcade Drive", DriveMode.ARCADE_DRIVE);
+		driveChooser.addObject("Curvature Drive", DriveMode.CURVATURE_DRIVE);
+		
+		// Add all driver control modes
+		controlChooser.addDefault("Steering Wheel + Throttle Stick", ControlMode.WHEEL_THROTTLE);
+		controlChooser.addObject("Xbox Controller", ControlMode.GAMEPAD);
+		
+		// Send mode choosers to the dashboard
+		//SmartDashboard.putData("Drive Mode", driveChooser);
+		SmartDashboard.putData("Control Mode", controlChooser);
+		
 		operatorTriggerL = new JoystickAnalogButton(operatorGamepad, Gamepad.AXIS_LEFT_TRIGGER, 0.5);
 		operatorTriggerR = new JoystickAnalogButton(operatorGamepad, Gamepad.AXIS_RIGHT_TRIGGER, 0.5);
 		
 		bindControls();
 	}
 	
-	// Setting the operator's controls.
 	private void bindControls() {
 		operatorGamepad.getButtonA().whileHeld(new SpinIntakeIn());
 		operatorGamepad.getButtonB().whileHeld(new SlowIntakeOut());
@@ -60,34 +86,26 @@ public class OI {
 		mainDriverGamepad.getButtonB().whenPressed(new SetElevatorHeight(9.92));
 		mainDriverGamepad.getButtonX().whenPressed(new SetElevatorHeight(357.12));
 		mainDriverGamepad.getButtonY().whenPressed(new SetElevatorHeight(446.4));
-		
 	}
 	
-	// Initializing the main driver's gamepad.
 	public Gamepad getMainController() {
 		return mainDriverGamepad;
 	}
 	
-	// Initializing the operator's gamepad.
 	public Gamepad getOperatorController() {
 		return operatorGamepad;
 	}
 	
-	// Initializing the steering wheel controller.
 	public Joystick getSteeringWheel() {
 		return steeringWheel;
 	}
 	
-	// Initializing the throttle controller.
 	public Joystick getThrottle() {
 		return throttle;
 	}
-
 	
-	// Getting the Y-value of the left stick on the main driver's gamepad.
 	public double getMainDriverGamepadY() {
 		double y = mainDriverGamepad.getLeftY();
-
 		double sign = 1;
 		if(y < 0) {
 			sign = -1;
@@ -95,11 +113,9 @@ public class OI {
 		}
 		return -(y * y * sign);
 	}
-
-	// Getting the X-value of the right stick on the main driver's gamepad.
+	
 	public double getMainDriverGamepadX() {
 		double x = mainDriverGamepad.getRightX();
-
 		double sign = 1;
 		if(x < 0) {
 			sign = -1;
@@ -122,14 +138,36 @@ public class OI {
 		double y = operatorGamepad.getLeftY();
 		return y;
 	}
-	
-	public enum DriveMode {
-		CURVATURE_DRIVE,
-		ARCADE_DRIVE
+
+	/**
+	 * Gets the x value from either main driver game pad, or steering wheel
+	 * (based on chosen control mode)
+	 * @return double
+	 */
+	public double getDriveX() {
+		switch(controlChooser.getSelected()) {
+			case WHEEL_THROTTLE:
+				return getMainDriverGamepadX();
+		
+			case GAMEPAD:
+			default:
+				return getSteeringWheelX();
+		}
 	}
-	
-	public enum ControlMode {
-		WHEEL_THROTTLE,
-		GAMEPAD
+
+	/**
+	 * Gets the y value from either main driver game pad, or throttle stick
+	 * (based on chosen control mode)
+	 * @return double
+	 */
+	public double getDriveY() {
+		switch(controlChooser.getSelected()) {
+			case WHEEL_THROTTLE:
+				return getMainDriverGamepadY();
+		
+			case GAMEPAD:
+			default:
+				return getThrottleY();
+		}
 	}
 }

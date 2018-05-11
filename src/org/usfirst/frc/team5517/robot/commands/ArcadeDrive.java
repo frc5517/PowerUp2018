@@ -16,30 +16,23 @@ public class ArcadeDrive extends Command {
         requires(Robot.driveTrain);
     }
 
-    
-    protected void initialize() {
-    }
-
-    //Getting the Y-value of the left stick and the X-value of the right stick on the main driver gamepad.
     protected void execute() {
-    	Robot.driveTrain.arcadeDrive(
-    		Robot.oi.getMainController().getLeftY(), // speed
-    		Robot.oi.getMainController().getRightX() // rotation
-    	);
+	    	Robot.driveTrain.arcadeDrive(
+	    		Robot.oi.getDriveY(), // speed
+	    		Robot.oi.getDriveX() // rotation
+	    	);
     }
-
 
     protected boolean isFinished() {
         return false;
     }
 
-
     protected void end() {
-    	Robot.driveTrain.stop();
+    		Robot.driveTrain.stop();
     }
 
     
     protected void interrupted() {
-    	end();
+    		end();
     }
 }
