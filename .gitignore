@@ -12,6 +12,8 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+.metadata
+.recommenders
 
 # External tool builders
 .externalToolBuilders/
